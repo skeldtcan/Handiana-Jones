@@ -10,4 +10,4 @@ public class HeritageApplication {
 		SpringApplication.run(HeritageApplication.class, args);
 	}
 
-}
+} 
