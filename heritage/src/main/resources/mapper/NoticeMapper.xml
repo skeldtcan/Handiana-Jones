@@ -11,20 +11,24 @@
 	</insert>
 	
 	<select id="listNoticepage" parameterType="map" resultType="noticeDto">
+		SELECT * FROM notice;
 	
 	</select>
 	
-	<select id="getNoticepage" parameterType="map" resultType="int">
-	
+	<select id="getNoticepage" parameterType="int" resultType="noticeDto">
+		SELECT * FROM notice
+		WHERE notice_no = #{noticeno};
 	</select>	
 
 	<update id="modifyNoticepage" parameterType="noticeDto">
-	
+		UPDATE notice
+		SET notice_title = #{notice_title}, notice_content = #{notice_content}
+		WHERE notice_no = #{noticeno}
 	</update>
 	
 	<delete id="deleteNoticepage" parameterType="int">
 		DELETE FROM NOTICE
-		WHERE notice_no = #{notice_no}
+		WHERE notice_no = #{noticeno}
 	</delete>	
 
 </mapper>

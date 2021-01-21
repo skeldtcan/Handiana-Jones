@@ -13,10 +13,10 @@ public interface NoticeService {
 	public List<NoticeDto> listNoticepage(NoticeParameterDto noticeParameterDto) throws Exception;
 //	public PageNavigation makePageNavigation(NoticeParameterDto noticeParameterDto) throws Exception;
 
-	public NoticeDto getNoticepage(int notice_no) throws Exception;
+	public NoticeDto getNoticepage(int noticeno) throws Exception;
 
 	public boolean modifyNoticepage(NoticeDto noticeDto) throws Exception;
 
-	public boolean deleteNoticepage(int notice_no) throws Exception;
+	public boolean deleteNoticepage(int noticeno) throws Exception;
 
 }
