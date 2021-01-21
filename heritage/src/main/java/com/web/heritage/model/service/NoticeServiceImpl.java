@@ -36,8 +36,8 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public NoticeDto getNoticepage(int noticeno) throws Exception {
-		return sqlSession.getMapper(NoticeMapper.class).getNoticepage(noticeno);
+	public NoticeDto getNoticepage(int notice_no) throws Exception {
+		return sqlSession.getMapper(NoticeMapper.class).getNoticepage(notice_no);
 	}
 
 	@Override
@@ -48,8 +48,8 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	@Transactional
-	public boolean deleteNoticepage(int noticeno) throws Exception {
-		return sqlSession.getMapper(NoticeMapper.class).deleteNoticepage(noticeno) == 1;
+	public boolean deleteNoticepage(int notice_no) throws Exception {
+		return sqlSession.getMapper(NoticeMapper.class).deleteNoticepage(notice_no) == 1;
 	}
 
 //	@Override

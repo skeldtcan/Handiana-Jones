@@ -8,5 +8,5 @@ public interface JwtService {
 	Map<String, Object> get(String key);
 	String getUserId();
 	boolean isUsable(String jwt);
-	
+
 }

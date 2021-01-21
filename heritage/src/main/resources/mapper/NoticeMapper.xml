@@ -17,18 +17,18 @@
 	
 	<select id="getNoticepage" parameterType="int" resultType="noticeDto">
 		SELECT * FROM notice
-		WHERE notice_no = #{noticeno};
+		WHERE notice_no = #{notice_no};
 	</select>	
 
 	<update id="modifyNoticepage" parameterType="noticeDto">
 		UPDATE notice
 		SET notice_title = #{notice_title}, notice_content = #{notice_content}
-		WHERE notice_no = #{noticeno}
+		WHERE notice_no = #{notice_no}
 	</update>
 	
 	<delete id="deleteNoticepage" parameterType="int">
 		DELETE FROM NOTICE
-		WHERE notice_no = #{noticeno}
+		WHERE notice_no = #{notice_no}
 	</delete>	
 
 </mapper>

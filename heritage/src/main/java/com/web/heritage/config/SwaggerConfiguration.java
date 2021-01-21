@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.common.base.Predicate;
 
-import springfox.documentation.builders.*;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.*;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.service.ResponseMessage;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -20,11 +25,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfiguration {
 
-//	http://localhost:8080/swagger-ui.html
+//	http://localhost:8000/heritage/swagger-ui.html
 
 	private String version = "V1";
 	private String title = "SSAFY VUEJS API " + version;
-	
+
 	@Bean
 	public Docket api() {
 		List<ResponseMessage> responseMessages = new ArrayList<ResponseMessage>();
@@ -37,7 +42,7 @@ public class SwaggerConfiguration {
 					.useDefaultResponseMessages(false)
 					.globalResponseMessage(RequestMethod.GET,responseMessages);
 	}
-	
+
 	private Predicate<String> postPaths() {
 		return PathSelectors.any();
 //		return or(regex("/user/.*"), regex("/article/.*"), regex("/memo/.*"));
@@ -46,7 +51,7 @@ public class SwaggerConfiguration {
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder().title(title)
-				.description("<h3>SSAFY API Reference for Developers</h3>Swagger를 이용한 VUEJS API<br><img src=\"ssafy.png\">") 
+				.description("<h3>SSAFY API Reference for Developers</h3>Swagger를 이용한 VUEJS API<br><img src=\"ssafy.png\">")
 				.contact(new Contact("SSAFY", "https://edu.ssafy.com", "ssafy@ssafy.com"))
 				.license("SSAFY License")
 				.licenseUrl("https://www.ssafy.com/ksp/jsp/swp/etc/swpPrivacy.jsp")

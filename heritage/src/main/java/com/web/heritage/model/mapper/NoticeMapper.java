@@ -16,11 +16,11 @@ public interface NoticeMapper {
 
 	public List<NoticeDto> listNoticepage(NoticeParameterDto noticeParameterDto) throws SQLException;
 
-	public NoticeDto getNoticepage(int noticeno) throws SQLException;
+	public NoticeDto getNoticepage(int notice_no) throws SQLException;
 
 	public int modifyNoticepage(NoticeDto noticeDto) throws SQLException;
 
-	public int deleteNoticepage(int noticeno) throws SQLException;
+	public int deleteNoticepage(int notice_no) throws SQLException;
 //	public int getTotalCount(NoticeParameterDto noticeParameterDto) throws SQLException;
 
 }

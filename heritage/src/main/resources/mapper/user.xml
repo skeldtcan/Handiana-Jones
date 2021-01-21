@@ -1,1 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.web.heritage.model.mapper.UserMapper">
+
+	<select id="login" parameterType="User" resultType="User">
+		select user_name, user_id
+		from user
+		where user_id = #{userid} and user_password = #{userpassword}
+	</select>
+
+	<select id="userInfo" parameterType="String" resultType="User">
+		select user_id, user_name, user_password, user_phone
+		from user
+		where user_id = #{userid}
+	</select>
+
+	<insert id="signUp" parameterType="User">
+		insert into user (user_no, user_id, user_name, user_password, user_phone)
+		value (0, #{userid}, #{username}, #{userpassword}, #{userphone})
+	</insert>
+	
+	<select id="listUser" parameterType="map" resultType="User">
+        select user_no, user_id, user_name, user_phone
+        from user
+        <if test="word != null and word != ''">
+            <if test="key == 'userid'">
+                where user_id like concat('%', #{word}, '%')
+            </if>
+            <if test="key != 'userid'">
+                where ${key} = #{word}
+            </if>
+        </if>
+        order by user_no
+        limit #{start}, #{spp}
+    </select>
+    
+    <select id="getTotalCount" parameterType="map" resultType="int">
+        select count(user_no)
+        from user
+        <if test="word != null and word != ''">
+            <if test="key == 'userid'">
+                where user_id like concat('%', #{word}, '%')
+            </if>
+            <if test="key != 'userid'">
+                where ${key} = #{word}
+            </if>
+        </if>
+    </select>
+</mapper>
