@@ -18,7 +18,7 @@
               color="blueGreyDarken4"
               class="mb-4"
               dark
-            ><span class="white--text east-sea-Dokdo " style="font-size:48px;">로그인</span></v-toolbar>
+            ><span class="white--text jua" style="font-size:30px;">로그인</span></v-toolbar>
             <v-card-text>
               <br>
                <v-text-field

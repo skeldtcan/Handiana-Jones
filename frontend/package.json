@@ -11,6 +11,7 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
+    "vue-daum-map": "^1.0.15",
     "vue-router": "^3.2.0",
     "vuetify": "^2.2.11"
   },
@@ -32,6 +33,9 @@
     "root": true,
     "env": {
       "node": true
+    },
+    "globals": {
+      "kakao": false
     },
     "extends": [
       "plugin:vue/essential",
