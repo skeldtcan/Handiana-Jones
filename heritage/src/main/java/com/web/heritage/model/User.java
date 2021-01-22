@@ -7,60 +7,60 @@ import io.swagger.annotations.ApiModelProperty;
 public class User {
 
 	@ApiModelProperty(value = "회원 번호")
-	private int userno;
+	private int user_no;
 	@ApiModelProperty(value = "회원 아이디")
-	private String userid;
+	private String user_id;
 	@ApiModelProperty(value = "회원 이름")
-	private String username;
+	private String user_name;
 	@ApiModelProperty(value = "회원 비밀번호")
-	private String userpassword;
+	private String user_password;
 	@ApiModelProperty(value = "회원 연락처")
-	private String userphone;
+	private String user_phone;
 
-	public int getUserno() {
-		return userno;
+	public int getUser_no() {
+		return user_no;
 	}
 
-	public void setUserno(int userno) {
-		this.userno = userno;
+	public void setUser_no(int user_no) {
+		this.user_no = user_no;
 	}
 
-	public String getUserid() {
-		return userid;
+	public String getUser_id() {
+		return user_id;
 	}
 
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUser_name() {
+		return user_name;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
 
-	public String getUserpassword() {
-		return userpassword;
+	public String getUser_password() {
+		return user_password;
 	}
 
-	public void setUserpassword(String userpassword) {
-		this.userpassword = userpassword;
+	public void setUser_password(String user_password) {
+		this.user_password = user_password;
 	}
 
-	public String getUserphone() {
-		return userphone;
+	public String getUser_phone() {
+		return user_phone;
 	}
 
-	public void setUserphone(String userphone) {
-		this.userphone = userphone;
+	public void setUser_phone(String user_phone) {
+		this.user_phone = user_phone;
 	}
 
 	@Override
 	public String toString() {
-		return "User [userno=" + userno + ", userid=" + userid + ", username=" + username + ", userpassword="
-			+ userpassword + ", userphone=" + userphone + "]";
+		return "user_ [user_no=" + user_no + ", user_id=" + user_id + ", user_name=" + user_name + ", user_password="
+			+ user_password + ", user_phone=" + user_phone + "]";
 	}
 
 }
