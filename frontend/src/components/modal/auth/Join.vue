@@ -19,11 +19,11 @@
             class="mb-4"
               color="blueGreyDarken4"
               dark
-            ><span class="white--text east-sea-Dokdo " style="font-size:48px;">회원가입</span></v-toolbar>
+            ><span class="white--text jua " style="font-size:36px;">회원가입</span></v-toolbar>
             <v-card-text>
               <br>
               <v-text-field
-              v-model="user.userEmail"
+              v-model="user.userId"
               outlined
             label="이메일"
           ></v-text-field>
@@ -39,6 +39,12 @@
           v-model="user.userPwdCon"
             label="비밀번호확인"
           ></v-text-field>
+           <v-text-field
+          v-model="user.userName"
+          outlined
+            label="이름"
+          ></v-text-field>
+            
           <v-text-field
           v-model="user.userPhone"
           outlined
@@ -69,9 +75,10 @@ export default {
     data(){
       return {
         user:{
-          userEmail:null,
+          userId:null,
           userPwd:null,
           userPwdCon:null,
+          userName:null,
           userPhone:null,
         },
 
