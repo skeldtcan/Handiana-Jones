@@ -20,13 +20,6 @@
 		insert into user (user_no, user_id, user_name, user_password, user_phone)
 		value (0, #{user_id}, #{user_name}, #{user_password}, #{user_phone})
 	</insert>
-
-<!--
-중복처리
-어싱크어웨이?
-비밀번호암호화
--->
-
         
 	<select id="listUser" parameterType="map" resultType="User">
         select user_no, user_id, user_name, user_password, user_phone
@@ -67,4 +60,9 @@
     	where user_no = #{user_no}
     </delete>
     
+<!--
+중복처리
+어싱크어웨이
+비밀번호암호화
+-->
 </mapper>

@@ -46,8 +46,7 @@ private UserService userService;
 
 @ApiOperation(value = "로그인", notes = "Access-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
 @PostMapping("/confirm/login")
-public ResponseEntity<Map<String, Object>> login(
-        @RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) User user) {
+public ResponseEntity<Map<String, Object>> login(@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) User user) {
     Map<String, Object> resultMap = new HashMap<>();
     HttpStatus status = null;
     try {
@@ -66,15 +65,14 @@ public ResponseEntity<Map<String, Object>> login(
         logger.error("로그인 실패 : {}", e);
         resultMap.put("message", e.getMessage());
         status = HttpStatus.INTERNAL_SERVER_ERROR;
+
     }
     return new ResponseEntity<Map<String, Object>>(resultMap, status);
 }
 
 @ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
 @GetMapping("/info/{user_id}")
-public ResponseEntity<Map<String, Object>> getInfo(
-        @PathVariable("user_id") @ApiParam(value = "인증할 회원의 아이디.", required = true) String user_id,
-        HttpServletRequest request) {
+public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("user_id") @ApiParam(value = "인증할 회원의 아이디.", required = true) String user_id, HttpServletRequest request) {
         logger.debug("user_id : {} ", user_id);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
