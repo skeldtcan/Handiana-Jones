@@ -5,64 +5,67 @@
 <mapper namespace="com.web.heritage.model.mapper.UserMapper">
 
 	<select id="login" parameterType="User" resultType="User">
-		select user_name, user_id
+		select
+		user_name, user_id
 		from user
-		where user_id = #{user_id} and user_password = #{user_password}
+		where user_id = #{user_id} and
+		user_password = #{user_password}
 	</select>
 
 	<select id="userInfo" parameterType="String" resultType="User">
-		select user_id, user_name, user_password, user_phone
+		select
+		user_id, user_name, user_password, user_phone
 		from user
-		where user_id = #{user_id}
+		where user_id =
+		#{user_id}
 	</select>
 
 	<insert id="signUp" parameterType="User">
-		insert into user (user_no, user_id, user_name, user_password, user_phone)
-		value (0, #{user_id}, #{user_name}, #{user_password}, #{user_phone})
+		insert into user (user_no,
+		user_id, user_name, user_password, user_phone)
+		value (0, #{user_id},
+		#{user_name}, #{user_password}, #{user_phone})
 	</insert>
 
 	<select id="listUser" parameterType="map" resultType="User">
-        select user_no, user_id, user_name, user_password, user_phone
-        from user
-        <if test="word != null and word != ''">
-            <if test="key == 'userid'">
-                where user_id like concat('%', #{word}, '%')
-            </if>
-            <if test="key != 'userid'">
-                where ${key} = #{word}
-            </if>
-        </if>
-        order by user_no
-        limit #{start}, #{spp}
-    </select>
+		select user_no, user_id, user_name, user_password, user_phone
+		from user
+		<if test="word != null and word != ''">
+			<if test="key == 'userid'">
+				where user_id like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'userid'">
+				where ${key} = #{word}
+			</if>
+		</if>
+		order by user_no
+		limit #{start}, #{spp}
+	</select>
 
-    <select id="getTotalCount" parameterType="map" resultType="int">
-        select count(user_no)
-        from user
-        <if test="word != null and word != ''">
-            <if test="key == 'userid'">
-                where user_id like concat('%', #{word}, '%')
-            </if>
-            <if test="key != 'userid'">
-                where ${key} = #{word}
-            </if>
-        </if>
-    </select>
+	<select id="getTotalCount" parameterType="map" resultType="int">
+		select count(user_no)
+		from user
+		<if test="word != null and word != ''">
+			<if test="key == 'userid'">
+				where user_id like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'userid'">
+				where ${key} = #{word}
+			</if>
+		</if>
+	</select>
 
-    <update id="modifyUser" parameterType="User">
-    	update user
-    	set user_name = #{user_name}, user_password = #{user_password}, user_phone = #{user_phone}
-    	where user_no = #{user_no}
-    </update>
+	<update id="modifyUser" parameterType="User">
+		update user
+		set user_name = #{user_name}, user_password = #{user_password},
+		user_phone = #{user_phone}
+		where user_no = #{user_no}
+	</update>
 
-    <delete id="deleteUser" parameterType="int">
-    	delete from user
-    	where user_no = #{user_no}
-    </delete>
+	<delete id="deleteUser" parameterType="int">
+		delete from user
+		where user_no = #{user_no}
+	</delete>
 
-<!--
-중복처리
-어싱크어웨이
-비밀번호암호화
--->
+	<!-- 중복처리 어싱크어웨이 비밀번호암호화 -->
 </mapper>

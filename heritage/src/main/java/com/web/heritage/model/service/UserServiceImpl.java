@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User login(User user) throws Exception {
-		if(user.getUser_id() == null || user.getUser_password() == null) {
+		if (user.getUser_id() == null || user.getUser_password() == null) {
 			return null;
 		}
 		return sqlSession.getMapper(UserMapper.class).login(user);
@@ -33,9 +33,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean signUp(User user) throws Exception {
-		if(user.getUser_id() == null || user.getUser_name() == null || user.getUser_password() == null || user.getUser_phone() == null) {
+		if (user.getUser_id() == null || user.getUser_name() == null || user.getUser_password() == null
+			|| user.getUser_phone() == null) {
 			throw new Exception();
 		}
+		// 패스워드 암호화저장
+//		try {
+//			String hash = SHA512.sha(user.getUser_password(), user.getUser_name());
+//			user.setUser_password(hash);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
 		return sqlSession.getMapper(UserMapper.class).signUp(user) == 1;
 	}
 
@@ -48,20 +57,20 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public PageNavigation makePageNavigation(UserParameter userParameter) throws Exception {
-	    int naviSize = 5;
-	    PageNavigation pageNavigation = new PageNavigation();
-	    pageNavigation.setCurrentPage(userParameter.getPg());
-	    pageNavigation.setNaviSize(naviSize);
-	    int totalCount = sqlSession.getMapper(UserMapper.class).getTotalCount(userParameter);
-	    pageNavigation.setTotalCount(totalCount);
-	    int totalPageCount = (totalCount - 1) / userParameter.getSpp() + 1;//27
-	    pageNavigation.setTotalPageCount(totalPageCount);
-	    boolean startRange = userParameter.getPg() <= naviSize;
-	    pageNavigation.setStartRange(startRange);
-	    boolean endRange = (totalPageCount - 1) / naviSize * naviSize < userParameter.getPg();
-	    pageNavigation.setEndRange(endRange);
-	    pageNavigation.makeNavigator();
-	    return pageNavigation;
+		int naviSize = 5;
+		PageNavigation pageNavigation = new PageNavigation();
+		pageNavigation.setCurrentPage(userParameter.getPg());
+		pageNavigation.setNaviSize(naviSize);
+		int totalCount = sqlSession.getMapper(UserMapper.class).getTotalCount(userParameter);
+		pageNavigation.setTotalCount(totalCount);
+		int totalPageCount = (totalCount - 1) / userParameter.getSpp() + 1;//27
+		pageNavigation.setTotalPageCount(totalPageCount);
+		boolean startRange = userParameter.getPg() <= naviSize;
+		pageNavigation.setStartRange(startRange);
+		boolean endRange = (totalPageCount - 1) / naviSize * naviSize < userParameter.getPg();
+		pageNavigation.setEndRange(endRange);
+		pageNavigation.makeNavigator();
+		return pageNavigation;
 	}
 
 	@Override
