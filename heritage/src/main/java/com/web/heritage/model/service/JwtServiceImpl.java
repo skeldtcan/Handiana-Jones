@@ -14,7 +14,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.web.common.error.UnauthorizedException;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtServiceImpl implements JwtService {
@@ -26,9 +29,12 @@ public class JwtServiceImpl implements JwtService {
 
 	@Override
 	public <T> String create(String key, T data, String subject) {
-		String jwt = Jwts.builder().setHeaderParam("typ", "JWT").setHeaderParam("regDate", System.currentTimeMillis())
+		String jwt = Jwts.builder().setHeaderParam("typ", "JWT")
+				.setHeaderParam("regDate", System.currentTimeMillis())
 				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * EXPIRE_MINUTES))
-				.setSubject(subject).claim(key, data).signWith(SignatureAlgorithm.HS256, this.generateKey()).compact();
+				.setSubject(subject)
+				.claim(key, data)
+				.signWith(SignatureAlgorithm.HS256, this.generateKey()).compact();
 		return jwt;
 	}
 
