@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.web.heritage.model.User;
 import com.web.heritage.model.UserParameter;
@@ -19,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User login(User user) throws Exception {
-		if(user.getUserid() == null || user.getUserpassword() == null) {
+		if(user.getUser_id() == null || user.getUser_password() == null) {
 			return null;
 		}
 		return sqlSession.getMapper(UserMapper.class).login(user);
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean signUp(User user) throws Exception {
-		if(user.getUserid() == null || user.getUsername() == null || user.getUserpassword() == null || user.getUserphone() == null) {
+		if(user.getUser_id() == null || user.getUser_name() == null || user.getUser_password() == null || user.getUser_phone() == null) {
 			throw new Exception();
 		}
 		return sqlSession.getMapper(UserMapper.class).signUp(user) == 1;
@@ -61,6 +62,18 @@ public class UserServiceImpl implements UserService {
 	    pageNavigation.setEndRange(endRange);
 	    pageNavigation.makeNavigator();
 	    return pageNavigation;
+	}
+
+	@Override
+	@Transactional
+	public boolean modifyUser(User user) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).modifyUser(user) == 1;
+	}
+
+	@Override
+	@Transactional
+	public boolean deleteUser(int userno) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).deleteUser(userno) == 1;
 	}
 
 }

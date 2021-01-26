@@ -107,6 +107,7 @@ public class PageNavigation {
 		buffer.append("			</li> \n");
 		buffer.append("		</ul> \n");
 		this.navigator = buffer.toString();
+
 	}
 
 }
