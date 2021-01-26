@@ -23,30 +23,30 @@
             <v-card-text>
               <br>
               <v-text-field
-              v-model="user.userId"
+              v-model="user.user_id"
               outlined
             label="이메일"
           ></v-text-field>
           <v-text-field
           type="password"
           outlined
-          v-model="user.userPwd"
+          v-model="user.user_password"
             label="비밀번호"
           ></v-text-field>
           <v-text-field
           type="password"
           outlined
-          v-model="user.userPwdCon"
+          v-model="passcon"
             label="비밀번호확인"
           ></v-text-field>
            <v-text-field
-          v-model="user.userName"
+          v-model="user.user_name"
           outlined
             label="이름"
           ></v-text-field>
             
           <v-text-field
-          v-model="user.userPhone"
+          v-model="user.user_phone"
           outlined
             label="연락처"
           ></v-text-field>
@@ -55,11 +55,11 @@
               <v-btn
                 color="brownLighten4"
                 @click="create"
-              ><span class="blue-grey--text text--darken-4 gugi" style="font-size:15px; padding: 10px; ">회원가입</span></v-btn>
+              ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">회원가입</span></v-btn>
               <v-btn
                 text
                 @click="dialog.value = false"
-              ><span class="blue-grey--text text--darken-4 gugi" style="font-size:15px; padding: 10px; ">창닫기</span></v-btn>
+              ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">창닫기</span></v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -70,17 +70,19 @@
 </template>
 
 <script>
+import { join } from "@/api/user.js";
+
 export default {
     name: 'join',
     data(){
       return {
         user:{
-          userId:null,
-          userPwd:null,
-          userPwdCon:null,
-          userName:null,
-          userPhone:null,
+          user_id:null,
+          user_password:null, 
+          user_name:null,
+          user_phone:null,
         },
+        passcon:'',
 
       }
     },
@@ -88,15 +90,19 @@ export default {
       
     },
     methods:{
+      
       create(){
-        console.log(this.user.userEmail)
-        console.log(this.user.userPwd)
-        console.log(this.user.userPwdCon)
-        console.log(this.user.userPhone)
-        if (this.user.userPwd===this.user.userPwdCon){
-          console.log('비밀번호가 옳습니다')
+        if (this.passcon === this.user.user_password){
+          join(
+            this.user, 
+          (response)=>{
+            console.log(response)
+          },
+          (error)=>{
+            console.log(error)
+            } )
         } else {
-          console.log('비밀번호가 틀립니다')
+          console.log(this.user.user_password)
         }
       }
     },
