@@ -1,10 +1,8 @@
 package com.web.heritage.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.heritage.model.User;
-import com.web.heritage.model.UserParameter;
 import com.web.heritage.model.service.JwtServiceImpl;
 import com.web.heritage.model.service.UserService;
 
@@ -115,28 +111,20 @@ public class UserController {
 		throws Exception {
 		logger.debug("signUp - 호출");
 		if (userService.signUp(user)) {
-			try {
-				MimeMessage message = mailSender.createMimeMessage();
-				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-				messageHelper.setTo(user.getUser_id());
-				messageHelper.setText("회원가입 인증메일입니다.");
-				messageHelper.setFrom(from);
-				messageHelper.setSubject(subject); // 메일제목은 생략이 가능하다
-				mailSender.send(message);
-			} catch (Exception e) {
-				System.out.println(e);
-			}
+//			try {
+//				MimeMessage message = mailSender.createMimeMessage();
+//				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+//				messageHelper.setTo(user.getUser_id());
+//				messageHelper.setText("회원가입 인증메일입니다.");
+//				messageHelper.setFrom(from);
+//				messageHelper.setSubject(subject); // 메일제목은 생략이 가능하다
+//				mailSender.send(message);
+//			} catch (Exception e) {
+//				System.out.println(e);
+//			}
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
-	}
-
-	@ApiOperation(value = "회원목록", notes = "모든 회원 정보를 반환한다.", response = List.class)
-	@GetMapping
-	public ResponseEntity<List<User>> listUser(
-		@ApiParam(value = "회원 정보를 얻기위한 부가정보.", required = true) UserParameter userParameter) throws Exception {
-		logger.debug("listUser - 호출");
-		return new ResponseEntity<List<User>>(userService.listUser(userParameter), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "회원 정보 수정", notes = "새로운 회원 정보를 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)

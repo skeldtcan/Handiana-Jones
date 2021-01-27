@@ -1,7 +1,5 @@
 package com.web.heritage.model.service;
 
-import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.web.heritage.model.User;
 import com.web.heritage.model.UserParameter;
 import com.web.heritage.model.mapper.UserMapper;
+import com.web.heritage.security.SHA512;
 import com.web.util.PageNavigation;
 
 @Service
@@ -38,21 +37,14 @@ public class UserServiceImpl implements UserService {
 			throw new Exception();
 		}
 		// 패스워드 암호화저장
-//		try {
-//			String hash = SHA512.sha(user.getUser_password(), user.getUser_name());
-//			user.setUser_password(hash);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		try {
+			String hash = SHA512.sha(user.getUser_password(), user.getUser_name());
+			user.setUser_password(hash);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return sqlSession.getMapper(UserMapper.class).signUp(user) == 1;
-	}
-
-	@Override
-	public List<User> listUser(UserParameter userParameter) throws Exception {
-		int start = userParameter.getPg() == 0 ? 0 : (userParameter.getPg() - 1) * userParameter.getSpp();
-		userParameter.setStart(start);
-		return sqlSession.getMapper(UserMapper.class).listUser(userParameter);
 	}
 
 	@Override

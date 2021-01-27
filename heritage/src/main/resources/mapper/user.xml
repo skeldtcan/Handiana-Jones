@@ -27,21 +27,6 @@
 		#{user_name}, #{user_password}, #{user_phone})
 	</insert>
 
-	<select id="listUser" parameterType="map" resultType="User">
-		select user_no, user_id, user_name, user_password, user_phone
-		from user
-		<if test="word != null and word != ''">
-			<if test="key == 'userid'">
-				where user_id like concat('%', #{word}, '%')
-			</if>
-			<if test="key != 'userid'">
-				where ${key} = #{word}
-			</if>
-		</if>
-		order by user_no
-		limit #{start}, #{spp}
-	</select>
-
 	<select id="getTotalCount" parameterType="map" resultType="int">
 		select count(user_no)
 		from user
@@ -67,5 +52,4 @@
 		where user_no = #{user_no}
 	</delete>
 
-	<!-- 중복처리 어싱크어웨이 비밀번호암호화 -->
 </mapper>
