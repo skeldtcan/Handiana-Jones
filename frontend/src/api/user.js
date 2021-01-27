@@ -20,7 +20,7 @@ function login(user, success, fail) {
     user_id: user.user_id,
     user_password: user.user_password
   };
-  console.log(instance.defaults.headers)
+  console.log("instance의 headers: ", instance.defaults.headers)
   instance
     .post("user/confirm/login", JSON.stringify(body))
     .then(success)

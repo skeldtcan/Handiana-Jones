@@ -35,8 +35,6 @@
           ></v-text-field>
             </v-card-text>
             <v-card-actions class="justify-end">
-                    
-
               <Findid/>
               
               <Findpwd/>
@@ -86,31 +84,28 @@ export default {
     },
     computed:{},
     methods:{
-      confirm(){
-        console.log(this.user.user_id)
-        console.log(this.user.user_password)
+      confirm() {
+        localStorage.setItem("access-token", "");
         login(
         this.user,
         (response) => {
-          console.log(response)
+          console.log("최종로그인확인", response.data.message)
           if (response.data.message === "success") {
             let token = response.data["access-token"];
-            
-            const storage = window.localStorage;
             this.$store.commit("setIsLogined", true);
-            storage.setItem("access-token", token);
-
+            localStorage.setItem("access-token", token)
+            // const storage = window.localStorage;
+            // storage.setItem("access-token", token);
+            
             this.$store.dispatch("GET_MEMBER_INFO", token);
             this.$router.push("/");
-            
           } else {
-            console.log('연결이되있네?')
+            console.log('로그인 실패')
             this.isLoginError = true;
           }
         },
         (error) => {
           console.error(error);
-          console.log('일단작동은함')
           alert("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
       );

@@ -90,19 +90,18 @@ export default {
       
     },
     methods:{
-      
-      create(){
-        if (this.passcon === this.user.user_password){
+      create() {
+        if (this.passcon === this.user.user_password) {
           join(
             this.user, 
           (response)=>{
-            console.log(response)
+            console.log("회원가입성공", response)
           },
           (error)=>{
-            console.log(error)
-            } )
+            console.log("회원가입실패", error)
+            })
         } else {
-          console.log(this.user.user_password)
+          alert("비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 시도해 주세요.")
         }
       }
     },
