@@ -19,6 +19,7 @@
               color="brownLighten4"
               v-bind="attrs"
               v-on="on"
+              @click="logout"
             ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">로그아웃</span></v-btn>
           </span>
           
@@ -40,6 +41,13 @@ export default {
   data: function () {
     return {
       isLogin: false,
+    }
+  },
+  methods: {
+    logout: function () {
+      localStorage.removeItem("access-token")
+      this.isLogin = false
+      
     }
   },
   mounted: function () {

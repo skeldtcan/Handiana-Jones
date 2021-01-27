@@ -133,16 +133,16 @@ export default {
                     var marker = markers[i]
                     // 마커에 표시할 인포윈도우 생성
                     // 인포위도우 커스터마이징(정보 및 이미지 담고 구조랑 디자인 짜기)
-                    var imageSrc = require('@/assets/exampleImg.jpg')
+                    var imageSrc = require('@/assets/exampleImg.webp')
                     // 전체 content 구조 예시
                     // '<div><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png"></div>' +
                     // '<div class="markertitlediv"><text class="gugi markertitletext">제목</text></div>'
-                    // 변수명 사용을 위해 분기점을 나눠준다. 
-                    var content1 = '<div><img src="'
+                    // 변수명 사용을 위해 분기점을 나눠준다.
+                    var content1 = '<img class="infoImg" src="'
                     var content2 = imageSrc
-                    var content3 = '"></div>'
-                    var content4 = '<div class="markertitlediv"><text class="gugi markertitletext">제목</text></div>'
-
+                    var content3 = '">'
+                    var content4 = '<div class="infoTitle"><text class="jua">문화재명</text></div>'
+    
                     var infowindow = new kakao.maps.InfoWindow({
                         content: content1+content2+content3+content4 // 인포윈도우에 표시할 내용
                     });
@@ -304,12 +304,13 @@ body{
     width:60rem; height:40rem; margin-left:auto; margin-right:auto;
 }
 
-/* 마커 제목 */
-.markertitlediv {
-    align-self: center;
+/* Info Window */
+.infoImg {
+    width:20rem; height:10rem;
+    padding: 1rem 1rem 0rem 1rem;
 }
-
-.markertitletext {
-    text-align: center;
+.infoTitle {
+    padding: 1rem;
+    font-size: 30px;
 }
 </style>

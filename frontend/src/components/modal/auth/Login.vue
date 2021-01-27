@@ -94,10 +94,10 @@ export default {
             let token = response.data["access-token"];
             this.$store.commit("setIsLogined", true);
             localStorage.setItem("access-token", token)
-            // const storage = window.localStorage;
-            // storage.setItem("access-token", token);
             this.$store.dispatch("GET_MEMBER_INFO", token);
             // this.$router.push("/");
+            // 페이지 리렌더링
+            location.reload();
           } else {
             console.log('로그인 실패')
             this.isLoginError = true;
