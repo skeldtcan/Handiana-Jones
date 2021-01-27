@@ -11,11 +11,13 @@ import com.web.heritage.model.UserParameter;
 public interface UserMapper {
 
 	public User login(User user) throws SQLException;
-	public User userInfo(String userid) throws SQLException;
+	public User userInfo(String user_id) throws SQLException;
+	public String findPwd(User user) throws SQLException;
+	public String findId(User user) throws SQLException;
 
 	public int signUp(User user) throws SQLException;
 	public int getTotalCount(UserParameter userParameter) throws SQLException;
 	public int modifyUser(User user) throws SQLException;
-	public int deleteUser(int userno) throws SQLException;
+	public int deleteUser(int user_no) throws SQLException;
 
 }
