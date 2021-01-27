@@ -96,9 +96,8 @@ export default {
             localStorage.setItem("access-token", token)
             // const storage = window.localStorage;
             // storage.setItem("access-token", token);
-            
             this.$store.dispatch("GET_MEMBER_INFO", token);
-            this.$router.push("/");
+            // this.$router.push("/");
           } else {
             console.log('로그인 실패')
             this.isLoginError = true;
