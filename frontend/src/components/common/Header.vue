@@ -10,10 +10,19 @@
 
         <v-spacer></v-spacer>
 
-        <!-- </v-btn> -->
-          <span class="mr-2"><Join/></span>
-          <span class="mr-2"><Login/></span>
-          <!-- <v-icon>mdi-open-in-new</v-icon> -->
+          <!-- 로그인이 안돼었을시 보이는 배너, vuetify 회원가입, 로그인 모답 -->
+          <span v-if="!isLogin" class="mr-2"><Join/></span>
+          <span v-if="!isLogin" class="mr-2"><Login/></span>
+          <!--  -->
+          <span v-if="isLogin">
+            <v-btn
+              color="brownLighten4"
+              v-bind="attrs"
+              v-on="on"
+              @click="logout"
+            ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">로그아웃</span></v-btn>
+          </span>
+          
         
       </v-app-bar>
   </div>
@@ -28,6 +37,24 @@ export default {
   components: {
     Join,
     Login,
+  },
+  data: function () {
+    return {
+      isLogin: false,
+    }
+  },
+  methods: {
+    logout: function () {
+      localStorage.removeItem("access-token")
+      this.isLogin = false
+      
+    }
+  },
+  mounted: function () {
+    let token = localStorage.getItem("access-token");
+    if (token) {
+      this.isLogin = true
+    }
   }
 }
 </script>

@@ -94,7 +94,7 @@ export default {
             let markers = data.positions.map(
                 (positionSingle) => {
                     // // 마커 이미지를 커스텀하기 위한 코드
-                    // var imageSrc = require('@/assets/markertestImg.jpg'), // 마커이미지의 주소입니다    
+                    // var imageSrc = require('@/assets/exampleImg.jpg'), // 마커이미지의 주소입니다    
                     //     imageSize = new kakao.maps.Size(50, 40), // 마커이미지의 크기입니다
                     //     imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
                     // // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
@@ -131,12 +131,20 @@ export default {
             // 마커에 마우스오버 등록을 위한 코드 시작.
             for (var i = 0; i < markers.length; i ++) {
                     var marker = markers[i]
-                    // 마커에 표시할 인포윈도우를 생성합니다 
-                    var iwContent = '<div><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png"></div>' +
-                    '<div class="markertitlediv"><text class="gugi markertitletext">제목</text></div> '
-
+                    // 마커에 표시할 인포윈도우 생성
+                    // 인포위도우 커스터마이징(정보 및 이미지 담고 구조랑 디자인 짜기)
+                    var imageSrc = require('@/assets/exampleImg.webp')
+                    // 전체 content 구조 예시
+                    // '<div><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png"></div>' +
+                    // '<div class="markertitlediv"><text class="gugi markertitletext">제목</text></div>'
+                    // 변수명 사용을 위해 분기점을 나눠준다.
+                    var content1 = '<img class="infoImg" src="'
+                    var content2 = imageSrc
+                    var content3 = '">'
+                    var content4 = '<div class="infoTitle"><text class="jua">문화재명</text></div>'
+    
                     var infowindow = new kakao.maps.InfoWindow({
-                        content: iwContent // 인포윈도우에 표시할 내용
+                        content: content1+content2+content3+content4 // 인포윈도우에 표시할 내용
                     });
                     // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
                     // 이벤트 리스너로는 클로저를 만들어 등록합니다 
@@ -296,12 +304,13 @@ body{
     width:60rem; height:40rem; margin-left:auto; margin-right:auto;
 }
 
-/* 마커 제목 */
-.markertitlediv {
-    align-self: center;
+/* Info Window */
+.infoImg {
+    width:20rem; height:10rem;
+    padding: 1rem 1rem 0rem 1rem;
 }
-
-.markertitletext {
-    text-align: center;
+.infoTitle {
+    padding: 1rem;
+    font-size: 30px;
 }
 </style>
