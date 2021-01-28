@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.web.heritage.model.User;
 import com.web.heritage.model.UserParameter;
 import com.web.heritage.model.mapper.UserMapper;
-import com.web.heritage.security.SHA512;
 import com.web.util.PageNavigation;
 
 @Service
@@ -26,8 +25,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User userInfo(String userid) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
+	public User userInfo(String user_id) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).userInfo(user_id);
+	}
+
+	@Override
+	public String findPwd(User user) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).findPwd(user);
+	}
+
+	@Override
+	public String findId(User user) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).findId(user);
 	}
 
 	@Override
@@ -36,14 +45,6 @@ public class UserServiceImpl implements UserService {
 			|| user.getUser_phone() == null) {
 			throw new Exception();
 		}
-		// 패스워드 암호화저장
-		try {
-			String hash = SHA512.sha(user.getUser_password(), user.getUser_name());
-			user.setUser_password(hash);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		return sqlSession.getMapper(UserMapper.class).signUp(user) == 1;
 	}
 
@@ -73,8 +74,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public boolean deleteUser(int userno) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).deleteUser(userno) == 1;
+	public boolean deleteUser(int user_no) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).deleteUser(user_no) == 1;
 	}
 
 }
