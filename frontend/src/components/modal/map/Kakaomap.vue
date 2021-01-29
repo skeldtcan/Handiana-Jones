@@ -141,7 +141,7 @@ export default {
                     var content1 = '<img class="infoImg" src="'
                     var content2 = imageSrc
                     var content3 = '">'
-                    var content4 = '<div class="infoTitle"><text class="jua">문화재명</text></div>'
+                    var content4 = '<div class="infoTitle"><text class="jua">경주 월성</text></div>'
     
                     var infowindow = new kakao.maps.InfoWindow({
                         content: content1+content2+content3+content4 // 인포윈도우에 표시할 내용

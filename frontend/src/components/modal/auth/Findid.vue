@@ -18,7 +18,7 @@
           <v-card>
             <v-toolbar
             class="mb-4"
-              color="blueGreyDarken4"
+              color="navy"
               dark
             ><span class="white--text jua " style="font-size:36px;">아이디찾기</span></v-toolbar>
             <v-card-text>
@@ -39,7 +39,7 @@
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn
-                color="brownLighten4"
+                color="brown2"
                 @click="findId"
               ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">아이디찾기</span></v-btn>
               <v-btn
@@ -61,8 +61,6 @@ export default {
     data(){
       return {
         user:{
-       
-          
           userName:null,
           userPhone:null,
         },

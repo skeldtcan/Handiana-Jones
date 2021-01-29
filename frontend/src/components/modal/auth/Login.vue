@@ -6,20 +6,20 @@
         max-width="600"
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="brownLighten4"
+          <v-btn text
             v-bind="attrs"
             v-on="on"
-           
-          ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">로그인</span></v-btn>
+          >
+          <span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px;">로그인</span>
+          </v-btn>
         </template>
         <template v-slot:default="dialog">
           <v-card>
             <v-toolbar
-              color="blueGreyDarken4"
+              color="navy"
               class="mb-4"
               dark
-            ><span class="white--text jua" style="font-size:30px;">로그인</span></v-toolbar>
+            ><span class="brown--text text--lighten-5 jua" style="font-size:24px;">로그인</span></v-toolbar>
             <v-card-text>
               <br>
                <v-text-field
@@ -43,13 +43,13 @@
               <Join/>
               
               <v-btn
-                color="brownLighten4"
+                color="brown2"
                 @click="confirm"
-              ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">로그인</span></v-btn>
+              ><span class="blue-grey--text text--darken-4 jua" style="font-size:18px; padding: 10px; ">로그인</span></v-btn>
               <v-btn
                 text
                 @click="dialog.value = false"
-              ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">창닫기</span></v-btn>
+              ><span class="blue-grey--text text--darken-4 jua" style="font-size:18px; padding: 10px; ">창닫기</span></v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -104,7 +104,7 @@ export default {
           }
         },
         (error) => {
-          console.error(error);
+          console.log(error);
           alert("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
       );

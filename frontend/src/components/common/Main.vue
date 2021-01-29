@@ -1,14 +1,7 @@
 <template>
-  <v-container>
+<v-content>
+  <v-container class="my-16">
     <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('@/assets/mainImage.jpg')"
-          gradient="rgba(10,15,21,.33), rgba(15,12,22,.7)"
-          class="mb-2"
-          height="300"
-        />
-      </v-col>
       <v-col cols="12">
         <Kakaomap/>
       </v-col>
@@ -16,6 +9,7 @@
         class="mb-5"
         cols="12"
       >
+      <!-- 밑에 부터 구조 잡기 위해 남겨둠. -->
         <h2 class="headline font-weight-bold mb-3">
           What's next?
         </h2>
@@ -75,6 +69,7 @@
       </v-col>
     </v-row>
   </v-container>
+  </v-content>
 </template>
 
 <!-- Main.vue -->
