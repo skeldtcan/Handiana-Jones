@@ -9,6 +9,7 @@
         class="mb-5"
         cols="12"
       >
+      <!-- 밑에 부터 구조 잡기 위해 남겨둠. -->
         <h2 class="headline font-weight-bold mb-3">
           What's next?
         </h2>
