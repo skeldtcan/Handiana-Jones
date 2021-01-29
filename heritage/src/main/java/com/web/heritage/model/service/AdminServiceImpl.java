@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.web.heritage.model.User;
 import com.web.heritage.model.UserParameter;
 import com.web.heritage.model.mapper.AdminMapper;
+import com.web.heritage.security.SHA512;
 import com.web.util.PageNavigation;
 
 @Service
@@ -24,12 +25,28 @@ public class AdminServiceImpl implements AdminService {
 			|| user.getUser_phone() == null) {
 			throw new Exception();
 		}
+		// 패스워드 암호화저장
+		try {
+			String hash = SHA512.sha(user.getUser_password(), user.getUser_name());
+			user.setUser_password(hash);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return sqlSession.getMapper(AdminMapper.class).signUp(user) == 1;
 	}
 
 	@Override
 	@Transactional
 	public boolean modifyUser(User user) throws Exception {
+		// 패스워드 암호화저장
+		try {
+			if (user.getUser_password() != null) {
+				String hash = SHA512.sha(user.getUser_password(), user.getUser_name());
+				user.setUser_password(hash);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return sqlSession.getMapper(AdminMapper.class).modifyUser(user) == 1;
 	}
 
@@ -41,7 +58,6 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public List<User> listUser(UserParameter userParameter) throws Exception {
-		System.out.println(userParameter.getStart());
 		int start = userParameter.getPg() == 0 ? 0 : (userParameter.getPg() - 1) * userParameter.getSpp();
 		userParameter.setStart(start);
 		return sqlSession.getMapper(AdminMapper.class).listUser(userParameter);

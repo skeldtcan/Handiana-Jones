@@ -12,6 +12,8 @@
 <script>
 import Header from './components/common/Header';
 import Main from './components/common/Main';
+// auth 부분
+import store from "@/store";
 
 export default {
   name: 'App',
@@ -20,10 +22,12 @@ export default {
     Header,
     Main,
   },
-
   data: () => ({
-    //
+    login: false,
   }),
+  mounted: function () {
+    console.log(store.state.userInfo)
+  },
 };
 </script>
 

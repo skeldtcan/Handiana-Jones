@@ -49,6 +49,9 @@ public class AdminController {
 	public ResponseEntity<String> modifyUser(
 		@RequestBody @ApiParam(value = "회원 정보", required = true) User user) throws Exception {
 		logger.debug("modifyUser - 호출");
+		if (user.getUser_password() != null && user.getUser_password().trim().equals("")) {
+			return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
+		}
 		if (adminService.modifyUser(user)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

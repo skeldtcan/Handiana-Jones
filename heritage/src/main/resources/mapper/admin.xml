@@ -13,11 +13,11 @@
         select user_no, user_id, user_name, user_password, user_phone
         from user
         <if test="word != null and word != ''">
-            <if test="key == 'user_id'">
-                where user_id like concat('%', #{word}, '%')
-            </if>
-            <if test="key != 'user_id'">
+            <if test="key == 'user_no'">
                 where ${key} = #{word}
+            </if>
+            <if test="key != 'user_no'">
+                where user_id like concat('%', #{word}, '%')
             </if>
         </if>
         order by user_no
@@ -28,18 +28,33 @@
         select count(user_no)
         from user
         <if test="word != null and word != ''">
-            <if test="key == 'user_id'">
-                where user_id like concat('%', #{word}, '%')
-            </if>
-            <if test="key != 'user_id'">
+            <if test="key == 'user_no'">
                 where ${key} = #{word}
+            </if>
+            <if test="key != 'user_no'">
+                where user_id like concat('%', #{word}, '%')
             </if>
         </if>
     </select>
 
     <update id="modifyUser" parameterType="User">
     	update user
-    	set user_name = #{user_name}, user_password = #{user_password}, user_phone = #{user_phone}
+    	set
+    		<if test="user_id != null and user_id != ''">
+    			user_id = #{user_id},
+    		</if>
+    		<if test="user_name != null">
+    			user_name = #{user_name},
+    		</if>
+    		<if test="user_password != null">
+    			user_password = #{user_password},
+    		</if>
+    		<if test="user_phone != null">
+    			user_phone = #{user_phone}
+    		</if>
+    		<if test="user_phone == null">
+    			user_no = #{user_no}
+    		</if>
     	where user_no = #{user_no}
     </update>
 
