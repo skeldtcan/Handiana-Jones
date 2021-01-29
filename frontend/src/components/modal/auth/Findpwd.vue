@@ -19,7 +19,7 @@
           <v-card>
             <v-toolbar
             class="mb-4"
-              color="blueGreyDarken4"
+              color="navy"
               dark
             ><span class="white--text jua " style="font-size:36px;">비밀번호찾기</span></v-toolbar>
             <v-card-text>
@@ -28,14 +28,8 @@
               v-model="user.userId"
               outlined
             label="이메일"
-          ></v-text-field>
-          
-           <v-text-field
-          v-model="user.userName"
-          outlined
-            label="이름"
-          ></v-text-field>
-            
+          ></v-text-field>       
+           
           <v-text-field
           v-model="user.userPhone"
           outlined
@@ -44,7 +38,7 @@
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn
-                color="brownLighten4"
+                color="brown2"
                 @click="findPwd"
               ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">비밀번호찾기</span></v-btn>
               <v-btn

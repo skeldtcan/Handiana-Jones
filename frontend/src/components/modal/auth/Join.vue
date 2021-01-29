@@ -7,19 +7,18 @@
         max-width="600"
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="brownLighten4"
+          <v-btn text
             v-bind="attrs"
             v-on="on"
-          ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">회원가입</span></v-btn>
+          ><span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px; ">회원가입</span></v-btn>
         </template>
         <template v-slot:default="dialog">
           <v-card>
             <v-toolbar
             class="mb-4"
-              color="blueGreyDarken4"
+              color="navy"
               dark
-            ><span class="white--text jua " style="font-size:36px;">회원가입</span></v-toolbar>
+            ><span class="brown--text text--lighten-5 jua" style="font-size:24px;">회원가입</span></v-toolbar>
             <v-card-text>
               <br>
               <v-text-field
@@ -53,13 +52,13 @@
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn
-                color="brownLighten4"
+                color="brown2"
                 @click="create"
-              ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">회원가입</span></v-btn>
+              ><span class="blue-grey--text text--darken-4 jua" style="font-size:18px; padding: 10px; ">가입하기</span></v-btn>
               <v-btn
                 text
                 @click="dialog.value = false"
-              ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">창닫기</span></v-btn>
+              ><span class="blue-grey--text text--darken-4 jua" style="font-size:18px; padding: 10px; ">창닫기</span></v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -98,7 +97,12 @@ export default {
             console.log("회원가입성공", response)
           },
           (error)=>{
-            console.log("회원가입실패", error)
+            if (error.response.status === 409) {
+              alert("사용자 이메일이 중복됐습니다. 다른 이메일 아이디를 사용해주세요")
+            }
+            if (error.response.status === 500) {
+              alert("회원가입에 실패했습니다.")
+            }
             })
         } else {
           alert("비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 시도해 주세요.")
