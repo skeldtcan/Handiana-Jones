@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web.heritage.model.User;
 import com.web.heritage.model.service.JwtServiceImpl;
 import com.web.heritage.model.service.UserService;
+import com.web.heritage.security.SHA512;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +39,8 @@ public class UserController {
 
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	private static final String SUCCESS = "success";
+	private static final String OVERLAP = "overlap";
+	private static final String EMAIL = "email";
 	private static final String FAIL = "fail";
 
 	@Autowired
@@ -58,6 +61,12 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
+			try {
+				String hash = SHA512.sha(user.getUser_password(), user.getUser_id()); // 비밀번호 암호화
+				user.setUser_password(hash);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			User loginUser = userService.login(user);
 			if (loginUser != null) {
 				String token = jwtService.create("user_id", loginUser.getUser_id(), "access-token");// key, data, subject
@@ -78,6 +87,32 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	@ApiOperation(value = "비밀번호 찾기", notes = "입력한 아이디와 이름에 해당하는 회원의 비밀번호를 반환한다.", response = String.class)
+	@PostMapping("/confirm/password")
+	public ResponseEntity<String> findPwd(
+		@RequestBody @ApiParam(value = "비밀번호 찾기 시 필요한 회원정보(아이디, 이름).", required = true) User user)
+		throws Exception {
+		logger.debug("findPwd - 호출");
+		String password = userService.findPwd(user);
+		if (password != null) {
+			return new ResponseEntity<String>(password, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+
+	@ApiOperation(value = "아이디 찾기", notes = "입력한 이름과 연락처에 해당하는 회원의 아이디를 반환한다.", response = String.class)
+	@PostMapping("/confirm/id")
+	public ResponseEntity<String> findId(
+		@RequestBody @ApiParam(value = "아이디 찾기 시 필요한 회원정보(이름, 연락처).", required = true) User user)
+		throws Exception {
+		logger.debug("findId - 호출");
+		String id = userService.findId(user);
+		if (id != null) {
+			return new ResponseEntity<String>(id, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+
 	@ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
 	@GetMapping("/info/{user_id}")
 	public ResponseEntity<Map<String, Object>> getInfo(
@@ -89,7 +124,7 @@ public class UserController {
 		if (jwtService.isUsable(request.getHeader("access-token"))) {
 			logger.info("사용 가능한 토큰!!!");
 			try {
-				//                로그인 사용자 정보.
+				// 로그인 사용자 정보.
 				User user = userService.userInfo(user_id);
 				resultMap.put("userInfo", user);
 				resultMap.put("message", SUCCESS);
@@ -112,21 +147,40 @@ public class UserController {
 	public ResponseEntity<String> signUp(@RequestBody @ApiParam(value = "회원 정보", required = true) User user)
 		throws Exception {
 		logger.debug("signUp - 호출");
-		if (userService.signUp(user)) {
+
+		HttpStatus status = HttpStatus.NO_CONTENT;
+		String result = FAIL;
+		Boolean isUsable = userService.userInfo(user.getUser_id()) == null;
+		if (isUsable) { //아이디 중복 여부
 			try {
 				MimeMessage message = mailSender.createMimeMessage();
 				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 				messageHelper.setTo(user.getUser_id());
 				messageHelper.setText("회원가입 인증메일입니다.");
 				messageHelper.setFrom(from);
-				messageHelper.setSubject(subject); // 메일제목은 생략이 가능하다
+				messageHelper.setSubject(subject); // 메일 제목은 생략이 가능
 				mailSender.send(message);
-			} catch (Exception e) {
+				try {
+					String hash = SHA512.sha(user.getUser_password(), user.getUser_id()); // 비밀번호 암호화
+					user.setUser_password(hash);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (userService.signUp(user)) {
+					status = HttpStatus.OK;
+					result = SUCCESS;
+				}
+			} catch (Exception e) { // 메일 발송 실패
 				System.out.println(e);
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+				result = EMAIL;
 			}
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		} else if (!isUsable) {
+			status = HttpStatus.CONFLICT;
+			result = OVERLAP;
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+
+		return new ResponseEntity<String>(result, status);
 	}
 
 	@ApiOperation(value = "회원 정보 수정", notes = "새로운 회원 정보를 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
