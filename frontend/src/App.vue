@@ -2,7 +2,6 @@
   <v-app>
     <!-- Header.vue를 이용한 헤더 부분 -->
     <Header></Header>
-     <!-- Main.vue를 이용한 메인 부분  -->
     <v-main>
       <Main/>
     </v-main>
