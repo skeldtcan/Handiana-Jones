@@ -17,7 +17,7 @@
                 where ${key} = #{word}
             </if>
             <if test="key != 'user_no'">
-                where user_id like concat('%', #{word}, '%')
+                where ${key} like concat('%', #{word}, '%')
             </if>
         </if>
         order by user_no
@@ -32,7 +32,7 @@
                 where ${key} = #{word}
             </if>
             <if test="key != 'user_no'">
-                where user_id like concat('%', #{word}, '%')
+                where ${key} like concat('%', #{word}, '%')
             </if>
         </if>
     </select>
