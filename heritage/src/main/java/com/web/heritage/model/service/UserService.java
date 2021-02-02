@@ -1,5 +1,7 @@
 package com.web.heritage.model.service;
 
+import java.util.Map;
+
 import com.web.heritage.model.User;
 import com.web.heritage.model.UserParameter;
 import com.web.util.PageNavigation;
@@ -10,9 +12,15 @@ public interface UserService {
 
 	public User userInfo(String user_id) throws Exception;
 
+	public String findId(User user) throws Exception;
+
 	public String findPwd(User user) throws Exception;
 
-	public String findId(User user) throws Exception;
+	public boolean modifyPwd(User user) throws Exception;
+
+	public boolean alterAuthKey(Map<String, String> map) throws Exception;
+
+	public String getAuthKey(Map<String, String> map) throws Exception;
 
 	public boolean signUp(User user) throws Exception;
 
