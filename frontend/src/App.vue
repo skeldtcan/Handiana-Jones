@@ -2,8 +2,14 @@
   <v-app>
     <!-- Header.vue를 이용한 헤더 부분 -->
     <Header></Header>
-    <v-main>
+     <!-- Main.vue를 이용한 메인 부분  -->
+     <!-- 메인페이지 -->
+    <v-main v-if="this.currentUrl=='http://localhost:8080/'">
       <Main/>
+    </v-main>
+    <!-- 공지사항 페이지 -->
+    <v-main v-if="this.currentUrl=='http://localhost:8080/noticepage'">
+      <NoticePage/>
     </v-main>
   </v-app>
 </template>
@@ -11,21 +17,25 @@
 <script>
 import Header from './components/common/Header';
 import Main from './components/common/Main';
+import NoticePage from './views/notice/NoticePage';
 // auth 부분
-import store from "@/store";
+// import store from "@/store";
 
 export default {
   name: 'App',
-
   components: {
     Header,
     Main,
+    NoticePage,
   },
   data: () => ({
     login: false,
+    currentUrl: '',
   }),
   mounted: function () {
-    console.log(store.state.userInfo)
+    var link = document.location.href;
+    this.currentUrl = link
+    console.log(this.currentUrl)
   },
 };
 </script>
