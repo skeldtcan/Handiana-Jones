@@ -6,7 +6,7 @@
 
 	<select id="login" parameterType="User" resultType="User">
 		select
-		user_name, user_id
+		user_name, user_id, auth_key
 		from user
 		where user_id = #{user_id} and
 		user_password = #{user_password}

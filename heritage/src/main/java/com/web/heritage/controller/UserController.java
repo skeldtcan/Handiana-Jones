@@ -43,6 +43,7 @@ public class UserController {
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
+	private static final String EMAIL_FAIL = "email_fail";
 
 	@Autowired
 	private JwtServiceImpl jwtService;
@@ -55,9 +56,12 @@ public class UserController {
 	private String from = "A207@gmail.com";
 	private String subject = "회원가입 인증메일입니다.";
 
+	private String emailY = "Y";
+
 	@ApiOperation(value = "로그인", notes = "Access-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
 	@PostMapping("/confirm/login")
 	public ResponseEntity<Map<String, Object>> login(
+
 		@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) User user) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
@@ -70,14 +74,19 @@ public class UserController {
 			}
 			User loginUser = userService.login(user);
 			if (loginUser != null) {
-				String token = jwtService.create("user_id", loginUser.getUser_id(), "access-token");// key, data, subject
-				logger.debug("로그인 토큰정보 : {}", token);
-				resultMap.put("access-token", token);
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
+				if (loginUser.getAuth_key().equals(emailY)) {
+					String token = jwtService.create("user_id", loginUser.getUser_id(), "access-token");// key, data, subject
+					logger.debug("로그인 토큰정보 : {}", token);
+					resultMap.put("access-token", token);
+					resultMap.put("message", SUCCESS);
+					status = HttpStatus.ACCEPTED;
+				} else {
+					resultMap.put("message", EMAIL_FAIL);
+					status = HttpStatus.NO_CONTENT;
+				}
 			} else {
 				resultMap.put("message", FAIL);
-				status = HttpStatus.ACCEPTED;
+				status = HttpStatus.NO_CONTENT;
 			}
 		} catch (Exception e) {
 			logger.error("로그인 실패 : {}", e);
@@ -229,7 +238,6 @@ public class UserController {
 		logger.debug("auth_key : {} ", auth_key);
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 		String result = FAIL;
-		String success = "Y";
 
 		Map<String, String> map = new HashMap<>();
 		map.put("user_id", user_id);
@@ -237,8 +245,8 @@ public class UserController {
 
 		try {
 			boolean isUsable = userService.getAuthKey(map) != null;
-			if(isUsable) {
-				map.put("auth_key", success);
+			if (isUsable) {
+				map.put("auth_key", emailY);
 				try {
 					userService.alterAuthKey(map);
 					result = SUCCESS;
