@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.web.heritage.model.Heritage;
+import com.web.heritage.model.HeritageImage;
 
 public interface HeritageService {
 
@@ -13,4 +14,7 @@ public interface HeritageService {
 
 	public Heritage getHeritage(@Param("kdcd") String kdcd, @Param("ctcd") String ctcd, @Param("asno") String asno)
 		throws SQLException;
+
+	public List<HeritageImage> getImages(@Param("kdcd") String kdcd, @Param("ctcd") String ctcd,
+		@Param("asno") String asno) throws Exception;
 }
