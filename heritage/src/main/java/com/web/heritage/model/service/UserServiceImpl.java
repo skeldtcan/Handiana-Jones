@@ -1,5 +1,8 @@
 package com.web.heritage.model.service;
 
+import java.sql.SQLException;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,13 +33,28 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public String findId(User user) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).findId(user);
+	}
+
+	@Override
 	public String findPwd(User user) throws Exception {
 		return sqlSession.getMapper(UserMapper.class).findPwd(user);
 	}
 
 	@Override
-	public String findId(User user) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).findId(user);
+	public boolean modifyPwd(User user) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).modifyPwd(user) == 1;
+	}
+
+	@Override
+	public boolean alterAuthKey(Map<String, String> map) throws SQLException {
+		return sqlSession.getMapper(UserMapper.class).alterAuthKey(map) == 1;
+	}
+
+	@Override
+	public String getAuthKey(Map<String, String> map) throws SQLException {
+		return sqlSession.getMapper(UserMapper.class).getAuthKey(map);
 	}
 
 	@Override

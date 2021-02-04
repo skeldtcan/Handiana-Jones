@@ -16,6 +16,8 @@ public class User {
 	private String user_password;
 	@ApiModelProperty(value = "회원 연락처")
 	private String user_phone;
+	@ApiModelProperty(value = "이메일 인증키")
+	private String auth_key;
 
 	public int getUser_no() {
 		return user_no;
@@ -55,6 +57,14 @@ public class User {
 
 	public void setUser_phone(String user_phone) {
 		this.user_phone = user_phone;
+	}
+
+	public String getAuth_key() {
+		return auth_key;
+	}
+
+	public void setAuth_key(String auth_key) {
+		this.auth_key = auth_key;
 	}
 
 	@Override
