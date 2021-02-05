@@ -36,7 +36,7 @@ public class HeritageController {
 	public ResponseEntity<List<Heritage>> listHeritage(
 		@PathVariable("word") @ApiParam(value = "검색할 키워드", required = true) String word) throws Exception {
 		logger.debug("listHeritage - 호출");
-		return new ResponseEntity<List<Heritage>>(heritageService.listHeritage(word), HttpStatus.OK);
+		return new ResponseEntity<List<Heritage>>(heritageService.listHeritage(word.trim()), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "문화재 정보", notes = "해당하는 문화재 상세 정보를 반환한다.", response = Heritage.class)
