@@ -154,7 +154,7 @@ export default {
                     // var url2 = '&ccbaAsno='c
                     // var url3 = '&ccbaCtcd='
                     // var url = url1+ccbaKdcd+url2+ccbaAsno+url3+ccbaCtcd
-                    // axios.get(`${API_BASE_URL}/images?kdcd=${ccbaKdcd}&ctcd=${ccbaCtcd}&asno=${ccbaAsno}`)
+                    // axios.get(`${API_BASE_URL}/images?asno=${ccbaAsno}&ctcd=${ccbaCtcd}&kdcd=${ccbaKdcd}`)
                     // .then((res)=>{
                     //     console.log(res)
                     // })
