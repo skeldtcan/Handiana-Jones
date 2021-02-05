@@ -24,6 +24,11 @@
 
 <script>
 import VueDaumMap from 'vue-daum-map';
+import { heritages } from "@/api/heritage.js";
+// 문화재 정보 API 상세 정보 요청을 위한 세팅
+// import axios from 'axios';
+// import { API_BASE_URL } from '@/config/index.js';
+
 export default {
     name: 'Kakaomap',
     components: {
@@ -54,9 +59,12 @@ export default {
                 });
             this.map = map;
             // 클러스터 생성을 위한 json 데이터 받아오기
-            const addressData = require('@/assets/clustertest.json');
-            // cluster 생성 methods 실행
-            this.setMarkerCluster(addressData, map)
+            // const addressData = require('@/assets/clustertest.json');
+            // 문화재 데이터 axios 요청해서 받기
+            heritages((response) => {
+                // cluster 생성 methods 실행
+                this.setMarkerCluster(response.data, map)
+            })
         },
         // 마커 클러스터러를 생성.
         setMarkerCluster(data, map) {
@@ -96,8 +104,8 @@ export default {
             });
 
             // 데이터에서 좌표 값을 가지고 마커를 표시합니다
-            let markers = data.positions.map(
-                (positionSingle) => {
+            let markers = data.map(
+                (singleheritage) => {
                 //     // 마커 이미지를 커스텀하기 위한 코드
                 //     var imageSrc = require('@/assets/exampleImg.jpg'), // 마커이미지의 주소입니다    
                 //         imageSize = new kakao.maps.Size(50, 40), // 마커이미지의 크기입니다
@@ -124,11 +132,10 @@ export default {
                 //     });
                 //     // map에 커스텀오버레이 표시
                 //     customOverlay.setMap(map);
-
                     // markers에 담길 position과 image 값들을 반환합니다.
                     return new window.kakao.maps.Marker({
                         // marker에 담고싶은 정보들 data 이용해서 이 부분부터 추가.(중요)
-                        position: new window.kakao.maps.LatLng(positionSingle.lat, positionSingle.lng),
+                        position: new window.kakao.maps.LatLng(singleheritage.latitude, singleheritage.longitude),
                         clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
                     });
             });
@@ -136,9 +143,30 @@ export default {
             // 마커에 마우스오버 등록을 위한 코드 시작.
             for (var i = 0; i < markers.length; i ++) {
                     var marker = markers[i]
+                    var singledata = data[i]
                     // 마커에 표시할 인포윈도우 생성
                     // 인포위도우 커스터마이징(정보 및 이미지 담고 구조랑 디자인 짜기)
-                    var imageSrc = require('@/assets/exampleImg.webp')
+                    // image 요청 url
+                    // var ccbaKdcd = singledata.ccba_kdcd
+                    // var ccbaAsno = singledata.ccba_asno
+                    // var ccbaCtcd = singledata.ccba_ctcd
+                    // var url1 = 'http://www.cha.go.kr/cha/SearchImageOpenapi.do?ccbaKdcd='
+                    // var url2 = '&ccbaAsno='c
+                    // var url3 = '&ccbaCtcd='
+                    // var url = url1+ccbaKdcd+url2+ccbaAsno+url3+ccbaCtcd
+                    // axios.get(`${API_BASE_URL}/images?kdcd=${ccbaKdcd}&ctcd=${ccbaCtcd}&asno=${ccbaAsno}`)
+                    // .then((res)=>{
+                    //     console.log(res)
+                    // })
+                    // .catch( (err) => {
+                    //     console.log(err)
+                    // })
+                    // var imageSrc_sub = require(`http://www.cha.go.kr/cha/SearchImageOpenapi.do?ccbaKdcd=${ccbaKdcd}&ccbaAsno=${ccbaAsno}&ccbaCtcd=${ccbaCtcd}`)
+                    // console.log(imageSrc_sub)
+                    // var imageSrc=require(imageSrc_sub.item[0].imageUrl)
+                    var imageSrc='NULL'
+                    // var imageSrc=require('@/assets/exampleImg.jpg')
+                    
                     // 전체 content 구조 예시
                     // '<div><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png"></div>' +
                     // '<div class="markertitlediv"><text class="gugi markertitletext">제목</text></div>'
@@ -146,10 +174,12 @@ export default {
                     var content1 = '<img class="infoImg" src="'
                     var content2 = imageSrc
                     var content3 = '">'
-                    var content4 = '<div class="infoTitle"><text class="jua">경주 월성</text></div>'
+                    var content4 = '<div class="infoTitle"><text class="jua">'
+                    var content5 = singledata.ccba_mnm
+                    var content6 = '</text></div>'
     
                     var infowindow = new kakao.maps.InfoWindow({
-                        content: content1+content2+content3+content4 // 인포윈도우에 표시할 내용
+                        content: content1+content2+content3+content4+content5+content6 // 인포윈도우에 표시할 내용
                     });
                     // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
                     // 이벤트 리스너로는 클로저를 만들어 등록합니다 
