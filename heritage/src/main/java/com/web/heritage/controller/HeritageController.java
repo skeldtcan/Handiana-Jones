@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.heritage.model.Heritage;
+import com.web.heritage.model.HeritageImage;
 import com.web.heritage.model.service.HeritageService;
 
 import io.swagger.annotations.Api;
@@ -44,6 +45,17 @@ public class HeritageController {
 		@RequestParam(value = "kdcd", required = true) String kdcd,
 		@RequestParam(value = "ctcd", required = true) String ctcd,
 		@RequestParam(value = "asno", required = true) String asno) throws Exception {
+		logger.debug("Heritage - 호출");
 		return new ResponseEntity<Heritage>(heritageService.getHeritage(kdcd, ctcd, asno), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "문화재 이미지 정보", notes = "해당하는 문화재의 이미지 정보를 반환한다.", response = HeritageImage.class)
+	@GetMapping("/images")
+	public ResponseEntity<List<HeritageImage>> getImages(
+		@RequestParam(value = "kdcd", required = true) String kdcd,
+		@RequestParam(value = "ctcd", required = true) String ctcd,
+		@RequestParam(value = "asno", required = true) String asno) throws Exception {
+		logger.debug("getHeritageImage - 호출");
+		return new ResponseEntity<List<HeritageImage>>(heritageService.getImages(kdcd, ctcd, asno), HttpStatus.OK);
 	}
 }
