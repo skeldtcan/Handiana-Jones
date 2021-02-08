@@ -10,6 +10,7 @@ import com.web.heritage.model.Favor;
 @Mapper
 public interface FavorMapper {
 	public int getCtcd(Favor favor) throws SQLException;
+	public int updateCtcd(Favor favor) throws SQLException;
 	public int getBcode(Favor favor) throws SQLException;
 	public int getCcce(Favor favor) throws SQLException;
 	public List<Favor> listRecommend(int user_no) throws SQLException;

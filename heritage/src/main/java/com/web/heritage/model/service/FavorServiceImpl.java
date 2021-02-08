@@ -21,6 +21,11 @@ public class FavorServiceImpl implements FavorService {
 	}
 
 	@Override
+	public boolean updateCtcd(Favor favor) throws Exception {
+		return sqlSession.getMapper(FavorMapper.class).updateCtcd(favor) == 1;
+	}
+
+	@Override
 	public boolean getBcode(Favor favor) throws Exception {
 		return sqlSession.getMapper(FavorMapper.class).getBcode(favor) == 1;
 	}

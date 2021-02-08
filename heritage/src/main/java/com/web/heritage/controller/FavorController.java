@@ -54,7 +54,27 @@ public class FavorController {
 		return new ResponseEntity<String>(result, status);
 	}
 
-	@ApiOperation(value = "분류 입력", notes = "선호하는 분류1,2,3을 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@ApiOperation(value = "시도명 수정", notes = "선호하는 시도명1,2,3을 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PutMapping("/ctcd")
+	public ResponseEntity<String> updateCtcd(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor)
+		throws Exception {
+		logger.debug("updateCtcd - 호출");
+		HttpStatus status = HttpStatus.NO_CONTENT;
+		String result = FAIL;
+
+		try {
+			if(favorService.updateCtcd(favor)) {
+				status = HttpStatus.OK;
+				result = SUCCESS;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<String>(result, status);
+	}
+
+	@ApiOperation(value = "분류 입력", notes = "선호하는 분류1,2,3을 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping("/bcode")
 	public ResponseEntity<String> getBcode(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor)
 		throws Exception {
@@ -74,7 +94,7 @@ public class FavorController {
 		return new ResponseEntity<String>(result, status);
 	}
 
-	@ApiOperation(value = "시대 입력", notes = "선호하는 시대1,2,3을 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@ApiOperation(value = "시대 입력", notes = "선호하는 시대1,2,3을 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping("/ccce")
 	public ResponseEntity<String> getCcce(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor)
 		throws Exception {
