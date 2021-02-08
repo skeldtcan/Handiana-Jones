@@ -26,8 +26,8 @@
 import VueDaumMap from 'vue-daum-map';
 import { heritages } from "@/api/heritage.js";
 // 문화재 정보 API 상세 정보 요청을 위한 세팅
-// import axios from 'axios';
-// import { API_BASE_URL } from '@/config/index.js';
+import axios from 'axios';
+import { API_BASE_URL } from '@/config/index.js';
 
 export default {
     name: 'Kakaomap',
@@ -52,7 +52,7 @@ export default {
     },
     methods: {
         // 페이지에 최초 맵을 생성할 때 DB에 담긴 모든 문화유적의 마커를 깔고 클러스트로 표현하며 시작한다.
-        onLoad() {
+        onLoad () {
             var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
                     center : new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표
                     level : 14 // 지도의 확대 레벨
@@ -67,7 +67,7 @@ export default {
             })
         },
         // 마커 클러스터러를 생성.
-        setMarkerCluster(data, map) {
+        setMarkerCluster: async (data, map) => {
             let clusterer = new window.kakao.maps.MarkerClusterer({
                 map: map,
                 averageCenter: true,
@@ -104,7 +104,7 @@ export default {
             });
 
             // 데이터에서 좌표 값을 가지고 마커를 표시합니다
-            let markers = data.map(
+            let markers = data.slice(0,20).map(
                 (singleheritage) => {
                 //     // 마커 이미지를 커스텀하기 위한 코드
                 //     var imageSrc = require('@/assets/exampleImg.jpg'), // 마커이미지의 주소입니다    
@@ -139,7 +139,6 @@ export default {
                         clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
                     });
             });
-            
             // 마커에 마우스오버 등록을 위한 코드 시작.
             for (var i = 0; i < markers.length; i ++) {
                     var marker = markers[i]
@@ -147,24 +146,37 @@ export default {
                     // 마커에 표시할 인포윈도우 생성
                     // 인포위도우 커스터마이징(정보 및 이미지 담고 구조랑 디자인 짜기)
                     // image 요청 url
-                    // var ccbaKdcd = singledata.ccba_kdcd
-                    // var ccbaAsno = singledata.ccba_asno
-                    // var ccbaCtcd = singledata.ccba_ctcd
+                    var ccbaKdcd = singledata.ccba_kdcd
+                    var ccbaAsno = singledata.ccba_asno
+                    var ccbaCtcd = singledata.ccba_ctcd
                     // var url1 = 'http://www.cha.go.kr/cha/SearchImageOpenapi.do?ccbaKdcd='
                     // var url2 = '&ccbaAsno='c
                     // var url3 = '&ccbaCtcd='
                     // var url = url1+ccbaKdcd+url2+ccbaAsno+url3+ccbaCtcd
+                    var imageSrc= null
+                    const getImageUrl = async () => {
+                        try {
+                            await axios.get(`${API_BASE_URL}/images?asno=${ccbaAsno}&ctcd=${ccbaCtcd}&kdcd=${ccbaKdcd}`)
+                            .then((res) => {
+                                imageSrc = res.data[0]['url']
+                                console.log(res.data[0]['url'])
+                            })
+                        } catch(err) {console.log(err)}
+                    }
                     // axios.get(`${API_BASE_URL}/images?asno=${ccbaAsno}&ctcd=${ccbaCtcd}&kdcd=${ccbaKdcd}`)
                     // .then((res)=>{
-                    //     console.log(res)
+                    //     console.log(res.data[0]['url'])
+                    //     this.imageSrc = res.data[0]['url']
                     // })
+                    await getImageUrl()
+                    console.log(imageSrc)
                     // .catch( (err) => {
                     //     console.log(err)
                     // })
                     // var imageSrc_sub = require(`http://www.cha.go.kr/cha/SearchImageOpenapi.do?ccbaKdcd=${ccbaKdcd}&ccbaAsno=${ccbaAsno}&ccbaCtcd=${ccbaCtcd}`)
                     // console.log(imageSrc_sub)
                     // var imageSrc=require(imageSrc_sub.item[0].imageUrl)
-                    var imageSrc='NULL'
+                    
                     // var imageSrc=require('@/assets/exampleImg.jpg')
                     
                     // 전체 content 구조 예시
