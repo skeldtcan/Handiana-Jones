@@ -21,6 +21,17 @@
 		)
 	</insert>
 
+	<update id="updateCtcd" parameterType="Favor">
+		update favor
+		set ccba_ctcd_nm1
+		=
+		#{ccba_ctcd_nm1},
+		ccba_ctcd_nm2 = #{ccba_ctcd_nm2},
+		ccba_ctcd_nm3 =
+		#{ccba_ctcd_nm3}
+		where user_no = #{user_no}
+	</update>
+
 	<update id="getBcode" parameterType="Favor">
 		update favor
 		set bcode_name1
@@ -54,7 +65,8 @@
 		like concat('%',f.ccce_name1,'%') or h.ccce_name like
 		concat('%',f.ccce_name2,'%') or h.ccce_name like
 		concat('%',f.ccce_name3,'%'))
-		and (h.bcode_name like concat('%',f.bcode_name1,'%') or h.bcode_name like
+		and (h.bcode_name like
+		concat('%',f.bcode_name1,'%') or h.bcode_name like
 		concat('%',f.bcode_name2,'%') or h.bcode_name like
 		concat('%',f.bcode_name3,'%'))
 		order by rand() limit 20;
