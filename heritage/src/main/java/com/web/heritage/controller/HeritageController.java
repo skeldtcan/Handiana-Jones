@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web.heritage.model.Heritage;
 import com.web.heritage.model.HeritageImage;
+import com.web.heritage.model.Marker;
 import com.web.heritage.model.service.HeritageService;
 
 import io.swagger.annotations.Api;
@@ -33,10 +34,10 @@ public class HeritageController {
 
 	@ApiOperation(value = "문화재 목록", notes = "해당하는 문화재 정보 리스트를 반환한다.", response = List.class)
 	@GetMapping("/heritages/{word}")
-	public ResponseEntity<List<Heritage>> listHeritage(
+	public ResponseEntity<List<Marker>> listHeritage(
 		@PathVariable("word") @ApiParam(value = "검색할 키워드", required = true) String word) throws Exception {
 		logger.debug("listHeritage - 호출");
-		return new ResponseEntity<List<Heritage>>(heritageService.listHeritage(word.trim()), HttpStatus.OK);
+		return new ResponseEntity<List<Marker>>(heritageService.listHeritage(word.trim()), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "문화재 정보", notes = "해당하는 문화재 상세 정보를 반환한다.", response = Heritage.class)
