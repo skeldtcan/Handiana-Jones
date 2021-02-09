@@ -36,8 +36,7 @@ public class FavorController {
 
 	@ApiOperation(value = "시도명 입력", notes = "선호하는 시도명1,2,3을 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PostMapping("/ctcd")
-	public ResponseEntity<String> getCtcd(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor)
-		throws Exception {
+	public ResponseEntity<String> getCtcd(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor){
 		logger.debug("getCtcd - 호출");
 		HttpStatus status = HttpStatus.NO_CONTENT;
 		String result = FAIL;
@@ -56,8 +55,7 @@ public class FavorController {
 
 	@ApiOperation(value = "시도명 수정", notes = "선호하는 시도명1,2,3을 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping("/ctcd")
-	public ResponseEntity<String> updateCtcd(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor)
-		throws Exception {
+	public ResponseEntity<String> updateCtcd(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor) {
 		logger.debug("updateCtcd - 호출");
 		HttpStatus status = HttpStatus.NO_CONTENT;
 		String result = FAIL;
@@ -76,8 +74,7 @@ public class FavorController {
 
 	@ApiOperation(value = "분류 입력", notes = "선호하는 분류1,2,3을 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping("/bcode")
-	public ResponseEntity<String> getBcode(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor)
-		throws Exception {
+	public ResponseEntity<String> getBcode(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor){
 		logger.debug("getBcode - 호출");
 		HttpStatus status = HttpStatus.NO_CONTENT;
 		String result = FAIL;
@@ -96,8 +93,7 @@ public class FavorController {
 
 	@ApiOperation(value = "시대 입력", notes = "선호하는 시대1,2,3을 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping("/ccce")
-	public ResponseEntity<String> getCcce(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor)
-		throws Exception {
+	public ResponseEntity<String> getCcce(@RequestBody @ApiParam(value = "선호 정보", required = true) Favor favor){
 		logger.debug("getCcce - 호출");
 		HttpStatus status = HttpStatus.NO_CONTENT;
 		String result = FAIL;

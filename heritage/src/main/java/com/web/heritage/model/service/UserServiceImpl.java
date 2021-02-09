@@ -1,16 +1,22 @@
 package com.web.heritage.model.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.mail.MessagingException;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.web.heritage.model.User;
 import com.web.heritage.model.UserParameter;
 import com.web.heritage.model.mapper.UserMapper;
+import com.web.heritage.security.RandomKey;
+import com.web.heritage.security.SHA512;
+import com.web.util.MailUtils;
 import com.web.util.PageNavigation;
 
 @Service
@@ -19,12 +25,28 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private SqlSession sqlSession;
 
+	@Autowired
+	private JavaMailSender mailSender;
+	private String from = "A207@gmail.com";
+	private String subject = "회원가입 인증메일입니다.";
+
+	private String emailY = "Y";
+
 	@Override
 	public User login(User user) throws Exception {
 		if (user.getUser_id() == null || user.getUser_password() == null) {
 			return null;
 		}
-		return sqlSession.getMapper(UserMapper.class).login(user);
+		String hash = SHA512.sha(user.getUser_password(), user.getUser_id()); // 비밀번호 암호화
+		user.setUser_password(hash);
+
+		User loginUser = sqlSession.getMapper(UserMapper.class).login(user);
+		if(loginUser != null) {
+			if (loginUser.getAuth_key().equals(emailY)) { // 이메일 인증 성공
+				return loginUser;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -34,17 +56,82 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String findId(User user) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).findId(user);
+		String id = sqlSession.getMapper(UserMapper.class).findId(user);
+		if(id != null) {
+			return id;
+		}
+		return null;
 	}
 
 	@Override
 	public String findPwd(User user) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).findPwd(user);
+		String password = sqlSession.getMapper(UserMapper.class).findPwd(user); //기존 비밀번호
+		if (password != null) {
+			password = RandomKey.create(8);
+			String hash = SHA512.sha(password, user.getUser_id()); // 비밀번호 암호화
+			user.setUser_password(hash);
+			if (modifyPwd(user)) {
+				return password;
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public boolean modifyPwd(User user) throws Exception {
 		return sqlSession.getMapper(UserMapper.class).modifyPwd(user) == 1;
+	}
+
+	@Override
+	public boolean confirmId(String user_id) throws Exception {
+		if(userInfo(user_id) == null) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean sendEmail(String user_id) throws Exception {
+		String auth_key = RandomKey.create(8);
+
+		Map<String, String> map = new HashMap<>();
+		map.put("user_id", user_id);
+		map.put("auth_key", auth_key);
+
+		if (alterAuthKey(map)) {
+			MailUtils mail;
+			try {
+				mail = new MailUtils(mailSender);
+				String mailContent = "<h1>[이메일 인증]</h1>"
+					+ "<br>"
+					+ "<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
+					+ "<a href='http://localhost:8000/heritage/user/confirm/email?user_id="
+					+ user_id + "&auth_key=" + auth_key + "' target='_blenk'>"
+					+ "이메일 인증 확인</a>";
+				mail.setTo(user_id);
+				mail.setText(mailContent);
+				mail.setSubject(subject);
+				mail.setFrom(from, "관리자");
+				mail.send();
+
+				return true;
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean confirmEmail(Map<String, String> map) throws Exception {
+		if (getAuthKey(map) != null) {
+			map.put("auth_key", emailY);
+			if(alterAuthKey(map)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -63,6 +150,8 @@ public class UserServiceImpl implements UserService {
 			|| user.getUser_phone() == null) {
 			throw new Exception();
 		}
+		String hash = SHA512.sha(user.getUser_password(), user.getUser_id()); // 비밀번호 암호화
+		user.setUser_password(hash);
 		return sqlSession.getMapper(UserMapper.class).signUp(user) == 1;
 	}
 
@@ -85,13 +174,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
 	public boolean modifyUser(User user) throws Exception {
+		String hash = SHA512.sha(user.getUser_password(), user.getUser_id()); // 비밀번호 암호화
+		user.setUser_password(hash);
+
 		return sqlSession.getMapper(UserMapper.class).modifyUser(user) == 1;
 	}
 
 	@Override
-	@Transactional
 	public boolean deleteUser(int user_no) throws Exception {
 		return sqlSession.getMapper(UserMapper.class).deleteUser(user_no) == 1;
 	}

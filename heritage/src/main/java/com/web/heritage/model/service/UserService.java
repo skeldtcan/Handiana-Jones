@@ -18,6 +18,12 @@ public interface UserService {
 
 	public boolean modifyPwd(User user) throws Exception;
 
+	public boolean confirmId(String user_id) throws Exception;
+
+	public boolean sendEmail(String user_id) throws Exception;
+
+	public boolean confirmEmail(Map<String, String> map) throws Exception;
+
 	public boolean alterAuthKey(Map<String, String> map) throws Exception;
 
 	public String getAuthKey(Map<String, String> map) throws Exception;
