@@ -18,9 +18,25 @@
         @load="onLoad()"
         class= "kakaomap"
         />
-
+        <!-- 문화재 상세정보 모달 -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="detailimagediv">
+                    <img id="detailimg" src="" alt="" class="detailimage">
+                </div>
+                <span class="close">&times;</span>
+                <div class="detailcontents">
+                    <div class="detailtitle east-sea-Dokdo"><p id="detailtitle">문화재 명</p></div>
+                    <div class="detaildescription jua"><p id= "detailcontent">문화재 설명</p></div>
+                </div>
+                
+            </div>
+        </div> 
+        <!-- 종료선 -->
     </div>
 </template>
+
 
 <script>
 import VueDaumMap from 'vue-daum-map';
@@ -44,7 +60,7 @@ export default {
         map: null,
         // keyword 검색을 위한 data instances
         keyword: '',
-        // 디테일 창 보여주기 boolean
+        // 공지사항 창 boolean
         isClick: false,
     }),
     beforeCreate () {
@@ -67,6 +83,7 @@ export default {
             })
         },
         // 마커 클러스터러를 생성.
+        // async 사용해 동기처리.
         setMarkerCluster: async (data, map) => {
             let clusterer = new window.kakao.maps.MarkerClusterer({
                 map: map,
@@ -104,40 +121,34 @@ export default {
             });
 
             // 데이터에서 좌표 값을 가지고 마커를 표시합니다
-            let markers = data.slice(0,20).map(
+            let markers = data.slice(0,10).map(
                 (singleheritage) => {
-                //     // 마커 이미지를 커스텀하기 위한 코드
-                //     var imageSrc = require('@/assets/exampleImg.jpg'), // 마커이미지의 주소입니다    
-                //         imageSize = new kakao.maps.Size(50, 40), // 마커이미지의 크기입니다
-                //         imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-                //     // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-                //     var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+                // 마커 이미지를 커스텀하기 위한 코드
+                var imageSrc = require('@/assets/beachflag.png'), // 마커이미지의 주소입니다    
+                    imageSize = new kakao.maps.Size(50, 40), // 마커이미지의 크기입니다
+                    imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+                // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-                // // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-                //     var content = '<div class="customoverlay">' +
-                //     '  <a href="https://map.kakao.com/link/map/11394059" target="_blank">' +
-                //     '    <span class="title">구의야구공원</span>' +
-                //     '  </a>' +
-                //     '</div>';
-                    
-                //     // 커스텀 오버레이가 표시될 위치입니다 
-                //     var position = new kakao.maps.LatLng(positionSingle.lat, positionSingle.lng);  
+                // 커스텀 오버레이가 표시될 위치입니다 
+                var markerPosition = new kakao.maps.LatLng(singleheritage.latitude, singleheritage.longitude);  
 
-                //     // 커스텀 오버레이를 생성합니다
-                //     var customOverlay = new kakao.maps.CustomOverlay({
-                //         map: map,
-                //         position: position,
-                //         content: content,
-                //         yAnchor: 1 
-                //     });
-                //     // map에 커스텀오버레이 표시
-                //     customOverlay.setMap(map);
+                // 커스텀 오버레이를 생성합니다
+                var customOverlay = new kakao.maps.CustomOverlay({
+                    map: map,
+                    position: markerPosition,
+                    yAnchor: 10
+                });
+                // map에 커스텀오버레이 표시
+                customOverlay.setMap(map);
                     // markers에 담길 position과 image 값들을 반환합니다.
-                    return new window.kakao.maps.Marker({
-                        // marker에 담고싶은 정보들 data 이용해서 이 부분부터 추가.(중요)
-                        position: new window.kakao.maps.LatLng(singleheritage.latitude, singleheritage.longitude),
-                        clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
-                    });
+                return new window.kakao.maps.Marker({
+                    // marker에 담고싶은 정보들 data 이용해서 이 부분부터 추가.(중요)
+                    // position: new window.kakao.maps.LatLng(singleheritage.latitude, singleheritage.longitude),
+                    position: markerPosition,
+                    image: markerImage,
+                    clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
+                });
             });
             // 마커에 마우스오버 등록을 위한 코드 시작.
             for (var i = 0; i < markers.length; i ++) {
@@ -145,44 +156,25 @@ export default {
                     var singledata = data[i]
                     // 마커에 표시할 인포윈도우 생성
                     // 인포위도우 커스터마이징(정보 및 이미지 담고 구조랑 디자인 짜기)
-                    // image 요청 url
+                    // image 요청 url 파라미터 생성
                     var ccbaKdcd = singledata.ccba_kdcd
                     var ccbaAsno = singledata.ccba_asno
-                    var ccbaCtcd = singledata.ccba_ctcd
-                    // var url1 = 'http://www.cha.go.kr/cha/SearchImageOpenapi.do?ccbaKdcd='
-                    // var url2 = '&ccbaAsno='c
-                    // var url3 = '&ccbaCtcd='
-                    // var url = url1+ccbaKdcd+url2+ccbaAsno+url3+ccbaCtcd
+                    var ccbaCtcd = singledata.ccba_ctcd   
+
                     var imageSrc= null
+                    // axios 요청 함수
                     const getImageUrl = async () => {
                         try {
                             await axios.get(`${API_BASE_URL}/images?asno=${ccbaAsno}&ctcd=${ccbaCtcd}&kdcd=${ccbaKdcd}`)
                             .then((res) => {
                                 imageSrc = res.data[0]['url']
-                                console.log(res.data[0]['url'])
                             })
                         } catch(err) {console.log(err)}
                     }
-                    // axios.get(`${API_BASE_URL}/images?asno=${ccbaAsno}&ctcd=${ccbaCtcd}&kdcd=${ccbaKdcd}`)
-                    // .then((res)=>{
-                    //     console.log(res.data[0]['url'])
-                    //     this.imageSrc = res.data[0]['url']
-                    // })
-                    await getImageUrl()
-                    console.log(imageSrc)
-                    // .catch( (err) => {
-                    //     console.log(err)
-                    // })
-                    // var imageSrc_sub = require(`http://www.cha.go.kr/cha/SearchImageOpenapi.do?ccbaKdcd=${ccbaKdcd}&ccbaAsno=${ccbaAsno}&ccbaCtcd=${ccbaCtcd}`)
-                    // console.log(imageSrc_sub)
-                    // var imageSrc=require(imageSrc_sub.item[0].imageUrl)
-                    
-                    // var imageSrc=require('@/assets/exampleImg.jpg')
-                    
-                    // 전체 content 구조 예시
-                    // '<div><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png"></div>' +
-                    // '<div class="markertitlediv"><text class="gugi markertitletext">제목</text></div>'
+                    await getImageUrl() // awiat을 이용해 동기처리
+
                     // 변수명 사용을 위해 분기점을 나눠준다.
+                    var content0 = '<div class="infoHeader han"><text>클릭하면 상세정보를 볼 수 있어요</text></div>'
                     var content1 = '<img class="infoImg" src="'
                     var content2 = imageSrc
                     var content3 = '">'
@@ -191,7 +183,7 @@ export default {
                     var content6 = '</text></div>'
     
                     var infowindow = new kakao.maps.InfoWindow({
-                        content: content1+content2+content3+content4+content5+content6 // 인포윈도우에 표시할 내용
+                        content: content0+content1+content2+content3+content4+content5+content6 // 인포윈도우에 표시할 내용
                     });
                     // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
                     // 이벤트 리스너로는 클로저를 만들어 등록합니다 
@@ -199,7 +191,7 @@ export default {
                     kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
                     kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
                     // 마커에 클릭이벤트를 등록합니다
-                    kakao.maps.event.addListener(marker, 'click', makeClickListner(map, marker));
+                    kakao.maps.event.addListener(marker, 'click', makeClickListner(imageSrc, singledata.ccba_mnm, singledata.content));
                 }
             // 마우스오버 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
             function makeOverListener(map, marker, infowindow) {
@@ -214,24 +206,32 @@ export default {
                 };
             }
             // 클릭이벤트용 인포윈도우를 표시하는 클로저를 만드는 함수
-            function makeClickListner(map, marker) {
+            // map, marker
+            function makeClickListner(img, name, content) {
                 return function () {
-                    var iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-                    var imageSrc = require('@/assets/exampleImg.webp')
-                    var content1 = '<img class="detailImg" src="'
-                    var img = imageSrc
-                    var content2 = '">'
-                    var content3 = '<div class="detailTitle"><text class="jua">'
-                    var title = '경주 월성'
-                    var content4 = '</text></div>'
-                    var content5 = '<div class="detailContent"><text class="jua">'
-                    var descrip = '내용: 경주 월성은 ~년도에 제작된 ~이며, 누구누구 왕이 어저구저저구 ~~~~~~~~~~~~~~~~~~~~~~~~'
-                    var content6 = '</text></div>'
-                    var infowindow = new kakao.maps.InfoWindow({
-                        content: content1+img+content2+content3+title+content4+content5+descrip+content6, // 인포윈도우에 표시할 내용
-                        removable: iwRemoveable
-                    });
-                    infowindow.open(map, marker)
+                    var modal = document.getElementById("myModal");
+                    modal.style.display = "block";
+                    // When the user clicks on <span> (x), close the modal
+                    var span = document.getElementsByClassName("close")[0];
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                    }
+                    // When the user clicks anywhere outside of the modal, close it
+                    window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                        }
+                    }
+                    // 모달 내용 변경
+                    // 이미지 변경
+                    var detailimg = document.getElementById("detailimg");
+                    detailimg.src = img;
+                    // 문화재명 변경
+                    var detailtitle = document.getElementById("detailtitle");
+                    detailtitle.innerHTML = name;
+                    // 문화재 상세설명
+                    var detailcontent = document.getElementById("detailcontent");
+                    detailcontent.innerHTML = content;
                 };
             }
             // clusterer에 마커들을 추가.(중요)
@@ -384,35 +384,99 @@ body{
     z-index: 0;
 }
 
-/* Info Window */
+/* 마우스오버 Info Window */
+.infoHeader {
+    font-size: 25px;
+    color: rgb(0, 0, 110);
+    margin: 0.5rem 0rem 0rem 0rem;
+
+}
 .infoImg {
-    width:15rem; height:7rem;
-    padding: 1rem 1rem 0rem 1rem;
+    width: auto; height: auto;
+    max-width: 30rem;
+    max-height: 20rem;
+    padding: 0.5rem 3rem 1rem 3rem;
 }
 .infoTitle {
-    padding: 0.5rem;
-    font-size: 20px;
+    margin: 0.5rem 0.5rem 2rem 0.5rem;
+    font-size: 25px;
 }
-.detailImg {
-    width: 40rem; height: 20rem;
-    padding: 1rem 1rem 0rem 1rem;
+
+/* 문화재 상세정보 조회 창 */
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-.detailTitle {
-    padding: 1rem;
-    font-size: 40px;
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 20px;
+  width: 80%;
+  height: 70%;
 }
-.detailContent {
-    font-size:20px;
-}
-/* 디테일창과 카카오맵 div */
-/* .container {
-    position: relative;
-}
-.center {
-    z-index: 1;
+/* 모달 이미지 */
+.detailimagediv {
     position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%);
-} */
+    left: auto;
+    margin-top: 2%;
+    width: 30%;
+    height: 50%;
+    border: 3px solid blue;
+    border-radius: 25px;
+}
+.detailimage {
+    width:100%;
+    height: 100%;
+    border-radius: 25px;
+}
+/* 모달 콘텐츠들 */
+.detailcontents {
+    position: absolute;
+    right: 15%;
+    width: 43%;
+    height: 53%;
+    border: 3px solid green;
+}
+/* 모달 문화재 명 */
+.detailtitle {
+    margin-top: 1%;
+    font-size: 50px;
+}
+/* 모달 문화재 상세설명 */
+.detaildescription {
+    position: absolute;
+    margin-top: 2%;
+    width: 100%;
+    height: 85%;
+    font-size: 19px;
+    border: 3px solid red;
+}
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
 </style>
