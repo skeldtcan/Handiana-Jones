@@ -68,11 +68,9 @@ export default {
     },
     moveToNoticePage: function () {
       this.$router.push({ name: "NoticePage" })
-      location.reload();
     },
     moveToMainPage: function () {
       this.$router.push({ name: "Main" })
-      location.reload();
     },
   },
   mounted: function () {
