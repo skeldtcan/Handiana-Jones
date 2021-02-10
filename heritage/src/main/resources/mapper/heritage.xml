@@ -7,8 +7,9 @@
 		resultType="Marker">
 		select *
 		from marker
+		where longitude != '0'
 		<if test="word != null and word != ''">
-			where ccba_mnm like concat('%', #{word}, '%')
+			or ccba_mnm like concat('%', #{word}, '%')
 			or ccba_ctcd_nm like concat('%', #{word}, '%')
 			or ccsi_name like concat('%', #{word}, '%')
 		</if>
