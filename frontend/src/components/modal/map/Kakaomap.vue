@@ -28,7 +28,12 @@
                 <span class="close">&times;</span>
                 <div class="detailcontents">
                     <div class="detailtitle east-sea-Dokdo"><p id="detailtitle">문화재 명</p></div>
-                    <div class="detaildescription jua"><p id= "detailcontent">문화재 설명</p></div>
+                    <div class="detaildescription">
+                        <div class="detailkind"><p id="detailkind" class="jua">문화재 종류</p></div>
+                        <p id="detailcontent" class="yeon">문화재 설명</p>
+                        <div class="detailaddress"><p id="detailaddress" class="jua">문화재 주소</p></div>
+                    </div>
+                    
                 </div>
                 
             </div>
@@ -121,10 +126,10 @@ export default {
             });
 
             // 데이터에서 좌표 값을 가지고 마커를 표시합니다
-            let markers = data.slice(0,10).map(
+            let markers = data.map(
                 (singleheritage) => {
                 // 마커 이미지를 커스텀하기 위한 코드
-                var imageSrc = require('@/assets/beachflag.png'), // 마커이미지의 주소입니다    
+                var imageSrc = require('@/assets/heritage.png'), // 마커이미지의 주소입니다    
                     imageSize = new kakao.maps.Size(50, 40), // 마커이미지의 크기입니다
                     imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
                 // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
@@ -160,25 +165,14 @@ export default {
                     var ccbaKdcd = singledata.ccba_kdcd
                     var ccbaAsno = singledata.ccba_asno
                     var ccbaCtcd = singledata.ccba_ctcd   
-
-                    var imageSrc= null
-                    // axios 요청 함수
-                    const getImageUrl = async () => {
-                        try {
-                            await axios.get(`${API_BASE_URL}/images?asno=${ccbaAsno}&ctcd=${ccbaCtcd}&kdcd=${ccbaKdcd}`)
-                            .then((res) => {
-                                imageSrc = res.data[0]['url']
-                            })
-                        } catch(err) {console.log(err)}
-                    }
-                    await getImageUrl() // awiat을 이용해 동기처리
-
+                    var imageSrc= singledata.img_url
+    
                     // 변수명 사용을 위해 분기점을 나눠준다.
-                    var content0 = '<div class="infoHeader han"><text>클릭하면 상세정보를 볼 수 있어요</text></div>'
+                    var content0 = '<div class="infoHeader jua"><text>클릭하면 상세정보를 볼 수 있어요</text></div>'
                     var content1 = '<img class="infoImg" src="'
                     var content2 = imageSrc
                     var content3 = '">'
-                    var content4 = '<div class="infoTitle"><text class="jua">'
+                    var content4 = '<div class="infoTitle"><text class="east-sea-Dokdo">'
                     var content5 = singledata.ccba_mnm
                     var content6 = '</text></div>'
     
@@ -191,7 +185,7 @@ export default {
                     kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
                     kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
                     // 마커에 클릭이벤트를 등록합니다
-                    kakao.maps.event.addListener(marker, 'click', makeClickListner(imageSrc, singledata.ccba_mnm, singledata.content));
+                    kakao.maps.event.addListener(marker, 'click', makeClickListner(ccbaKdcd,ccbaAsno,ccbaCtcd, imageSrc));
                 }
             // 마우스오버 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
             function makeOverListener(map, marker, infowindow) {
@@ -206,9 +200,10 @@ export default {
                 };
             }
             // 클릭이벤트용 인포윈도우를 표시하는 클로저를 만드는 함수
-            // map, marker
-            function makeClickListner(img, name, content) {
-                return function () {
+            function makeClickListner(ccbaKdcd,ccbaAsno,ccbaCtcd,img) {
+                return async () => {
+
+                    // 마커 클릭시 모달 열람 기능 추가
                     var modal = document.getElementById("myModal");
                     modal.style.display = "block";
                     // When the user clicks on <span> (x), close the modal
@@ -222,16 +217,40 @@ export default {
                         modal.style.display = "none";
                         }
                     }
+
+                    // axios 요청
+                    var name = null; 
+                    var kind = null; 
+                    var content = null; 
+                    var loc = null
+                    const getdetail = async () => {
+                        try {
+                            await axios.get(`${API_BASE_URL}/heritage?asno=${ccbaAsno}&ctcd=${ccbaCtcd}&kdcd=${ccbaKdcd}`)
+                            .then((res) => {
+                                name = res.data.ccba_mnm
+                                kind = res.data.mcode_name
+                                content = res.data.content
+                                loc = res.data.ccba_lcad
+                            })
+                        } catch(err) {console.log(err)}
+                    }
+                    await getdetail()
                     // 모달 내용 변경
                     // 이미지 변경
                     var detailimg = document.getElementById("detailimg");
                     detailimg.src = img;
-                    // 문화재명 변경
+                    // 문화재명
                     var detailtitle = document.getElementById("detailtitle");
                     detailtitle.innerHTML = name;
+                    // 문화재 종류
+                    var detailkind = document.getElementById("detailkind");
+                    detailkind.innerHTML = "분류: "+kind;
                     // 문화재 상세설명
                     var detailcontent = document.getElementById("detailcontent");
                     detailcontent.innerHTML = content;
+                    //문화재 주소
+                    var detailaddress = document.getElementById("detailaddress")
+                    detailaddress.innerHTML = "위치: "+loc
                 };
             }
             // clusterer에 마커들을 추가.(중요)
@@ -387,7 +406,7 @@ body{
 /* 마우스오버 Info Window */
 .infoHeader {
     font-size: 25px;
-    color: rgb(0, 0, 110);
+    color: black;
     margin: 0.5rem 0rem 0rem 0rem;
 
 }
@@ -398,8 +417,11 @@ body{
     padding: 0.5rem 3rem 1rem 3rem;
 }
 .infoTitle {
-    margin: 0.5rem 0.5rem 2rem 0.5rem;
-    font-size: 25px;
+    border: 3px solid rgb(0, 55, 110);
+    background-color: rgb(0, 55, 110);
+    color: #f2f2f2;
+    margin: 0;
+    font-size: 40px;
 }
 
 /* 문화재 상세정보 조회 창 */
@@ -453,23 +475,42 @@ body{
 }
 /* 모달 문화재 명 */
 .detailtitle {
-    margin-top: 1%;
+    margin-top: 0%;
+    height: 15%;
     font-size: 50px;
+    border: 3px solid rgb(0, 55, 110);
+    border-radius: 25px;
+    background-color:  rgb(0, 55, 110);
+    color: #f2f2f2;
+}
+.detailkind {
+    position: relative;
+    border: 3px solid yellow;
+    left: 0%;
+    width: 25%;
+    
 }
 /* 모달 문화재 상세설명 */
 .detaildescription {
     position: absolute;
-    margin-top: 2%;
+    margin-top: 0%;
     width: 100%;
     height: 85%;
-    font-size: 19px;
+    font-size: 21px;
     border: 3px solid red;
+}
+.detailaddress {
+    position: relative;
+    left: 0%;
+    width: 60%;
+    margin-top: 0.5%;
+    border: 3px solid purple;;
 }
 /* The Close Button */
 .close {
   color: #aaaaaa;
   float: right;
-  font-size: 28px;
+  font-size: 40px;
   font-weight: bold;
 }
 
