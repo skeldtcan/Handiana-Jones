@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '@/components/common/Main.vue'
 import NoticePage from '@/views/notice/NoticePage.vue'
-
+import Recommend from '@/views/Recommend.vue'
 
 Vue.use(VueRouter)
 
@@ -17,7 +17,18 @@ const routes = [
     name: 'NoticePage',
     component: NoticePage,
   },
-
+  {
+    name: "Recommend",
+    path: "/heritage",
+    component: Recommend,
+    children: [
+      {
+        path: "recommend/:user_no",
+        name: "RecommendResult",
+        component: () => import("@/components/modal/recommend/Recommend.vue")
+      }
+    ],
+  },
 
 ]
 

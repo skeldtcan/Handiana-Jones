@@ -65,49 +65,49 @@ import Join from '@/components/modal/auth/Join';
 import Findpwd from '@/components/modal/auth/Findpwd';
 import Findid from '@/components/modal/auth/Findid';
 
-
 export default {
     name: 'login',
     data(){
       return {
-        user:{
-          user_id:null,
-          user_password:null
+        user: {
+          user_id: null,
+          user_password: null
         },
-
-      }
+        isLoginError: false
+      };
     },
     components:{
       Join,
-    Findpwd,
-    Findid,
+      Findpwd,
+      Findid,
     },
     computed:{},
     methods:{
       confirm() {
         localStorage.setItem("access-token", "");
         login(
-        this.user,
-        (response) => {
-          console.log("최종로그인확인", response.data.message)
-          if (response.data.message === "success") {
-            let token = response.data["access-token"];
-            this.$store.commit("setIsLogined", true);
-            localStorage.setItem("access-token", token)
-            this.$store.dispatch("GET_MEMBER_INFO", token);
-            // this.$router.push("/");
-            // 페이지 리렌더링
-            location.reload();
-          } else {
-            console.log('로그인 실패')
-            this.isLoginError = true;
+          this.user,
+          (response) => {
+            console.log("최종로그인확인", response.data.message)
+            if (response.data.message === "success") {
+              let token = response.data["access-token"];
+              this.$store.commit("setIsLogined", true);
+              localStorage.setItem("access-token", token);
+
+              this.$store.dispatch("GET_MEMBER_INFO", token);
+              this.$router.push("/");
+              // 페이지 리렌더링
+              // location.reload();
+            } else {
+              console.log('로그인 실패')
+              this.isLoginError = true;
+            }
+          },
+          (error) => {
+            console.log(error);
+            alert("아이디 또는 비밀번호가 일치하지 않습니다.");
           }
-        },
-        (error) => {
-          console.log(error);
-          alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-        }
-      );
+        );
       }
     },
 
