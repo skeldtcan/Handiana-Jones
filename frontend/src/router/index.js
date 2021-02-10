@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '@/components/common/Main.vue'
 import NoticePage from '@/views/notice/NoticePage.vue'
-import Recommend from '@/views/Recommend.vue'
+import Recommend from '@/views/recommend/Recommend.vue'
 
 Vue.use(VueRouter)
 
