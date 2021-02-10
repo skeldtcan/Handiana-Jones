@@ -27,12 +27,12 @@ function login(user, success, fail) {
     .catch(fail);
 }
 
-async function findById(userid, success, fail) {
+async function findById(user_id, success, fail) {
   instance.defaults.headers["access-token"] = window.localStorage.getItem(
     "access-token"
   );
   await instance
-    .get(`/user/info/${userid}`)
+    .get(`/user/info/${user_id}`)
     .then(success)
     .catch(fail);
 }
