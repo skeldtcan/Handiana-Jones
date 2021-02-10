@@ -14,7 +14,7 @@
 
 	<select id="userInfo" parameterType="String" resultType="User">
 		select
-		user_id, user_name, user_password, user_phone
+		user_no, user_id, user_name, user_password, user_phone
 		from user
 		where user_id =
 		#{user_id}
