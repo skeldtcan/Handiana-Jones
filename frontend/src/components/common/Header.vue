@@ -14,11 +14,15 @@
           <span v-if="!isLogin" class="mr-2"><Login/></span>
           <!-- 로그인 상태일때 보이는 배너 -->
           <span v-if="isLogin">
-            <v-btn text
-              v-bind="attrs"
-              v-on="on"
-              @click="logout"
-            ><span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px; ">로그아웃</span></v-btn>
+          <span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px; ">{{userInfo.user_name}}님 환영합니다.</span>
+          <router-link :to="{ name: 'mypage' }">
+            <span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px; ">내 정보</span>
+          </router-link>
+          <v-btn text
+            v-bind="attrs"
+            v-on="on"
+            @click="logout">
+          <span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px; ">로그아웃</span></v-btn>
           </span>
       </v-toolbar>
 
@@ -41,6 +45,15 @@
         공지사항
         <i class="fas fa-volume-down" style="padding-left: 0.5rem"></i>
       </v-btn>
+
+      <!-- 추천 목록 -->
+      <v-btn
+        color="blue-grey"
+        class="ma-2 white--text"
+        @click="moveToRecommend"
+      >
+        추천 목록
+      </v-btn>
     </v-toolbar>
   </nav>
 </template>
@@ -48,37 +61,42 @@
 <script>
 import Join from '@/components/modal/auth/Join';
 import Login from '@/components/modal/auth/Login';
+import { mapState } from "vuex";
 
 export default {
-  name: 'Header',
+  name: 'header',
   components: {
     Join,
     Login,
   },
-  data: function () {
-    return {
-      isLogin: false,
-    }
+  computed: {
+    ...mapState(["userInfo", "isLogin"])
   },
   methods: {
     logout: function () {
-      localStorage.removeItem("access-token")
-      this.isLogin = false
-      
+      this.$store
+      .dispatch("LOGOUT")
+      .then(() => {
+        this.$router.push({ name: "Main" });
+      })
+      .catch(() => {
+        console.log("로그아웃 문제 발생");
+      });
     },
     moveToNoticePage: function () {
       this.$router.push({ name: "NoticePage" })
+    },
+    moveToRecommend() {
+      console.log(this.userInfo.user_no)
+      this.$router.push({
+        name: "RecommendResult",
+        params: { user_no: this.userInfo.user_no }
+      });
     },
     moveToMainPage: function () {
       this.$router.push({ name: "Main" })
     },
   },
-  mounted: function () {
-    let token = localStorage.getItem("access-token");
-    if (token) {
-      this.isLogin = true
-    }
-  }
 }
 </script>
 
