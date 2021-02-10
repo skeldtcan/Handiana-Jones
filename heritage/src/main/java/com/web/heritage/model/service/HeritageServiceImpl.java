@@ -17,6 +17,7 @@ import org.w3c.dom.NodeList;
 
 import com.web.heritage.model.Heritage;
 import com.web.heritage.model.HeritageImage;
+import com.web.heritage.model.Marker;
 import com.web.heritage.model.mapper.HeritageMapper;
 
 @Service
@@ -26,7 +27,7 @@ public class HeritageServiceImpl implements HeritageService {
 	private SqlSession sqlSession;
 
 	@Override
-	public List<Heritage> listHeritage(String word) throws SQLException {
+	public List<Marker> listHeritage(String word) throws SQLException {
 		return sqlSession.getMapper(HeritageMapper.class).listHeritage(word);
 	}
 

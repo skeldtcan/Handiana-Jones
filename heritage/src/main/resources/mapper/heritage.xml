@@ -4,9 +4,9 @@
 
 <mapper namespace="com.web.heritage.model.mapper.HeritageMapper">
 	<select id="listHeritage" parameterType="String"
-		resultType="Heritage">
+		resultType="Marker">
 		select *
-		from heritage
+		from marker
 		<if test="word != null and word != ''">
 			where ccba_mnm like concat('%', #{word}, '%')
 			or ccba_ctcd_nm like concat('%', #{word}, '%')
