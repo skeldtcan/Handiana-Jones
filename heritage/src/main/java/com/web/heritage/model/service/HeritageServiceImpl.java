@@ -43,26 +43,30 @@ public class HeritageServiceImpl implements HeritageService {
 			+ "&ccbaAsno=" + asno
 			+ "&ccbaCtcd=" + ctcd;
 
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(url);
+		try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(url);
 
-		doc.getDocumentElement().normalize(); //문서 정규화
-		NodeList listImage = doc.getElementsByTagName("imageUrl"); //System.out.println("파싱할 리스트 수: " + listImage.getLength());
-		NodeList listDesc = doc.getElementsByTagName("ccimDesc"); //System.out.println("파싱할 리스트 수: " + listDesc.getLength());
+			doc.getDocumentElement().normalize(); //문서 정규화
+			NodeList listImage = doc.getElementsByTagName("imageUrl"); //System.out.println("파싱할 리스트 수: " + listImage.getLength());
+			NodeList listDesc = doc.getElementsByTagName("ccimDesc"); //System.out.println("파싱할 리스트 수: " + listDesc.getLength());
 
-		for (int i = 0; i < listImage.getLength(); i++) {
-			Node nodeImage = listImage.item(i);
-			Node nodeDesc = listDesc.item(i);
+			for (int i = 0; i < listImage.getLength(); i++) {
+				Node nodeImage = listImage.item(i);
+				Node nodeDesc = listDesc.item(i);
 
-			if (nodeImage.getNodeType() == Node.ELEMENT_NODE) {
-				HeritageImage image = new HeritageImage();
-				Element elemImage = (Element)nodeImage;
-				image.setUrl(elemImage.getTextContent());
-				Element elemDesc = (Element)nodeDesc;
-				image.setDesc(elemDesc.getTextContent());
-				images.add(image);
+				if (nodeImage.getNodeType() == Node.ELEMENT_NODE) {
+					HeritageImage image = new HeritageImage();
+					Element elemImage = (Element)nodeImage;
+					image.setUrl(elemImage.getTextContent());
+					Element elemDesc = (Element)nodeDesc;
+					image.setDesc(elemDesc.getTextContent());
+					images.add(image);
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return images;
 	}
