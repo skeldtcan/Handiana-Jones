@@ -36,6 +36,8 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 /* Black Han Sans */
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+/* Yeon Sung */
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 .east-sea-Dokdo {
   font-family: 'East Sea Dokdo', cursive;
 }
@@ -47,5 +49,8 @@ export default {
 }
 .han {
   font-family: 'Black Han Sans', sans-serif;
+}
+.yeon {
+  font-family: 'Yeon Sung', cursive;
 }
 </style>
