@@ -2,8 +2,8 @@
     <div class="container">
         <!-- search bar -->
         <div class="search">
-            <input type="text" class="searchTerm" placeholder="문화재 또는 지역을 검색해 주세요" v-model="keyword" @keypress.enter="keywordMarker()">
-            <button type="" class="searchButton" @click="keywordMarker()">
+            <input type="text" class="searchTerm" placeholder="문화재 또는 지역을 검색해 주세요" v-model="keyword" @keypress.enter="keywordMarker(keyword)">
+            <button type="" class="searchButton" @click="keywordMarker(keyword)">
                 <i class="fa fa-search"></i>
             </button>
         </div>
@@ -67,6 +67,7 @@ export default {
         keyword: '',
         // 공지사항 창 boolean
         isClick: false,
+        heritages: [],
     }),
     beforeCreate () {
         this.isClick=false
@@ -257,7 +258,7 @@ export default {
             clusterer.addMarkers(markers)
         },
         // keyword 검색을 위한 Method
-        keywordMarker: function () {
+        keywordMarker: async (keyword) => {
             var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
                 mapOption = {
                     center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
@@ -270,9 +271,29 @@ export default {
             // 장소 검색 객체를 생성합니다
             var ps = new kakao.maps.services.Places();
 
-            // 키워드로 장소를 검색합니다
-            ps.keywordSearch(this.keyword, placesSearchCB); 
+            // const getheritages = async() => {
+            //     try {
+            //         await axios.get(`${API_BASE_URL}/heritages/${this.keyword}`)
+            //         .then((res)=>{
+            //             heritages = res.data
+            //         })
+            //     } catch(err) {console.log(err)}
+            // }
+            // await getheritages()
 
+            // 키워드로 장소를 검색합니다
+            ps.keywordSearch(keyword, placesSearchCB);
+            // var heritages = []
+            // 문화재 정보 검색
+            const getheritages = async() => {
+                try {
+                    await axios.get(`${API_BASE_URL}/heritages/${keyword}`)
+                    .then((res)=>{
+                        heritages = res.data
+                    })
+                } catch(err) {console.log(err)}
+            }
+            await getheritages()
             // 키워드 검색 완료 시 호출되는 콜백함수 입니다
             function placesSearchCB (data, status) {
                 if (status === kakao.maps.services.Status.OK) {

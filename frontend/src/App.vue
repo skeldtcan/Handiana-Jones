@@ -18,12 +18,7 @@ export default {
     Header,
   },
   data: () => ({
-    login: false,
-
   }),
-  mounted: function () {
-
-  },
 };
 </script>
 
