@@ -99,6 +99,12 @@ export default {
             this.user, 
           (response)=>{
             console.log("회원가입성공", response)
+            this.user.user_id = "",
+            this.user.user_password = "",
+            this.passcon = "",
+            this.user.user_name = "",
+            this.user.user_phone = ""
+            alert("회원가입 성공")
           },
           (error)=>{
             if (error.response.status === 409) {
