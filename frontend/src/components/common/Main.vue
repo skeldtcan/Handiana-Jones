@@ -1,5 +1,5 @@
 <template>
-<v-content>
+<v-main>
   <v-container class="my-16">
     <v-row class="text-center">
       <v-col cols="12">
@@ -69,7 +69,7 @@
       </v-col>
     </v-row>
   </v-container>
-  </v-content>
+</v-main>
 </template>
 
 <!-- Main.vue -->

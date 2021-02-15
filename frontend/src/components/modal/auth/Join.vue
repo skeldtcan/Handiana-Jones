@@ -10,7 +10,7 @@
           <v-btn text
             v-bind="attrs"
             v-on="on"
-          ><span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px; ">회원가입</span></v-btn>
+          ><span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px; ">회원가입</span></v-btn>
         </template>
         <template v-slot:default="dialog">
           <v-card>
@@ -18,7 +18,15 @@
             class="mb-4"
               color="navy"
               dark
-            ><span class="brown--text text--lighten-5 jua" style="font-size:24px;">회원가입</span></v-toolbar>
+            ><span class="brown--text text--lighten-5 jua" style="font-size:24px;">회원가입</span>
+            <v-spacer/>
+              <v-btn
+                text
+                @click="dialog.value = false"
+              >
+              <span class="brown1--text jua" style="font-size:14px; padding: 10px; ">x</span>
+              </v-btn>
+            </v-toolbar>
             <v-card-text>
               <br>
               <v-text-field
@@ -54,11 +62,7 @@
               <v-btn
                 color="brown2"
                 @click="create"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:18px; padding: 10px; ">가입하기</span></v-btn>
-              <v-btn
-                text
-                @click="dialog.value = false"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:18px; padding: 10px; ">창닫기</span></v-btn>
+              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">가입하기</span></v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -76,10 +80,10 @@ export default {
     data(){
       return {
         user:{
-          user_id:null,
-          user_password:null, 
-          user_name:null,
-          user_phone:null,
+          user_id: "",
+          user_password: "", 
+          user_name: "",
+          user_phone: "",
         },
         passcon:'',
 

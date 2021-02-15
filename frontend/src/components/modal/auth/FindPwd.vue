@@ -13,7 +13,7 @@
             color="white"
             v-bind="attrs"
             v-on="on"
-          ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">비밀번호찾기</span></v-btn>
+          ><span class="blue-grey--text text--darken-4 jua" style="font-size:18px; padding: 10px; ">비밀번호 찾기</span></v-btn>
         </template>
         <template v-slot:default="dialog">
           <v-card>
@@ -21,30 +21,34 @@
             class="mb-4"
               color="navy"
               dark
-            ><span class="white--text jua " style="font-size:36px;">비밀번호찾기</span></v-toolbar>
+            ><span class="white--text jua " style="font-size:24px;">비밀번호 찾기</span>
+            <v-spacer/>
+              <v-btn
+                text
+                @click="dialog.value = false"
+              >
+              <span class="brown1--text jua" style="font-size:14px; padding: 10px; ">x</span>
+              </v-btn>
+            </v-toolbar>
             <v-card-text>
               <br>
               <v-text-field
-              v-model="user.userId"
+              v-model="user.user_id"
               outlined
             label="이메일"
           ></v-text-field>       
            
           <v-text-field
-          v-model="user.userPhone"
+          v-model="user.user_name"
           outlined
-            label="연락처"
+            label="이름"
           ></v-text-field>
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn
                 color="brown2"
                 @click="findPwd"
-              ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">비밀번호찾기</span></v-btn>
-              <v-btn
-                text
-                @click="dialog.value = false"
-              ><span class="blue-grey--text text--darken-4 gugi" style="font-size:20px; padding: 10px; ">창닫기</span></v-btn>
+              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">확인</span></v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -55,15 +59,15 @@
 </template>
 
 <script>
+import { findPassword } from "@/api/user.js";
+
 export default {
-    name: 'Findpwd',
+    name: 'FindPwd',
     data(){
       return {
         user:{
-          userId:null,
-          
-          userName:null,
-          userPhone:null,
+          user_id: null,
+          user_name: null,
         },
 
       }
@@ -73,11 +77,15 @@ export default {
     },
     methods:{
       findPwd(){
-        console.log(this.user.userId)
-  
-        console.log(this.user.userPhone)
-        console.log(this.user.userName)
-        
+        findPassword(
+          this.user,
+          (response) => {
+              console.log(response.data);
+              alert(this.user.user_name + "님의 임시 비밀번호는 " + response.data + "입니다.");
+          },
+          (error) => {
+              console.log(error);
+        })
       }
     },
 }

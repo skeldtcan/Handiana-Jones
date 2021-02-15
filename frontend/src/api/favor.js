@@ -1,0 +1,33 @@
+import { createInstance } from "./index.js";
+
+const instance = createInstance();
+
+function recommends(user_no, success, fail){
+    instance
+    .get(`/heritage/recommend/${user_no}`)
+    .then(success)
+    .catch(fail)
+}
+
+function ctcds(favor, success, fail){
+    instance
+    .post(`/heritage/ctcd`, JSON.stringify(favor))
+    .then(success)
+    .catch(fail)
+}
+
+function bcodes(favor, success, fail){
+    instance
+    .put(`/heritage/bcode`, JSON.stringify(favor))
+    .then(success)
+    .catch(fail)
+}
+
+function ccces(favor, success, fail){
+    instance
+    .put(`/heritage/ccce`, JSON.stringify(favor))
+    .then(success)
+    .catch(fail)
+}
+
+export { recommends, ctcds, bcodes, ccces };
