@@ -1,11 +1,11 @@
 <template>
-  <nav class="mb-16">
+    <nav class="mb-16">
         <v-toolbar
         color="navy"
         height="80"
       >
         <div class="d-flex align-center">
-          <v-toolbar-title color="navy"><span class="brown--text text--lighten-5 east-sea-Dokdo " style="font-size:48px; cursor:pointer;" @click="moveToMainPage">한디아나존스</span></v-toolbar-title>
+          <v-toolbar-title color="navy"><span class="brown--text text--lighten-5 east-sea-Dokdo " style="font-size: 52px; cursor: pointer; padding: 10px;" @click="moveToMainPage">한디아나존스</span></v-toolbar-title>
         </div>
 
         <v-spacer></v-spacer>
@@ -13,61 +13,73 @@
           <span v-if="!isLogin" class="mr-2"><Join/></span>
           <span v-if="!isLogin" class="mr-2"><Login/></span>
           <!-- 로그인 상태일때 보이는 배너 -->
-          <span v-if="isLogin">
-          <span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px; ">{{userInfo.user_name}}님 환영합니다.</span>
-          <router-link :to="{ name: 'mypage' }">
-            <span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px; ">내 정보</span>
-          </router-link>
-          <v-btn text
-            v-bind="attrs"
-            v-on="on"
-            @click="logout">
-          <span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px; ">로그아웃</span></v-btn>
+          <span v-if="isLogin" class="mr-2"><MyInfo/></span>
+          <span v-if="isLogin" class="mr-2">
+            <v-btn text
+              v-bind="attrs"
+              v-on="on"
+              @click="logout">
+              <span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px; ">로그아웃</span>
+            </v-btn>
           </span>
       </v-toolbar>
 
       <v-img
         :src="require('@/assets/mainImage.jpg')"
         class="md-2"
-        height="200"
+        height="250"
       />
-    <!-- Navbar -->
-    <v-toolbar 
-    height="70"
-    color="grey"
-    >
-    <!-- 공지사항 버튼 -->
-      <v-btn
-        color="blue-grey"
-        class="ma-2 white--text"
-        @click="moveToNoticePage"
+      <!-- Navbar -->
+      <v-toolbar 
+      height="65"
+      color="grey"
       >
-        공지사항
-        <i class="fas fa-volume-down" style="padding-left: 0.5rem"></i>
-      </v-btn>
+      <!-- 공지사항 버튼 -->
+        <v-btn text
+          class="ma-1"
+          @click="moveToNoticePage"
+        >
+          <span class="navy--text jua" style="font-size:18px; padding: 5px; ">
+            공지사항
+          </span>
+          <i class="fas fa-volume-down" style="padding-left: 0.5rem"></i>
+        </v-btn>
 
-      <!-- 추천 목록 -->
-      <v-btn
-        color="blue-grey"
-        class="ma-2 white--text"
-        @click="moveToRecommend"
-      >
-        추천 목록
-      </v-btn>
-    </v-toolbar>
-  </nav>
+        <!-- 선호 정보 입력 -->
+        <v-btn text
+          class="ma-1"
+          @click="moveToFavor"
+        >
+          <span class="navy--text jua" style="font-size:18px; padding: 5px; ">
+          선호 정보 입력
+          </span>
+        </v-btn>
+
+        <!-- 추천 목록 -->
+        <v-btn text
+          class="ma-1"
+          @click="moveToRecommend"
+        >
+          <span class="navy--text jua" style="font-size:18px; padding: 5px; ">
+          추천 목록
+          </span>
+        </v-btn>
+      </v-toolbar>
+    </nav>
 </template>
 
 <script>
 import Join from '@/components/modal/auth/Join';
 import Login from '@/components/modal/auth/Login';
+import MyInfo from '@/components/modal/auth/MyInfo';
 import { mapState } from "vuex";
 
 export default {
-  name: 'header',
+  name: 'Header',
   components: {
     Join,
     Login,
+    MyInfo,
   },
   computed: {
     ...mapState(["userInfo", "isLogin"])
@@ -89,9 +101,12 @@ export default {
     moveToRecommend() {
       console.log(this.userInfo.user_no)
       this.$router.push({
-        name: "RecommendResult",
+        name: "Recommend",
         params: { user_no: this.userInfo.user_no }
       });
+    },
+    moveToFavor() {
+      this.$router.push({ name: "InsertCtcd" });
     },
     moveToMainPage: function () {
       this.$router.push({ name: "Main" })

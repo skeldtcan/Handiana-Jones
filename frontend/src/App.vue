@@ -1,14 +1,16 @@
 <template>
   <v-app>
     <!-- Header.vue를 이용한 헤더 부분 -->
-    <Header></Header>
+    <Header/>
     <!-- 헤더 이하 내용 -->
     <router-view />
+    <Footer/>
   </v-app>
 </template>
 
 <script>
 import Header from './components/common/Header';
+import Footer from './components/common/Footer';
 // auth 부분
 // import store from "@/store";
 
@@ -16,6 +18,7 @@ export default {
   name: 'App',
   components: {
     Header,
+    Footer,
   },
   data: () => ({
   }),

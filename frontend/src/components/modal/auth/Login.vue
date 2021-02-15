@@ -10,7 +10,7 @@
             v-bind="attrs"
             v-on="on"
           >
-          <span class="brown--text text--lighten-5 jua" style="font-size:16px; padding: 10px;">로그인</span>
+          <span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px;">로그인</span>
           </v-btn>
         </template>
         <template v-slot:default="dialog">
@@ -19,7 +19,15 @@
               color="navy"
               class="mb-4"
               dark
-            ><span class="brown--text text--lighten-5 jua" style="font-size:24px;">로그인</span></v-toolbar>
+            ><span class="brown--text text--lighten-5 jua" style="font-size:24px;">로그인</span>
+            <v-spacer/>
+              <v-btn
+                text
+                @click="dialog.value = false"
+              >
+              <span class="brown1--text jua" style="font-size:14px; padding: 10px; ">x</span>
+              </v-btn>
+              </v-toolbar>
             <v-card-text>
               <br>
                <v-text-field
@@ -35,21 +43,15 @@
           ></v-text-field>
             </v-card-text>
             <v-card-actions class="justify-end">
-              <Findid/>
+              <FindId/>
               
-              <Findpwd/>
+              <FindPwd/>
             </v-card-actions>
             <v-card-actions class="justify-end">
-              <Join/>
-              
               <v-btn
                 color="brown2"
                 @click="confirm"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:18px; padding: 10px; ">로그인</span></v-btn>
-              <v-btn
-                text
-                @click="dialog.value = false"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:18px; padding: 10px; ">창닫기</span></v-btn>
+              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">로그인</span></v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -61,9 +63,8 @@
 
 <script>
 import { login } from "@/api/user.js";
-import Join from '@/components/modal/auth/Join';
-import Findpwd from '@/components/modal/auth/Findpwd';
-import Findid from '@/components/modal/auth/Findid';
+import FindPwd from '@/components/modal/auth/FindPwd';
+import FindId from '@/components/modal/auth/FindId';
 
 export default {
     name: 'login',
@@ -77,9 +78,8 @@ export default {
       };
     },
     components:{
-      Join,
-      Findpwd,
-      Findid,
+      FindPwd,
+      FindId,
     },
     computed:{},
     methods:{
@@ -93,11 +93,10 @@ export default {
               let token = response.data["access-token"];
               this.$store.commit("setIsLogined", true);
               localStorage.setItem("access-token", token);
-
               this.$store.dispatch("GET_MEMBER_INFO", token);
-              this.$router.push("/");
+              // this.$router.push({ name: "Main" });
               // 페이지 리렌더링
-              // location.reload();
+              location.reload();
             } else {
               console.log('로그인 실패')
               this.isLoginError = true;

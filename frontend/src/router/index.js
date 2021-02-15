@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '@/components/common/Main.vue'
 import NoticePage from '@/views/notice/NoticePage.vue'
-import Recommend from '@/views/recommend/Recommend.vue'
+import Favor from '@/views/favor/Favor.vue'
 
 Vue.use(VueRouter)
 
@@ -18,18 +18,32 @@ const routes = [
     component: NoticePage,
   },
   {
-    name: "Recommend",
     path: "/heritage",
-    component: Recommend,
+    name: "Favor",
+    component: Favor,
     children: [
       {
         path: "recommend/:user_no",
-        name: "RecommendResult",
-        component: () => import("@/components/modal/recommend/Recommend.vue")
-      }
+        name: "Recommend",
+        component: () => import("@/components/modal/favor/Recommend.vue")
+      },
+      {
+        path: "ctcd",
+        name: "InsertCtcd",
+        component: () => import("@/components/modal/favor/InsertCtcd.vue")
+      },
+      {
+        path: "bcode",
+        name: "InsertBcode",
+        component: () => import("@/components/modal/favor/InsertBcode.vue")
+      },
+      {
+        path: "ccce",
+        name: "InsertCcce",
+        component: () => import("@/components/modal/favor/InsertCcce.vue")
+      },
     ],
   },
-
 ]
 
 const router = new VueRouter({

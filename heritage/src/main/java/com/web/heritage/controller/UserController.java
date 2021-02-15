@@ -100,7 +100,7 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "아이디 찾기", notes = "입력한 이름과 연락처에 해당하는 회원의 아이디를 반환한다.", response = String.class)
-	@PostMapping("/confirm/id")
+	@PostMapping("/find/id")
 	public ResponseEntity<String> findId(
 		@RequestBody @ApiParam(value = "아이디 찾기 시 필요한 회원정보(이름, 연락처).", required = true) User user)
 		throws Exception {
@@ -114,7 +114,7 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "비밀번호 찾기", notes = "입력한 아이디와 이름에 해당하는 회원의 비밀번호를 반환한다.", response = String.class)
-	@PostMapping("/confirm/password")
+	@PostMapping("/find/password")
 	public ResponseEntity<String> findPwd(
 		@RequestBody @ApiParam(value = "비밀번호 찾기 시 필요한 회원정보(아이디, 이름).", required = true) User user)
 		throws Exception {
