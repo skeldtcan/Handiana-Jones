@@ -28,12 +28,11 @@
                 <span class="close">&times;</span>
                 <div class="detailcontents">
                     <div class="detailtitle east-sea-Dokdo"><p id="detailtitle">문화재 명</p></div>
+                    <div class="detailkind"><p id="detailkind" class="jua">문화재 종류</p></div>
                     <div class="detaildescription">
-                        <div class="detailkind"><p id="detailkind" class="jua">문화재 종류</p></div>
                         <p id="detailcontent" class="yeon">문화재 설명</p>
-                        <div class="detailaddress"><p id="detailaddress" class="jua">문화재 주소</p></div>
                     </div>
-                    
+                    <div class="detailaddress"><p id="detailaddress" class="jua">문화재 주소</p></div>
                 </div>
                 
             </div>
@@ -59,7 +58,7 @@ export default {
         // 카카오맵을 위한 data instances
         appKey: '2e4b87e7a16709ce4966d35d9caaad46',
         center: { lat: 36.2683, lng: 127.6358 }, // 지도의 중심 좌표
-        level: 14, 
+        level: 13, 
         mapTypeId: VueDaumMap.MapTypeId.NORMAL,
         libraries: ['services', 'clusterer', 'drawing'],
         map: null,
@@ -77,7 +76,7 @@ export default {
         onLoad () {
             var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
                     center : new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표
-                    level : 14 // 지도의 확대 레벨
+                    level : 13 // 지도의 확대 레벨
                 });
             this.map = map;
             // 클러스터 생성을 위한 json 데이터 받아오기
@@ -125,9 +124,8 @@ export default {
                     }, // styles 종료선.
                 ] // clusterer 종료선.
             });
-
             // 데이터에서 좌표 값을 가지고 마커를 표시합니다
-            let markers = data.map(
+            let markers = data.slice(0,500).map(
                 (singleheritage) => {
                 // 마커 이미지를 커스텀하기 위한 코드
                 var imageSrc = require('@/assets/heritage.png'), // 마커이미지의 주소입니다    
@@ -257,6 +255,7 @@ export default {
             // clusterer에 마커들을 추가.(중요)
             clusterer.addMarkers(markers)
         },
+        
         // keyword 검색을 위한 Method
         keywordMarker: async (keyword) => {
             var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -420,7 +419,7 @@ body{
 
 /* kakaomap */
 .kakaomap {
-    width:60rem; height:40rem; margin-left:auto; margin-right:auto;
+    width:90rem; height:60rem; margin-left:auto; margin-right:auto;
     z-index: 0;
 }
 
@@ -438,9 +437,9 @@ body{
     padding: 0.5rem 3rem 1rem 3rem;
 }
 .infoTitle {
-    border: 3px solid rgb(0, 55, 110);
-    background-color: rgb(0, 55, 110);
-    color: #f2f2f2;
+    border: 3px solid #24303F;
+    background-color: #24303F;
+    color: #E2D6CE;
     margin: 0;
     font-size: 40px;
 }
@@ -454,7 +453,7 @@ body{
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
+  width:100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
@@ -475,14 +474,13 @@ body{
 .detailimagediv {
     position: absolute;
     left: auto;
-    margin-top: 2%;
+    margin-top: 0%;
     width: 30%;
-    height: 50%;
-    border: 3px solid blue;
+    height: 55%;
     border-radius: 25px;
 }
 .detailimage {
-    width:100%;
+    width: 100%;
     height: 100%;
     border-radius: 25px;
 }
@@ -492,40 +490,47 @@ body{
     right: 15%;
     width: 43%;
     height: 53%;
-    border: 3px solid green;
 }
 /* 모달 문화재 명 */
 .detailtitle {
     margin-top: 0%;
+    padding: 1% 1% 1% 1%;
     height: 15%;
-    font-size: 50px;
-    border: 3px solid rgb(0, 55, 110);
+    font-size: 40px;
+    border: 3px solid #24303F;
     border-radius: 25px;
-    background-color:  rgb(0, 55, 110);
-    color: #f2f2f2;
+    background-color:  #24303F;
+    color: #E2D6CE;
 }
 .detailkind {
     position: relative;
-    border: 3px solid yellow;
+    padding-top: 3%;
     left: 0%;
     width: 25%;
+    font-size: 20px;
     
 }
 /* 모달 문화재 상세설명 */
 .detaildescription {
-    position: absolute;
+    position: relative;
     margin-top: 0%;
+    padding: 1% 1% 1% 1%;
     width: 100%;
-    height: 85%;
+    height: 55%;
     font-size: 21px;
-    border: 3px solid red;
+    overflow: auto; /* Enable scroll if needed */
+    border: 5px solid #E2D6CE;
+    border-left-color:white;
+    border-right-color: white;
+    border-radius: 5px;
 }
 .detailaddress {
     position: relative;
-    left: 0%;
-    width: 60%;
-    margin-top: 0.5%;
-    border: 3px solid purple;;
+    left: -10%;
+    width: 70%;
+    margin-top: 2%;
+    font-size: 20px;
+
 }
 /* The Close Button */
 .close {

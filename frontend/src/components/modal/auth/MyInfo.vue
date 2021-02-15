@@ -10,7 +10,7 @@
             v-bind="attrs"
             v-on="on"
           >
-          <span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px;">{{ userInfo.user_name }}님</span>
+          <span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px;">{{ userInfo.user_name }}님의 마이페이지</span>
           </v-btn>
         </template>
         <template v-slot:default="dialog">

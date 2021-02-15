@@ -16,8 +16,6 @@
           <span v-if="isLogin" class="mr-2"><MyInfo/></span>
           <span v-if="isLogin" class="mr-2">
             <v-btn text
-              v-bind="attrs"
-              v-on="on"
               @click="logout">
               <span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px; ">로그아웃</span>
             </v-btn>
