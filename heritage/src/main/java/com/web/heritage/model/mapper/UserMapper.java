@@ -16,6 +16,7 @@ public interface UserMapper {
 	public String findPwd(User user) throws SQLException;
 	public int modifyPwd(User user) throws SQLException;
 	public String findId(User user) throws SQLException;
+	public int insertAuthKey(User user) throws SQLException;
 	public int alterAuthKey(Map<String, String> map) throws SQLException;
 	public String getAuthKey(Map<String, String> map) throws SQLException;
 
