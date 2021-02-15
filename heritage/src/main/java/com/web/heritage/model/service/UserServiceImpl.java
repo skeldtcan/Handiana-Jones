@@ -1,7 +1,6 @@
 package com.web.heritage.model.service;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -91,14 +90,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean sendEmail(String user_id) throws Exception {
+	public boolean sendEmail(User user) throws Exception {
 		String auth_key = RandomKey.create(8);
+		user.setAuth_key(auth_key);
 
-		Map<String, String> map = new HashMap<>();
-		map.put("user_id", user_id);
-		map.put("auth_key", auth_key);
-
-		if (alterAuthKey(map)) {
+		if (insertAuthKey(user)) {
 			MailUtils mail;
 			try {
 				mail = new MailUtils(mailSender);
@@ -106,9 +102,9 @@ public class UserServiceImpl implements UserService {
 					+ "<br>"
 					+ "<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
 					+ "<a href='http://localhost:8000/heritage/user/confirm/email?user_id="
-					+ user_id + "&auth_key=" + auth_key + "' target='_blenk'>"
+					+ user.getUser_id() + "&auth_key=" + auth_key + "' target='_blenk'>"
 					+ "이메일 인증 확인</a>";
-				mail.setTo(user_id);
+				mail.setTo(user.getUser_id());
 				mail.setText(mailContent);
 				mail.setSubject(subject);
 				mail.setFrom(from, "관리자");
@@ -132,6 +128,11 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public boolean insertAuthKey(User user) throws SQLException {
+		return sqlSession.getMapper(UserMapper.class).insertAuthKey(user) == 1;
 	}
 
 	@Override

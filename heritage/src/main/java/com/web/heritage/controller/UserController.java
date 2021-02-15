@@ -137,16 +137,16 @@ public class UserController {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 
-		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "이메일 발송 확인", notes = "이메일 발송 여부를 확인한다. 그리고 인증 여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PostMapping("/send/email")
 	public ResponseEntity<String> sendEmail(
-		@RequestParam @ApiParam(value = "이메일 인증할 회원의 아이디.", required = true) String user_id,
+		@RequestBody @ApiParam(value = "이메일 인증할 회원의 아이디.", required = true) User user,
 		HttpServletRequest request) throws Exception {
-		logger.debug("user_id : {} ", user_id);
-		if (userService.sendEmail(user_id)) {
+		logger.debug("user_id : {} ", user.getUser_id());
+		if (userService.sendEmail(user)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 
@@ -173,7 +173,7 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "회원가입", notes = "새로운 회원 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@PostMapping
+	@PutMapping
 	public ResponseEntity<String> signUp(@RequestBody @ApiParam(value = "회원 정보", required = true) User user)
 		throws Exception {
 		logger.debug("signUp - 호출");
@@ -185,7 +185,7 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "회원 정보 수정", notes = "새로운 회원 정보를 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@PutMapping
+	@PutMapping("/modify")
 	public ResponseEntity<String> modifyUser(@RequestBody @ApiParam(value = "수정할 회원 정보.", required = true) User user)
 		throws Exception {
 		logger.debug("modifyUser - 호출");
