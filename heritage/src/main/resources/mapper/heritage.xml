@@ -9,9 +9,9 @@
 		from marker
 		where longitude != '0'
 		<if test="word != null and word != ''">
-			or ccba_mnm like concat('%', #{word}, '%')
+			and (ccba_mnm like concat('%', #{word}, '%')
 			or ccba_ctcd_nm like concat('%', #{word}, '%')
-			or ccsi_name like concat('%', #{word}, '%')
+			or ccsi_name like concat('%', #{word}, '%'))
 		</if>
 		order by rand() limit 1000;
 	</select>
