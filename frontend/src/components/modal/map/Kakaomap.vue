@@ -66,7 +66,6 @@ export default {
         keyword: '',
         // 공지사항 창 boolean
         isClick: false,
-        heritages: [],
     }),
     beforeCreate () {
         this.isClick=false
@@ -125,7 +124,7 @@ export default {
                 ] // clusterer 종료선.
             });
             // 데이터에서 좌표 값을 가지고 마커를 표시합니다
-            let markers = data.slice(0,500).map(
+            let markers = data.map(
                 (singleheritage) => {
                 // 마커 이미지를 커스텀하기 위한 코드
                 var imageSrc = require('@/assets/heritage.png'), // 마커이미지의 주소입니다    
@@ -255,7 +254,8 @@ export default {
             // clusterer에 마커들을 추가.(중요)
             clusterer.addMarkers(markers)
         },
-        
+
+        //////////////////////////////////////////////////////////////////////////////
         // keyword 검색을 위한 Method
         keywordMarker: async (keyword) => {
             var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -263,9 +263,15 @@ export default {
                     center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
                     level: 3 // 지도의 확대 레벨
                 };  
-
             // 지도를 생성합니다    
             var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+            // 마커 이미지를 커스텀하기 위한 코드
+            var imageSrc = require('@/assets/heritage.png'), // 마커이미지의 주소입니다    
+                imageSize = new kakao.maps.Size(50, 40), // 마커이미지의 크기입니다
+                imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
             // 장소 검색 객체를 생성합니다
             var ps = new kakao.maps.services.Places();
@@ -280,29 +286,30 @@ export default {
             // }
             // await getheritages()
 
-            // 키워드로 장소를 검색합니다
-            ps.keywordSearch(keyword, placesSearchCB);
-            // var heritages = []
             // 문화재 정보 검색
             const getheritages = async() => {
                 try {
-                    await axios.get(`${API_BASE_URL}/heritages/${keyword}`)
+                    const result = await axios.get(`${API_BASE_URL}/heritages/${keyword}`)
                     .then((res)=>{
-                        heritages = res.data
+                        const heritages = res.data
+                        return heritages  
                     })
+                    return result
                 } catch(err) {console.log(err)}
             }
-            await getheritages()
+            const keywordheritages = await getheritages()
+            // 키워드로 장소를 검색합니다
+            ps.keywordSearch(keyword, placesSearchCB);
             // 키워드 검색 완료 시 호출되는 콜백함수 입니다
             function placesSearchCB (data, status) {
                 if (status === kakao.maps.services.Status.OK) {
                     // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
                     // LatLngBounds 객체에 좌표를 추가합니다
                     var bounds = new kakao.maps.LatLngBounds();
-
-                    for (var i=0; i<data.length; i++) {
-                        displayMarker(data[i]);    
-                        bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+                    console.log(data)
+                    for (var i=0; i<keywordheritages.length; i++) {
+                        displayMarker(keywordheritages[i]);  
+                        bounds.extend(new kakao.maps.LatLng(keywordheritages[i].latitude, keywordheritages[i].longitude));
                     }       
 
                     // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
@@ -311,28 +318,43 @@ export default {
             }
             // 지도에 마커를 표시하는 함수입니다(마커 표시와 동시에 마우스오버와 클릭 이벤트도 같이 생성.)
             function displayMarker(place) {
+                var markerPosition = new kakao.maps.LatLng(place.latitude, place.longitude);
+
+                // 커스텀 오버레이를 생성합니다
+                var customOverlay = new kakao.maps.CustomOverlay({
+                    map: map,
+                    position: markerPosition,
+                    yAnchor: 10
+                });
+                // map에 커스텀오버레이 표시
+                customOverlay.setMap(map);
                 
                 // 마커를 생성하고 지도에 표시합니다
                 var marker = new kakao.maps.Marker({
                     map: map,
-                    position: new kakao.maps.LatLng(place.y, place.x),
+                    image: markerImage,
+                    position: markerPosition,
                     clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
                 });
                 // 마커에 표시할 인포윈도우 생성
                 // 인포위도우 커스터마이징(정보 및 이미지 담고 구조랑 디자인 짜기)
-                var imageSrc = require('@/assets/exampleImg.webp')
-                // 전체 content 구조 예시
-                // '<div><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png"></div>' +
-                // '<div class="markertitlediv"><text class="gugi markertitletext">제목</text></div>'
-                // 변수명 사용을 위해 분기점을 나눠준다.
-                var content1 = '<img class="infoImg" src="'
-                var content2 = imageSrc
-                var content3 = '">'
-                var content4 = '<div class="infoTitle"><text class="jua">경주 월성</text></div>'
-
-                var infowindow = new kakao.maps.InfoWindow({
-                    content: content1+content2+content3+content4 // 인포윈도우에 표시할 내용
-                });
+                    var ccbaKdcd = place.ccba_kdcd
+                    var ccbaAsno = place.ccba_asno
+                    var ccbaCtcd = place.ccba_ctcd   
+                    var imageSrc= place.img_url
+    
+                    // 변수명 사용을 위해 분기점을 나눠준다.
+                    var content0 = '<div class="infoHeader jua"><text>클릭하면 상세정보를 볼 수 있어요</text></div>'
+                    var content1 = '<img class="infoImg" src="'
+                    var content2 = imageSrc
+                    var content3 = '">'
+                    var content4 = '<div class="infoTitle"><text class="east-sea-Dokdo">'
+                    var content5 = place.ccba_mnm
+                    var content6 = '</text></div>'
+    
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: content0+content1+content2+content3+content4+content5+content6 // 인포윈도우에 표시할 내용
+                    });
                 // 마커에 마우스오버 이벤트를 등록합니다
                 kakao.maps.event.addListener(marker, 'mouseover', function() {
                 // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
@@ -344,29 +366,60 @@ export default {
                     // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
                     infowindow.close();
                 });
-
                 // 마커에 클릭이벤트를 등록하기 위한 코드 시작.
-                // 마커에 클릭이벤트를 등록합니다
-                kakao.maps.event.addListener(marker, 'click', function() {
-                    // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-                    var iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-                    var imageSrc = require('@/assets/exampleImg.webp')
-                    var content1 = '<img class="detailImg" src="'
-                    var img = imageSrc
-                    var content2 = '">'
-                    var content3 = '<div class="detailTitle"><text class="jua">'
-                    var title = '경주 월성'
-                    var content4 = '</text></div>'
-                    var content5 = '<div class="detailContent"><text class="jua">'
-                    var descrip = '내용: 경주 월성은 ~년도에 제작된 ~이며, 누구누구 왕이 어저구저저구 ~~~~~~~~~~~~~~~~~~~~~~~~'
-                    var content6 = '</text></div>'
-                    var infowindow = new kakao.maps.InfoWindow({
-                        content: content1+img+content2+content3+title+content4+content5+descrip+content6, // 인포윈도우에 표시할 내용
-                        removable: iwRemoveable
-                    });
-                    infowindow.open(map, marker)
-                });
+                kakao.maps.event.addListener(marker, 'click', makeClickListner(ccbaKdcd,ccbaAsno,ccbaCtcd, imageSrc));
             } // displayMarker 종료부분
+            function makeClickListner(ccbaKdcd,ccbaAsno,ccbaCtcd,img) {
+                return async () => {
+                    // 마커 클릭시 모달 열람 기능 추가
+                    var modal = document.getElementById("myModal");
+                    modal.style.display = "block";
+                    // When the user clicks on <span> (x), close the modal
+                    var span = document.getElementsByClassName("close")[0];
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                    }
+                    // When the user clicks anywhere outside of the modal, close it
+                    window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                        }
+                    }
+                    // axios 요청
+                    var name = null; 
+                    var kind = null; 
+                    var content = null; 
+                    var loc = null
+                    const getdetail = async () => {
+                        try {
+                            await axios.get(`${API_BASE_URL}/heritage?asno=${ccbaAsno}&ctcd=${ccbaCtcd}&kdcd=${ccbaKdcd}`)
+                            .then((res) => {
+                                name = res.data.ccba_mnm
+                                kind = res.data.mcode_name
+                                content = res.data.content
+                                loc = res.data.ccba_lcad
+                            })
+                        } catch(err) {console.log(err)}
+                    }
+                    await getdetail()
+                    // 모달 내용 변경
+                    // 이미지 변경
+                    var detailimg = document.getElementById("detailimg");
+                    detailimg.src = img;
+                    // 문화재명
+                    var detailtitle = document.getElementById("detailtitle");
+                    detailtitle.innerHTML = name;
+                    // 문화재 종류
+                    var detailkind = document.getElementById("detailkind");
+                    detailkind.innerHTML = "분류: "+kind;
+                    // 문화재 상세설명
+                    var detailcontent = document.getElementById("detailcontent");
+                    detailcontent.innerHTML = content;
+                    //문화재 주소
+                    var detailaddress = document.getElementById("detailaddress")
+                    detailaddress.innerHTML = "위치: "+loc
+                };
+            }
         }, // keyword Marker 종료부분
     }, // methods 종료부분 
 }

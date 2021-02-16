@@ -34,6 +34,18 @@
               outlined
             label="이메일"
           ></v-text-field>
+          <v-btn
+                color="brown2"
+                small
+                @click="confirmUserid"
+              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">중복 확인</span>
+              </v-btn>
+          <v-btn
+                color="brown2"
+                small
+                @click="confirmEmail"
+              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">이메일 인증</span>
+              </v-btn>
           <v-text-field
           type="password"
           outlined
@@ -72,30 +84,30 @@
   
 </template>
 
+
 <script>
 import { join } from "@/api/user.js";
+import { sendEmail } from "@/api/user.js";
+import { confirmId } from "@/api/user.js";
 
 export default {
     name: 'join',
     data(){
       return {
         user:{
+          user_no: 0,
           user_id: "",
           user_password: "", 
           user_name: "",
           user_phone: "",
         },
-        passcon:'',
-
+        passcon: '',
       }
-    },
-    computed:{
-      
     },
     methods:{
       create() {
         if (this.passcon === this.user.user_password) {
-          join(
+         join(
             this.user, 
           (response)=>{
             console.log("회원가입성공", response)
@@ -107,20 +119,51 @@ export default {
             alert("회원가입 성공")
           },
           (error)=>{
-            if (error.response.status === 409) {
-              alert("사용자 이메일이 중복됐습니다. 다른 이메일 아이디를 사용해주세요")
-            }
-            if (error.response.status === 500) {
-              alert("회원가입에 실패했습니다.")
-            }
-            })
+            console.log(error);
+          })
         } else {
-          alert("비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 시도해 주세요.")
+          alert("비밀번호가 일치하지 않습니다. 다시 시도해 주세요.")
         }
-      }
+      },
+      confirmEmail(){
+        sendEmail(
+         this.user,
+          (response) => {
+            if (response.data === "success") {
+              console.log('성공');
+                alert('메일이 발송되었습니다.');
+            } else {
+              console.log('실패');
+              alert('메일 발송에 실패했습니다.');
+            }
+          },
+          (error) => {
+            console.log(this.user.user_id);
+            console.log(error);
+          }
+      )},
+      confirmUserid(){
+        confirmId(
+         this.user.user_id,
+          (response) => {
+            console.log(this.user.user_id);
+            console.log(response.data);
+            if (response.data === "success") {
+              console.log('성공');
+                alert('사용가능한 아이디입니다.');
+            } else {
+              console.log('실패');
+              alert('이미 사용하고 있는 아이디입니다.');
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+      )},
     },
 }
 </script>
+
 
 <style>
 
