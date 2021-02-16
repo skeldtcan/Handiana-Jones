@@ -46,12 +46,6 @@
 		and
 		user_name = #{user_name}
 	</update>
-
-	<insert id="insertAuthKey" parameterType="User">
-		insert user (user_no,
-		user_id, user_name, user_password, user_phone, auth_key)
-		values (0, #{user_id}, '', '', '', #{auth_key})
-	</insert>
 	
 	<update id="alterAuthKey" parameterType="Map">
 		update user
@@ -67,14 +61,11 @@
 		auth_key = #{auth_key}
 	</select>
 
-	<update id="signUp" parameterType="User">
-		update user
-		set user_name =
-		#{user_name}, user_password = #{user_password},
-		user_phone =
-		#{user_phone}
-		where user_id = #{user_id}
-	</update>
+	<insert id="signUp" parameterType="User">
+		insert user (user_no,
+		user_id, user_name, user_password, user_phone, auth_key)
+		values (0, #{user_id}, #{user_name}, #{user_password}, #{user_phone}, #{auth_key})
+	</insert>
 
 	<select id="getTotalCount" parameterType="map" resultType="int">
 		select count(user_no)
