@@ -40,12 +40,6 @@
                 @click="confirmUserid"
               ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">중복 확인</span>
               </v-btn>
-          <v-btn
-                color="brown2"
-                small
-                @click="confirmEmail"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">이메일 인증</span>
-              </v-btn>
           <v-text-field
           type="password"
           outlined
@@ -87,7 +81,6 @@
 
 <script>
 import { join } from "@/api/user.js";
-import { sendEmail } from "@/api/user.js";
 import { confirmId } from "@/api/user.js";
 
 export default {
@@ -116,7 +109,7 @@ export default {
             this.passcon = "",
             this.user.user_name = "",
             this.user.user_phone = ""
-            alert("회원가입 성공")
+            alert("가입하신 아이디로 이메일을 발송했습니다.\n첨부된 링크를 클릭한 후 로그인 해주세요.");
           },
           (error)=>{
             console.log(error);
@@ -125,23 +118,6 @@ export default {
           alert("비밀번호가 일치하지 않습니다. 다시 시도해 주세요.")
         }
       },
-      confirmEmail(){
-        sendEmail(
-         this.user,
-          (response) => {
-            if (response.data === "success") {
-              console.log('성공');
-                alert('메일이 발송되었습니다.');
-            } else {
-              console.log('실패');
-              alert('메일 발송에 실패했습니다.');
-            }
-          },
-          (error) => {
-            console.log(this.user.user_id);
-            console.log(error);
-          }
-      )},
       confirmUserid(){
         confirmId(
          this.user.user_id,

@@ -20,7 +20,7 @@
           >
             <v-item v-slot="{ active, toggle }">
               <v-img
-                :src="`https://cdn.vuetifyjs.com/images/${item.src}`"
+                :src="require(`@/assets/${item.src}`)"
                 height="150"
                 class="text-right pa-2"
                 @click="toggle"
@@ -28,6 +28,7 @@
                 <v-btn
                   icon
                   dark
+                  x-large
                 >
                   <v-icon>
                     {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
@@ -57,51 +58,51 @@ export default {
       return {
           items: [
             {
-            src: 'backgrounds/bg.jpg',
+            src: 'ctcd/gb.jpg',
             title: '경북'
             },
             {
-            src: 'backgrounds/md.jpg',
+            src: 'ctcd/gyoengnam.gif',
             title: '경남'
             },
             {
-            src: 'backgrounds/bg-2.jpg',
+            src: 'ctcd/seoul.png',
             title: '서울'
             },
             {
-            src: 'backgrounds/md2.jpg',
+            src: 'ctcd/jeonnam.jpg',
             title: '전남'
             },
             {
-            src: 'backgrounds/bg.jpg',
+            src: 'ctcd/gg.jpg',
             title: '경기'
             },
             {
-            src: 'backgrounds/md.jpg',
+            src: 'ctcd/chungnam.jpg',
             title: '충남'
             },
             {
-            src: 'backgrounds/bg-2.jpg',
+            src: 'ctcd/jeonbuk.jpg',
             title: '전북'
             },
             {
-            src: 'backgrounds/md2.jpg',
+            src: 'ctcd/chungbuk.jpg',
             title: '충북'
             },
             {
-            src: 'backgrounds/bg.jpg',
+            src: 'ctcd/gangwon.jpg',
             title: '강원'
             },
             {
-            src: 'backgrounds/md.jpg',
+            src: 'ctcd/busan.gif',
             title: '부산'
             },
             {
-            src: 'backgrounds/bg-2.jpg',
+            src: 'ctcd/jeju.jpg',
             title: '제주'
             },
             {
-            src: 'backgrounds/md2.jpg',
+            src: 'ctcd/daegu.png',
             title: '대구'
             },
         ],
@@ -147,5 +148,4 @@ export default {
 </script>
 
 <style>
-
 </style>

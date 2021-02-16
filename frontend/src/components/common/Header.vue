@@ -43,6 +43,7 @@
           <i class="fas fa-volume-down" style="padding-left: 0.5rem"></i>
         </v-btn>
 
+        <span v-if="isLogin" class="mr-2">
         <!-- 선호 정보 입력 -->
         <v-btn text
           class="ma-1"
@@ -52,7 +53,9 @@
           선호 정보 입력
           </span>
         </v-btn>
+        </span>
 
+        <span v-if="isLogin" class="mr-2">
         <!-- 추천 목록 -->
         <v-btn text
           class="ma-1"
@@ -62,6 +65,8 @@
           추천 목록
           </span>
         </v-btn>
+        </span>
+
       </v-toolbar>
     </nav>
 </template>
