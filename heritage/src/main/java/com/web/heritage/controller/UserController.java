@@ -140,40 +140,28 @@ public class UserController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "이메일 발송 확인", notes = "이메일 발송 여부를 확인한다. 그리고 인증 여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@PostMapping("/send/email")
-	public ResponseEntity<String> sendEmail(
-		@RequestBody @ApiParam(value = "이메일 인증할 회원의 아이디.", required = true) User user,
-		HttpServletRequest request) throws Exception {
-		logger.debug("user_id : {} ", user.getUser_id());
-		if (userService.sendEmail(user)) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		}
-
-		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
 	@ApiOperation(value = "이메일 인증 확인", notes = "이메일 인증 여부를 확인한다. 그리고 인증 여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@GetMapping("/confirm/email")
+	@GetMapping("/email")
 	public ResponseEntity<String> confirmEmail(
 		@RequestParam("user_id") @ApiParam(value = "이메일 인증할 회원의 아이디.", required = true) String user_id,
 		@RequestParam("auth_key") @ApiParam(value = "이메일 인증 키.", required = true) String auth_key,
 		HttpServletRequest request) throws Exception {
 		logger.debug("user_id : {} ", user_id);
 		logger.debug("auth_key : {} ", auth_key);
+		String success = "이메일 인증에 성공했습니다. 로그인이 가능합니다.";
 
 		Map<String, String> map = new HashMap<>();
 		map.put("user_id", user_id);
 		map.put("auth_key", auth_key);
 		if (userService.confirmEmail(map)) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			return new ResponseEntity<String>(success, HttpStatus.OK);
 		}
 
 		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ApiOperation(value = "회원가입", notes = "새로운 회원 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@PutMapping
+	@PostMapping
 	public ResponseEntity<String> signUp(@RequestBody @ApiParam(value = "회원 정보", required = true) User user)
 		throws Exception {
 		logger.debug("signUp - 호출");
