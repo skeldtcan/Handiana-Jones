@@ -128,7 +128,7 @@ export default {
             modifyInfo(
                 this.userInfo,
                 (response) => {
-                    if (response.data.message === "success") {
+                    if (response.data === "success") {
                         console.log('성공');
                     } else {
                     console.log('실패');
@@ -140,9 +140,9 @@ export default {
         },
         deleteUser(){
             deleteInfo(
-                this.userInfo.user_id,
+                this.userInfo.user_no,
                 (response) => {
-                    if (response.data.message === "success") {
+                    if (response.data === "success") {
                         console.log('성공');
                     } else {
                     console.log('실패');

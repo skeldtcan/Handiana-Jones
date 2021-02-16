@@ -7,7 +7,7 @@ const instance = createInstance();
 
 function join(user, success, fail){
     instance
-    .put('/user', JSON.stringify(user))
+    .post('/user', JSON.stringify(user))
     .then(success)
     .catch(fail)
 }
@@ -19,9 +19,9 @@ function modifyInfo(user, success, fail){
   .catch(fail)
 }
 
-function deleteInfo(user_id, success, fail){
+function deleteInfo(user_no, success, fail){
   instance
-  .delete(`/user/${user_id}`)
+  .delete(`/user/${user_no}`)
   .then(success)
   .catch(fail)
 }
@@ -43,7 +43,7 @@ function login(user, success, fail) {
 
 function findUserId(user, success, fail){
   instance
-  .post('/user/find/id', JSON.stringify(user))
+  .get('/user/find/id', JSON.stringify(user))
   .then(success)
   .catch(fail)
 }
@@ -62,13 +62,6 @@ function confirmId(user_id, success, fail){
   .catch(fail)
 }
 
-function sendEmail(user, success, fail){
-  instance
-  .post('/user/send/email', JSON.stringify(user))
-  .then(success)
-  .catch(fail)
-}
-
 async function findById(user_id, success, fail) {
   instance.defaults.headers["access-token"] = window.localStorage.getItem(
     "access-token"
@@ -79,4 +72,4 @@ async function findById(user_id, success, fail) {
     .catch(fail);
 }
 
-export { join, modifyInfo, deleteInfo, login, findUserId, findPassword, confirmId , sendEmail, findById };
+export { join, modifyInfo, deleteInfo, login, findUserId, findPassword, confirmId, findById };
