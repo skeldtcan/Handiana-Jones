@@ -12,10 +12,9 @@ import com.web.common.interceptor.JwtInterceptor;
 @ComponentScan({"com.web.common.interceptor"})
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-	private static final String[] EXCLUDE_PATHS = {"/error/**", "/heritages/**", "/heritage",
-		"/noticepage/**", "/user/confirm/**", "/user/find/**", "/user/info/**",
+	private static final String[] EXCLUDE_PATHS = {"/error/**", "/heritages/**", "/heritage/**", "/user/**",
+		"/noticepage/**",
 		"/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**" // Swagger 권한 처리
-
 	};
 
 	@Autowired
