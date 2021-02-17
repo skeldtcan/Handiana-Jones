@@ -1075,7 +1075,6 @@ body{
     position: relative;
     padding-top: 3%;
     left: 0%;
-    width: 25%;
     font-size: 20px;
     text-align: left;
 }
@@ -1094,7 +1093,6 @@ body{
 }
 .detailaddress {
     position: relative;
-    width: 70%;
     margin-top: 2%;
     font-size: 20px;
     text-align: left;
