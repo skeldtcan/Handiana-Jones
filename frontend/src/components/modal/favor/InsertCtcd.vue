@@ -1,7 +1,7 @@
 <template>
   <v-card
     max-width="70%"
-    class="mx-auto"
+    class="mx-auto my-5"
   >
   <div style="text-align:center; " class="mx-5 my-5">
     <span class="navy--text jua" style="font-size:36px;">선호하는 지역 3가지를 선택해주세요.</span>
@@ -20,24 +20,28 @@
           >
             <v-item v-slot="{ active, toggle }">
               <v-img
-                :src="`https://cdn.vuetifyjs.com/images/${item.src}`"
-                height="150"
+                :src="require(`@/assets/${item.src}`)"
+                max-height="150"
+                contain
                 class="text-right pa-2"
                 @click="toggle"
               >
                 <v-btn
                   icon
                   dark
+                  x-large
+                  color="red"
                 >
                   <v-icon>
                     {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
                   </v-icon>
                 </v-btn>
+              </v-img>
+            </v-item>
+            
                 <div style="text-align:center;">
                     <span class="yeon" style="font-size:36px;">{{ item.title }}</span>
                 </div>
-              </v-img>
-            </v-item>
           </v-col>
         </v-row>
       </v-item-group>
@@ -49,6 +53,8 @@
 </template>
 <script>
 import { ctcds } from "@/api/favor.js";
+import { getFavor } from "@/api/favor.js";
+import { updateCtcds } from "@/api/favor.js";
 import { mapState } from "vuex";
 
 export default {
@@ -57,51 +63,51 @@ export default {
       return {
           items: [
             {
-            src: 'backgrounds/bg.jpg',
+            src: 'ctcd/gb.jpg',
             title: '경북'
             },
             {
-            src: 'backgrounds/md.jpg',
+            src: 'ctcd/gyoengnam.gif',
             title: '경남'
             },
             {
-            src: 'backgrounds/bg-2.jpg',
+            src: 'ctcd/seoul.png',
             title: '서울'
             },
             {
-            src: 'backgrounds/md2.jpg',
+            src: 'ctcd/jeonnam.jpg',
             title: '전남'
             },
             {
-            src: 'backgrounds/bg.jpg',
+            src: 'ctcd/gg.jpg',
             title: '경기'
             },
             {
-            src: 'backgrounds/md.jpg',
+            src: 'ctcd/chungnam.jpg',
             title: '충남'
             },
             {
-            src: 'backgrounds/bg-2.jpg',
+            src: 'ctcd/jeonbuk.jpg',
             title: '전북'
             },
             {
-            src: 'backgrounds/md2.jpg',
+            src: 'ctcd/chungbuk.jpg',
             title: '충북'
             },
             {
-            src: 'backgrounds/bg.jpg',
+            src: 'ctcd/gangwon.jpg',
             title: '강원'
             },
             {
-            src: 'backgrounds/md.jpg',
+            src: 'ctcd/busan.gif',
             title: '부산'
             },
             {
-            src: 'backgrounds/bg-2.jpg',
+            src: 'ctcd/jeju.jpg',
             title: '제주'
             },
             {
-            src: 'backgrounds/md2.jpg',
+            src: 'ctcd/daegu.jpg',
             title: '대구'
             },
         ],
@@ -127,15 +133,37 @@ export default {
             this.favor.ccba_ctcd_nm1 = this.items[select1].title;
             this.favor.ccba_ctcd_nm2 = this.items[select2].title;
             this.favor.ccba_ctcd_nm3 = this.items[select3].title;
-            ctcds (
-                this.favor,
-                (response) => {
-                    console.log(response);
-                },
-                (error) => {
-                    console.log(error);
+            getFavor(
+              this.userInfo.user_no,
+              (response) => {
+                if (response.data === "success") {
+                    console.log('기존 정보 없음');
+                    ctcds (
+                      this.favor,
+                      (response) => {
+                          console.log(response);
+                      },
+                      (error) => {
+                          console.log(error);
+                      }
+                  );
+                } else {
+                  console.log('기존 정보 있음');
+                  updateCtcds (
+                    this.favor,
+                    (response) => {
+                        console.log(response);
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
                 }
-            );
+              },
+              (error) => {
+                  console.log(error);
+              }
+          )
             this.$router.push({ name: "InsertBcode" });
         }
         else {

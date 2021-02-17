@@ -52,6 +52,12 @@
 		where user_no = #{user_no}
 	</update>
 
+	<select id="getFavor" parameterType="int" resultType="int">
+	select count(*)
+	from favor
+	where user_no = #{user_no};
+	</select>
+
 	<select id="listRecommend" parameterType="int"
 		resultType="Heritage">
 		select *
@@ -69,6 +75,13 @@
 		concat('%',f.bcode_name1,'%') or h.bcode_name like
 		concat('%',f.bcode_name2,'%') or h.bcode_name like
 		concat('%',f.bcode_name3,'%'))
-		order by rand() limit 20;
+		order by rand() limit 15;
 	</select>
+	
+	<delete id="deleteInfo" parameterType="int">
+		delete from favor
+		where
+		user_no = #{user_no}
+	</delete>
+	
 </mapper>

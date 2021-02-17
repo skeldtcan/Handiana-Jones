@@ -4,7 +4,7 @@
     class="mx-auto"
   >
   <div style="text-align:center; " class="mx-5 my-5">
-    <span class="navy--text jua" style="font-size:36px;">선호하는 지역 3가지를 선택해주세요.</span>
+    <span class="navy--text jua" style="font-size:36px;">선호하는 시대 3가지를 선택해주세요.</span>
   </div>
     <v-container class="pa-1">
       <v-item-group
@@ -28,6 +28,7 @@
                 <v-btn
                   icon
                   dark
+                  x-large
                 >
                   <v-icon>
                     {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
@@ -74,7 +75,7 @@ export default {
             },
             {
             src: 'backgrounds/bg.jpg',
-            title: '조선시대 후기 & 조선 후기'
+            title: '조선시대 후기'
             },
             {
             src: 'backgrounds/md.jpg',

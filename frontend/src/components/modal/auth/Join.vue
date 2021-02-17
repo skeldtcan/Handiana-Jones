@@ -10,7 +10,7 @@
           <v-btn text
             v-bind="attrs"
             v-on="on"
-          ><span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px; ">회원가입</span></v-btn>
+          ><span class="white--text jua" style="font-size:18px; padding: 5px; ">회원가입</span></v-btn>
         </template>
         <template v-slot:default="dialog">
           <v-card>
@@ -18,34 +18,28 @@
             class="mb-4"
               color="navy"
               dark
-            ><span class="brown--text text--lighten-5 jua" style="font-size:24px;">회원가입</span>
+            ><span class="white--text jua" style="font-size:24px;">회원가입</span>
             <v-spacer/>
               <v-btn
                 text
                 @click="dialog.value = false"
               >
-              <span class="brown1--text jua" style="font-size:14px; padding: 10px; ">x</span>
+              <span class="white--text jua" style="font-size:14px; padding: 10px; ">x</span>
               </v-btn>
             </v-toolbar>
             <v-card-text>
               <br>
-              <v-text-field
+              <v-text-field 
               v-model="user.user_id"
               outlined
             label="이메일"
           ></v-text-field>
           <v-btn
-                color="brown2"
-                small
-                @click="confirmUserid"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">중복 확인</span>
-              </v-btn>
-          <v-btn
-                color="brown2"
-                small
-                @click="confirmEmail"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">이메일 인증</span>
-              </v-btn>
+              color="grey"
+              small
+              @click="confirmUserid"
+            ><span class="white--text jua" style="font-size:16px; padding: 5px; ">중복 확인</span>
+            </v-btn>
           <v-text-field
           type="password"
           outlined
@@ -74,7 +68,8 @@
               <v-btn
                 color="brown2"
                 @click="create"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">가입하기</span></v-btn>
+                class="mx-2 my-2"
+              ><span class="navy--text jua mx-5" style="font-size:20px; padding: 10px; ">가입하기</span></v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -87,7 +82,6 @@
 
 <script>
 import { join } from "@/api/user.js";
-import { sendEmail } from "@/api/user.js";
 import { confirmId } from "@/api/user.js";
 
 export default {
@@ -102,46 +96,35 @@ export default {
           user_phone: "",
         },
         passcon: '',
+        idcon: '',
       }
     },
     methods:{
       create() {
         if (this.passcon === this.user.user_password) {
-         join(
-            this.user, 
-          (response)=>{
-            console.log("회원가입성공", response)
-            this.user.user_id = "",
-            this.user.user_password = "",
-            this.passcon = "",
-            this.user.user_name = "",
-            this.user.user_phone = ""
-            alert("회원가입 성공")
-          },
-          (error)=>{
-            console.log(error);
-          })
+          if(this.idcon === true){
+            join(
+                this.user, 
+              (response)=>{
+                console.log("회원가입성공", response)
+                this.user.user_id = "",
+                this.user.user_password = "",
+                this.passcon = "",
+                this.user.user_name = "",
+                this.user.user_phone = ""
+                alert("가입하신 아이디로 이메일을 발송했습니다.\n첨부된 링크를 클릭한 후 로그인 해주세요.");
+              },
+              (error)=>{
+                console.log(error);
+              })
+          }
+          else{
+            alert("아이디 중복 확인을 해주세요.")
+          }
         } else {
-          alert("비밀번호가 일치하지 않습니다. 다시 시도해 주세요.")
+          alert("비밀번호가 일치하지 않습니다. 다시 입력해 주세요.")
         }
       },
-      confirmEmail(){
-        sendEmail(
-         this.user,
-          (response) => {
-            if (response.data === "success") {
-              console.log('성공');
-                alert('메일이 발송되었습니다.');
-            } else {
-              console.log('실패');
-              alert('메일 발송에 실패했습니다.');
-            }
-          },
-          (error) => {
-            console.log(this.user.user_id);
-            console.log(error);
-          }
-      )},
       confirmUserid(){
         confirmId(
          this.user.user_id,
@@ -150,7 +133,8 @@ export default {
             console.log(response.data);
             if (response.data === "success") {
               console.log('성공');
-                alert('사용가능한 아이디입니다.');
+              alert('사용가능한 아이디입니다.');
+              this.idcon = true;
             } else {
               console.log('실패');
               alert('이미 사용하고 있는 아이디입니다.');

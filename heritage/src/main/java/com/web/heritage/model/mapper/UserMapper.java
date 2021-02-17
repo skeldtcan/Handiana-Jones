@@ -24,5 +24,6 @@ public interface UserMapper {
 	public int getTotalCount(UserParameter userParameter) throws SQLException;
 	public int modifyUser(User user) throws SQLException;
 	public int deleteUser(int user_no) throws SQLException;
+	public String getPassword(String user_id) throws SQLException;
 
 }

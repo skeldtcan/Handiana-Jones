@@ -10,7 +10,7 @@
             v-bind="attrs"
             v-on="on"
           >
-          <span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px;">{{ userInfo.user_name }}님의 마이페이지</span>
+          <span class="white--text jua" style="font-size:18px; padding: 5px;">{{ userInfo.user_name }}님의 마이페이지</span>
           </v-btn>
         </template>
         <template v-slot:default="dialog">
@@ -19,7 +19,7 @@
               color="navy"
               class="mb-4"
               dark
-            ><span class="brown--text text--lighten-5 jua" style="font-size:24px;">회원 정보</span>
+            ><span class="white--text jua" style="font-size:24px;">회원 정보</span>
             <v-spacer/>
               <v-btn
                 text
@@ -29,50 +29,65 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <br>
                 <v-row class="mx-0">
-                    <v-col cols="2">
+                    <v-col cols="3" class="black--text jua" style="font-size: 18px;">
                     아이디
                     </v-col>
                     <v-text-field
-                    v-model="userid" cols="8">
+                    v-model="userid"
+                    cols="7">
                     </v-text-field>
                 </v-row>
                 <v-row class="mx-0">
-                    <v-col cols="2">
+                    <v-col cols="3" class="black--text jua" style="font-size: 18px;">
                     이름
                     </v-col>
-                    <v-text-field v-model="username" cols="8">
+                    <v-text-field v-model="username" cols="7">
                     {{ userInfo.user_name }}
                     </v-text-field>
                 </v-row>
                 <v-row class="mx-0">
-                    <v-col cols="2">
+                    <v-col cols="3" class="black--text jua" style="font-size: 18px;">
                     비밀번호
                     </v-col>
-                    <v-text-field v-model="userpwd" cols="8">
+                    <v-text-field 
+                    type="password"
+                    v-model="userpwd"
+                    cols="7">
                     {{ userInfo.user_password }}
                     </v-text-field>
                 </v-row>
+                <v-row>
+                  <v-col cols="3" class="black--text jua" style="font-size: 18px;">
+                    비밀번호 확인
+                    </v-col>
+                    <v-text-field
+                    type="password"
+                    v-model="passcon"
+                    cols="7"
+                    ></v-text-field>
+                </v-row>
                 <v-row class="mx-0">
-                    <v-col cols="2">
+                    <v-col cols="3" class="black--text jua" style="font-size: 18px;">
                     연락처
                     </v-col>
-                    <v-text-field v-model="userphone" cols="8">
+                    <v-text-field v-model="userphone" cols="7">
                     {{ userInfo.user_phone }}
                     </v-text-field>
                 </v-row>
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn
-                color="brown1"
+                color="grey"
                 @click="deleteUser"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">회원 탈퇴</span>
+                class="mx-2 my-2"
+              ><span class="white--text jua mx-5" style="font-size:18px; padding: 10px; ">회원 탈퇴</span>
               </v-btn>
             <v-btn
                 color="brown2"
                 @click="modifyUser"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">정보 수정</span>
+                class="mx-2 my-2"
+              ><span class="navy--text jua mx-5" style="font-size:18px; padding: 10px; ">정보 수정</span>
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -84,7 +99,8 @@
 </template>
 
 <script>
-import { findById, modifyInfo, deleteInfo } from "@/api/user.js";
+import { findById, modifyInfo, deleteInfo, confirmPwd } from "@/api/user.js";
+import { deleteFavor } from "@/api/favor.js";
 import { mapState } from "vuex";
 
 export default {
@@ -96,6 +112,7 @@ export default {
         username: null,
         userpwd: null,
         userphone: null,
+        passcon: '',
       };
     },
     computed: {
@@ -109,9 +126,9 @@ export default {
           this.userInfo.user_id,
           (response) => {
             if (response.data.message === "success") {
-                console.log('성공');
+                console.log('회원 정보 확인');
             } else {
-              console.log('실패');
+              console.log('회원 정보 확인 불가');
             }
           },
           (error) => {
@@ -125,32 +142,73 @@ export default {
             this.userInfo.user_name = this.username;
             this.userInfo.user_password = this.userpwd;
             this.userInfo.user_phone = this.userphone;
-            modifyInfo(
-                this.userInfo,
-                (response) => {
-                    if (response.data.message === "success") {
-                        console.log('성공');
-                    } else {
-                    console.log('실패');
-                    }
-                },
-                (error) => {
-                    console.log(error);
-            })
+            if(this.userInfo.user_password === null){
+              alert("기존 비밀번호를 입력해주세요.");
+            }
+            else{
+              if (this.passcon === this.userInfo.user_password) {
+                modifyInfo(
+                    this.userInfo,
+                    (response) => {
+                        if (response.data === "success") {
+                            console.log('성공');
+                        } else {
+                        console.log('실패');
+                        }
+                    },
+                    (error) => {
+                        console.log(error);
+                })
+              }
+              else{
+                alert("비밀번호가 일치하지 않습니다. 다시 입력해 주세요.")
+              }
+            }
         },
         deleteUser(){
-            deleteInfo(
-                this.userInfo.user_id,
-                (response) => {
-                    if (response.data.message === "success") {
-                        console.log('성공');
-                    } else {
-                    console.log('실패');
-                    }
-                },
-                (error) => {
-                    console.log(error);
-            })
+          this.userInfo.user_id = this.userid;
+          this.userInfo.user_name = this.username;
+          this.userInfo.user_password = this.userpwd;
+          this.userInfo.user_phone = this.userphone;
+          confirmPwd(
+            this.userInfo,
+            (response) => {
+              if (response.data === "success") {
+                  console.log('비밀번호 일치');
+                  deleteFavor(
+                    this.userInfo.user_no,
+                    (response) => {
+                        if (response.data === "success") {
+                            console.log('추천 정보 삭제');
+                            deleteInfo(
+                              this.userInfo.user_no,
+                              (response) => {
+                                  if (response.data === "success") {
+                                      console.log('탈퇴 성공');
+                                      alert("탈퇴 처리가 완료되었습니다.");
+                                  } else {
+                                    console.log('탈퇴 실패');
+                                  }
+                              },
+                              (error) => {
+                                  console.log(error);
+                          })
+                        } else {
+                          console.log('추천 정보 삭제 실패');
+                        }
+                    },
+                    (error) => {
+                        console.log(error);
+                  })
+              } else {
+                console.log('비밀번호 불일치');
+              }
+            },
+            (error) => {
+                console.log(error);
+                alert("비밀번호를 다시 입력해주세요.");
+            }
+          )
         },
     },
 }

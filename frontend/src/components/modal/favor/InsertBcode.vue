@@ -5,7 +5,7 @@
     class="mx-auto"
   >
   <div style="text-align:center; " class="mx-5 my-5">
-    <span class="navy--text jua" style="font-size:36px;">선호하는 지역 3가지를 선택해주세요.</span>
+    <span class="navy--text jua" style="font-size:36px;">선호하는 카테고리 3가지를 선택해주세요.</span>
   </div>
     <v-container class="pa-1">
       <v-item-group
@@ -29,6 +29,7 @@
                 <v-btn
                   icon
                   dark
+                  x-large
                 >
                   <v-icon>
                     {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
@@ -164,7 +165,7 @@ export default {
             this.$router.push({ name: "InsertCcce" });
         }
         else {
-          alert("선호하는 종류 3가지를 선택해주세요.")
+          alert("선호하는 카테고리 3가지를 선택해주세요.")
         }
     },
   },

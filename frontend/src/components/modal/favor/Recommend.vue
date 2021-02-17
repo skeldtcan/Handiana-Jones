@@ -1,33 +1,38 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="heritages"
-    :items-per-page="5"
-    class="elevation-1"
-  ></v-data-table>
+  <div id="app">
+    <vue-glide v-if="heritages.length" class="v-g-size">
+      <vue-glide-slide
+        v-for="(heritage, idx) in heritages"
+        :key="idx">
+        <RecommendHeritage
+          :heritage="heritage"
+        />
+      </vue-glide-slide>
+      <template slot="control">
+        <button class = "leftbutton" data-glide-dir="<"><i class="fas fa-arrow-alt-circle-left"></i></button>
+        <button class = "rightbutton" data-glide-dir=">"><i class="fas fa-arrow-alt-circle-right"></i></button>
+      </template>
+    </vue-glide>
+  </div>
 </template>
 
 <script>
+import { Glide, GlideSlide } from 'vue-glide-js';
 import { recommends } from "@/api/favor.js";
 import { mapState } from "vuex";
+import  RecommendHeritage  from '@/components/modal/favor/RecommendHeritage';
 
 export default {
   name: "Recommend",
-  data () {
-      return {
-        headers: [
-          {
-            text: '문화재명',
-            align: 'start',
-            sortable: false,
-            value: 'ccba_mnm',
-          },
-          { text: '종류', value: 'bcode_name' },
-          { text: '시대', value: 'ccce_name' },
-          { text: '주소', value: 'ccba_lcad' },
-        ],
-        heritages: [],
-      };
+  data: function () {
+    return {
+      heritages: [],
+    }
+  },
+  components: {
+    [Glide.name]: Glide,
+    [GlideSlide.name]: GlideSlide,
+    RecommendHeritage,
   },
   computed: {
     ...mapState(["userInfo", "isLogin"])
@@ -37,7 +42,6 @@ export default {
       this.userInfo.user_no,
       (response) => {
         this.heritages = response.data;
-        console.log(this.heritages);
       },
       (error) => {
         console.log(error);
@@ -48,5 +52,22 @@ export default {
 </script>
 
 <style>
-
+.leftbutton {
+  position: relative;
+  left: 45%;
+  color: #CDB7A9;
+  font-size: 40px;
+  margin: 2% 0% 2% 0%;
+  
+}
+.rightbutton {
+  position: relative;
+  left: 50%;
+  color: #CDB7A9;
+  font-size: 40px;
+  margin: 2% 0% 2% 0%;
+}
+.v-g-size {
+  margin: 7% 3% 7% 3%;
+}
 </style>

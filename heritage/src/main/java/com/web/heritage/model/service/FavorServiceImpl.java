@@ -36,8 +36,18 @@ public class FavorServiceImpl implements FavorService {
 	}
 
 	@Override
+	public boolean getFavor(int user_no) throws Exception {
+		return sqlSession.getMapper(FavorMapper.class).getFavor(user_no) == 0;
+	}
+
+	@Override
 	public List<Favor> listRecommend(int user_no) throws Exception {
 		return sqlSession.getMapper(FavorMapper.class).listRecommend(user_no);
+	}
+
+	@Override
+	public boolean deleteInfo(int user_no) throws Exception {
+		return sqlSession.getMapper(FavorMapper.class).deleteInfo(user_no) == 1;
 	}
 
 }

@@ -16,6 +16,13 @@ function ctcds(favor, success, fail){
     .catch(fail)
 }
 
+function updateCtcds(favor, success, fail){
+    instance
+    .put(`/heritage/ctcd`, JSON.stringify(favor))
+    .then(success)
+    .catch(fail)
+}
+
 function bcodes(favor, success, fail){
     instance
     .put(`/heritage/bcode`, JSON.stringify(favor))
@@ -30,4 +37,25 @@ function ccces(favor, success, fail){
     .catch(fail)
 }
 
-export { recommends, ctcds, bcodes, ccces };
+function getFavor(user_no, success, fail){
+    instance
+    .get(`/heritage/${user_no}`)
+    .then(success)
+    .catch(fail)
+}
+
+function getImages(ccba_asno, ccba_ctcd_nm, ccba_kdcd, success, fail){
+    instance
+    .get(`/images?asno=${ccba_asno}&ctcd=${ccba_ctcd_nm}&kdcd=${ccba_kdcd}`)
+    .then(success)
+    .catch(fail)
+}
+
+function deleteFavor(user_no, success, fail){
+    instance
+    .delete(`/heritage/recommend/${user_no}`)
+    .then(success)
+    .catch(fail)
+}
+
+export { recommends, ctcds, updateCtcds, bcodes, ccces, getFavor, getImages, deleteFavor };

@@ -3,8 +3,6 @@ package com.web.heritage.model.service;
 import java.sql.SQLException;
 import java.util.Map;
 
-import javax.mail.MessagingException;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -90,36 +88,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean sendEmail(User user) throws Exception {
-		String auth_key = RandomKey.create(8);
-		user.setAuth_key(auth_key);
-
-		if (insertAuthKey(user)) {
-			MailUtils mail;
-			try {
-				mail = new MailUtils(mailSender);
-				String mailContent = "<h1>[이메일 인증]</h1>"
-					+ "<br>"
-					+ "<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
-					+ "<a href='http://localhost:8000/heritage/user/confirm/email?user_id="
-					+ user.getUser_id() + "&auth_key=" + auth_key + "' target='_blenk'>"
-					+ "이메일 인증 확인</a>";
-				mail.setTo(user.getUser_id());
-				mail.setText(mailContent);
-				mail.setSubject(subject);
-				mail.setFrom(from, "관리자");
-				mail.send();
-
-				return true;
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return false;
-	}
-
-	@Override
 	public boolean confirmEmail(Map<String, String> map) throws Exception {
 		if (getAuthKey(map) != null) {
 			map.put("auth_key", emailY);
@@ -151,8 +119,26 @@ public class UserServiceImpl implements UserService {
 			|| user.getUser_phone() == null) {
 			throw new Exception();
 		}
+		String auth_key = RandomKey.create(8); // auth_key 생성
+		user.setAuth_key(auth_key);
+
 		String hash = SHA512.sha(user.getUser_password(), user.getUser_id()); // 비밀번호 암호화
 		user.setUser_password(hash);
+
+		MailUtils mail; // 메일 발송
+		mail = new MailUtils(mailSender);
+		String mailContent = "<h1>[이메일 인증]</h1>"
+			+ "<br>"
+			+ "<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
+			+ "<a href='http://localhost:8000/heritage/user/email?user_id="
+			+ user.getUser_id() + "&auth_key=" + auth_key + "' target='_blenk'>"
+			+ "이메일 인증 확인</a>";
+		mail.setTo(user.getUser_id());
+		mail.setText(mailContent);
+		mail.setSubject(subject);
+		mail.setFrom(from, "관리자");
+		mail.send();
+
 		return sqlSession.getMapper(UserMapper.class).signUp(user) == 1;
 	}
 
@@ -186,5 +172,18 @@ public class UserServiceImpl implements UserService {
 	public boolean deleteUser(int user_no) throws Exception {
 		return sqlSession.getMapper(UserMapper.class).deleteUser(user_no) == 1;
 	}
+
+	@Override
+	public boolean getPassword(User user) throws Exception {
+		String hash = SHA512.sha(user.getUser_password(), user.getUser_id()); // 비밀번호 암호화
+		String pwd = sqlSession.getMapper(UserMapper.class).getPassword(user.getUser_id());
+
+		if(hash.equals(pwd)) {
+			return true;
+		}
+
+		return false;
+	}
+
 
 }
