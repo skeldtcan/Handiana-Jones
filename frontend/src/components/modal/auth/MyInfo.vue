@@ -30,7 +30,7 @@
             </v-toolbar>
             <v-card-text>
                 <v-row class="mx-0">
-                    <v-col cols="3">
+                    <v-col cols="3" class="black--text jua" style="font-size: 18px;">
                     아이디
                     </v-col>
                     <v-text-field
@@ -39,7 +39,7 @@
                     </v-text-field>
                 </v-row>
                 <v-row class="mx-0">
-                    <v-col cols="3">
+                    <v-col cols="3" class="black--text jua" style="font-size: 18px;">
                     이름
                     </v-col>
                     <v-text-field v-model="username" cols="7">
@@ -47,7 +47,7 @@
                     </v-text-field>
                 </v-row>
                 <v-row class="mx-0">
-                    <v-col cols="3">
+                    <v-col cols="3" class="black--text jua" style="font-size: 18px;">
                     비밀번호
                     </v-col>
                     <v-text-field 
@@ -58,7 +58,7 @@
                     </v-text-field>
                 </v-row>
                 <v-row>
-                  <v-col cols="3">
+                  <v-col cols="3" class="black--text jua" style="font-size: 18px;">
                     비밀번호 확인
                     </v-col>
                     <v-text-field
@@ -68,7 +68,7 @@
                     ></v-text-field>
                 </v-row>
                 <v-row class="mx-0">
-                    <v-col cols="3">
+                    <v-col cols="3" class="black--text jua" style="font-size: 18px;">
                     연락처
                     </v-col>
                     <v-text-field v-model="userphone" cols="7">
@@ -81,13 +81,13 @@
                 color="grey"
                 @click="deleteUser"
                 class="mx-2 my-2"
-              ><span class="white--text jua mx-5" style="font-size:16px; padding: 10px; ">회원 탈퇴</span>
+              ><span class="white--text jua mx-5" style="font-size:18px; padding: 10px; ">회원 탈퇴</span>
               </v-btn>
             <v-btn
                 color="brown2"
                 @click="modifyUser"
                 class="mx-2 my-2"
-              ><span class="navy--text jua mx-5" style="font-size:16px; padding: 10px; ">정보 수정</span>
+              ><span class="navy--text jua mx-5" style="font-size:18px; padding: 10px; ">정보 수정</span>
               </v-btn>
             </v-card-actions>
           </v-card>
