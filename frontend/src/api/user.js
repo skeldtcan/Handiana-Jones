@@ -62,6 +62,13 @@ function confirmId(user_id, success, fail){
   .catch(fail)
 }
 
+function confirmPwd(user, success, fail){
+  instance
+  .post(`/user/confirm`, JSON.stringify(user))
+  .then(success)
+  .catch(fail)
+}
+
 async function findById(user_id, success, fail) {
   instance.defaults.headers["access-token"] = window.localStorage.getItem(
     "access-token"
@@ -72,4 +79,4 @@ async function findById(user_id, success, fail) {
     .catch(fail);
 }
 
-export { join, modifyInfo, deleteInfo, login, findUserId, findPassword, confirmId, findById };
+export { join, modifyInfo, deleteInfo, login, findUserId, findPassword, confirmId, confirmPwd, findById };

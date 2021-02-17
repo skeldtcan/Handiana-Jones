@@ -29,7 +29,7 @@
             </v-toolbar>
             <v-card-text>
               <br>
-              <v-text-field
+              <v-text-field 
               v-model="user.user_id"
               outlined
             label="이메일"
@@ -96,25 +96,31 @@ export default {
           user_phone: "",
         },
         passcon: '',
+        idcon: '',
       }
     },
     methods:{
       create() {
         if (this.passcon === this.user.user_password) {
-         join(
-            this.user, 
-          (response)=>{
-            console.log("회원가입성공", response)
-            this.user.user_id = "",
-            this.user.user_password = "",
-            this.passcon = "",
-            this.user.user_name = "",
-            this.user.user_phone = ""
-            alert("가입하신 아이디로 이메일을 발송했습니다.\n첨부된 링크를 클릭한 후 로그인 해주세요.");
-          },
-          (error)=>{
-            console.log(error);
-          })
+          if(this.idcon === true){
+            join(
+                this.user, 
+              (response)=>{
+                console.log("회원가입성공", response)
+                this.user.user_id = "",
+                this.user.user_password = "",
+                this.passcon = "",
+                this.user.user_name = "",
+                this.user.user_phone = ""
+                alert("가입하신 아이디로 이메일을 발송했습니다.\n첨부된 링크를 클릭한 후 로그인 해주세요.");
+              },
+              (error)=>{
+                console.log(error);
+              })
+          }
+          else{
+            alert("아이디 중복 확인을 해주세요.")
+          }
         } else {
           alert("비밀번호가 일치하지 않습니다. 다시 입력해 주세요.")
         }
@@ -127,7 +133,8 @@ export default {
             console.log(response.data);
             if (response.data === "success") {
               console.log('성공');
-                alert('사용가능한 아이디입니다.');
+              alert('사용가능한 아이디입니다.');
+              this.idcon = true;
             } else {
               console.log('실패');
               alert('이미 사용하고 있는 아이디입니다.');

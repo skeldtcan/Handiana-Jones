@@ -51,4 +51,11 @@ function getImages(ccba_asno, ccba_ctcd_nm, ccba_kdcd, success, fail){
     .catch(fail)
 }
 
-export { recommends, ctcds, updateCtcds, bcodes, ccces, getFavor, getImages };
+function deleteFavor(user_no, success, fail){
+    instance
+    .delete(`/heritage/recommend/${user_no}`)
+    .then(success)
+    .catch(fail)
+}
+
+export { recommends, ctcds, updateCtcds, bcodes, ccces, getFavor, getImages, deleteFavor };
