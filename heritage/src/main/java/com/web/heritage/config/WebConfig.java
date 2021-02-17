@@ -22,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		System.out.println(jwtInterceptor);
+		// System.out.println(jwtInterceptor);
 		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")// 기본 적용 경로
 			.excludePathPatterns(EXCLUDE_PATHS);// 적용 제외 경로
 		//		registry.addInterceptor(jwtInterceptor).addPathPatterns("/user/**", "/article/**", "/memo/**") // 기본 적용 경로
