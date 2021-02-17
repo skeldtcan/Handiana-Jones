@@ -53,6 +53,8 @@
 </template>
 <script>
 import { ctcds } from "@/api/favor.js";
+import { getFavor } from "@/api/favor.js";
+import { updateCtcds } from "@/api/favor.js";
 import { mapState } from "vuex";
 
 export default {
@@ -131,15 +133,37 @@ export default {
             this.favor.ccba_ctcd_nm1 = this.items[select1].title;
             this.favor.ccba_ctcd_nm2 = this.items[select2].title;
             this.favor.ccba_ctcd_nm3 = this.items[select3].title;
-            ctcds (
-                this.favor,
-                (response) => {
-                    console.log(response);
-                },
-                (error) => {
-                    console.log(error);
+            getFavor(
+              this.userInfo.user_no,
+              (response) => {
+                if (response.data === "success") {
+                    console.log('기존 정보 없음');
+                    ctcds (
+                      this.favor,
+                      (response) => {
+                          console.log(response);
+                      },
+                      (error) => {
+                          console.log(error);
+                      }
+                  );
+                } else {
+                  console.log('기존 정보 있음');
+                  updateCtcds (
+                    this.favor,
+                    (response) => {
+                        console.log(response);
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
                 }
-            );
+              },
+              (error) => {
+                  console.log(error);
+              }
+          )
             this.$router.push({ name: "InsertBcode" });
         }
         else {
