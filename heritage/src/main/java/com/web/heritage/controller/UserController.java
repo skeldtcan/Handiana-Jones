@@ -196,4 +196,17 @@ public class UserController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	@ApiOperation(value = "비밀번호 일치 여부", notes = "회원 아이디에 해당하는 비밀번호의 일치 여부를 반환한다.", response = String.class)
+	@PostMapping("/confirm")
+	public ResponseEntity<String> getPassword(
+		@RequestBody @ApiParam(value = "필요한 회원정보(아이디, 확인할 비밀번호).", required = true) User user)
+		throws Exception {
+		logger.debug("getPassword - 호출");
+		if (userService.getPassword(user)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 }

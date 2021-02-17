@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -127,6 +128,18 @@ public class FavorController {
 		}
 
 		return new ResponseEntity<String>(result, status);
+	}
+
+	@ApiOperation(value = "정보 삭제", notes = "회원 번호에 해당하는 추천 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@DeleteMapping("/recommend/{user_no}")
+	public ResponseEntity<String> deleteInfo(
+		@PathVariable("user_no") @ApiParam(value = "삭제할 회원의 회원 번호.", required = true) int user_no) throws Exception {
+		logger.debug("deleteInfo - 호출");
+		if (favorService.deleteInfo(user_no)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ApiOperation(value = "추천 목록", notes = "추천 문화재 정보를 반환한다.", response = List.class)

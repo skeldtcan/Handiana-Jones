@@ -173,4 +173,17 @@ public class UserServiceImpl implements UserService {
 		return sqlSession.getMapper(UserMapper.class).deleteUser(user_no) == 1;
 	}
 
+	@Override
+	public boolean getPassword(User user) throws Exception {
+		String hash = SHA512.sha(user.getUser_password(), user.getUser_id()); // 비밀번호 암호화
+		String pwd = sqlSession.getMapper(UserMapper.class).getPassword(user.getUser_id());
+
+		if(hash.equals(pwd)) {
+			return true;
+		}
+
+		return false;
+	}
+
+
 }

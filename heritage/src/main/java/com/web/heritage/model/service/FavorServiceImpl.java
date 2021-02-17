@@ -45,4 +45,9 @@ public class FavorServiceImpl implements FavorService {
 		return sqlSession.getMapper(FavorMapper.class).listRecommend(user_no);
 	}
 
+	@Override
+	public boolean deleteInfo(int user_no) throws Exception {
+		return sqlSession.getMapper(FavorMapper.class).deleteInfo(user_no) == 1;
+	}
+
 }

@@ -36,4 +36,6 @@ public interface UserService {
 
 	public boolean deleteUser(int user_no) throws Exception;
 
+	public boolean getPassword(User user) throws Exception;
+
 }

@@ -94,5 +94,11 @@
 		where
 		user_no = #{user_no}
 	</delete>
+	
+	<select id="getPassword" parameterType="String" resultType="String">
+		select user_password
+		from user
+		where user_id = #{user_id}
+	</select>
 
 </mapper>
