@@ -5,7 +5,7 @@
         height="80"
       >
         <div class="d-flex align-center">
-          <v-toolbar-title color="navy"><span class="brown--text text--lighten-5 east-sea-Dokdo " style="font-size: 52px; cursor: pointer; padding: 10px;" @click="moveToMainPage">한디아나존스</span></v-toolbar-title>
+          <v-toolbar-title color="navy"><span class="white--text east-sea-Dokdo " style="font-size: 52px; cursor: pointer; padding: 10px;" @click="moveToMainPage">한디아나존스</span></v-toolbar-title>
         </div>
 
         <v-spacer></v-spacer>
@@ -17,7 +17,7 @@
           <span v-if="isLogin" class="mr-2">
             <v-btn text
               @click="logout">
-              <span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px; ">로그아웃</span>
+              <span class="white--text jua" style="font-size:18px; padding: 5px; ">로그아웃</span>
             </v-btn>
           </span>
       </v-toolbar>
@@ -50,7 +50,7 @@
           @click="moveToFavor"
         >
           <span class="navy--text jua" style="font-size:18px; padding: 5px; ">
-          선호 정보 입력
+          문화재 추천을 위한 선호 정보 입력
           </span>
         </v-btn>
         </span>
@@ -62,7 +62,7 @@
           @click="moveToRecommend"
         >
           <span class="navy--text jua" style="font-size:18px; padding: 5px; ">
-          추천 목록
+          사용자 맞춤 문화재 추천 목록
           </span>
         </v-btn>
         </span>

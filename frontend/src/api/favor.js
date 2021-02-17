@@ -30,4 +30,11 @@ function ccces(favor, success, fail){
     .catch(fail)
 }
 
-export { recommends, ctcds, bcodes, ccces };
+function getImages(ccba_asno, ccba_ctcd_nm, ccba_kdcd, success, fail){
+    instance
+    .get(`/images?asno=${ccba_asno}&ctcd=${ccba_ctcd_nm}&kdcd=${ccba_kdcd}`)
+    .then(success)
+    .catch(fail)
+}
+
+export { recommends, ctcds, bcodes, ccces, getImages };

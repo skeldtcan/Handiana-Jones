@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <vue-glide v-if="heritages.length">
+    <vue-glide v-if="heritages.length" class="v-g-size">
       <vue-glide-slide
         v-for="(heritage, idx) in heritages"
         :key="idx">
@@ -42,7 +42,6 @@ export default {
       this.userInfo.user_no,
       (response) => {
         this.heritages = response.data;
-        console.log(this.heritages);
       },
       (error) => {
         console.log(error);
@@ -56,7 +55,7 @@ export default {
 .leftbutton {
   position: relative;
   left: 45%;
-  color: #24303F;
+  color: #CDB7A9;
   font-size: 40px;
   margin: 2% 0% 2% 0%;
   
@@ -64,8 +63,11 @@ export default {
 .rightbutton {
   position: relative;
   left: 50%;
-  color: #24303F;
+  color: #CDB7A9;
   font-size: 40px;
   margin: 2% 0% 2% 0%;
+}
+.v-g-size {
+  margin: 7% 3% 7% 3%;
 }
 </style>

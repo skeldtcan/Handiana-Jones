@@ -69,6 +69,6 @@
 		concat('%',f.bcode_name1,'%') or h.bcode_name like
 		concat('%',f.bcode_name2,'%') or h.bcode_name like
 		concat('%',f.bcode_name3,'%'))
-		order by rand() limit 20;
+		order by rand() limit 15;
 	</select>
 </mapper>

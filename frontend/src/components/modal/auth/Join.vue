@@ -10,7 +10,7 @@
           <v-btn text
             v-bind="attrs"
             v-on="on"
-          ><span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px; ">회원가입</span></v-btn>
+          ><span class="white--text jua" style="font-size:18px; padding: 5px; ">회원가입</span></v-btn>
         </template>
         <template v-slot:default="dialog">
           <v-card>
@@ -18,13 +18,13 @@
             class="mb-4"
               color="navy"
               dark
-            ><span class="brown--text text--lighten-5 jua" style="font-size:24px;">회원가입</span>
+            ><span class="white--text jua" style="font-size:24px;">회원가입</span>
             <v-spacer/>
               <v-btn
                 text
                 @click="dialog.value = false"
               >
-              <span class="brown1--text jua" style="font-size:14px; padding: 10px; ">x</span>
+              <span class="white--text jua" style="font-size:14px; padding: 10px; ">x</span>
               </v-btn>
             </v-toolbar>
             <v-card-text>
@@ -35,11 +35,11 @@
             label="이메일"
           ></v-text-field>
           <v-btn
-                color="brown2"
-                small
-                @click="confirmUserid"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">중복 확인</span>
-              </v-btn>
+              color="grey"
+              small
+              @click="confirmUserid"
+            ><span class="white--text jua" style="font-size:16px; padding: 5px; ">중복 확인</span>
+            </v-btn>
           <v-text-field
           type="password"
           outlined
@@ -68,7 +68,8 @@
               <v-btn
                 color="brown2"
                 @click="create"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">가입하기</span></v-btn>
+                class="mx-2 my-2"
+              ><span class="navy--text jua mx-5" style="font-size:20px; padding: 10px; ">가입하기</span></v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -115,7 +116,7 @@ export default {
             console.log(error);
           })
         } else {
-          alert("비밀번호가 일치하지 않습니다. 다시 시도해 주세요.")
+          alert("비밀번호가 일치하지 않습니다. 다시 입력해 주세요.")
         }
       },
       confirmUserid(){

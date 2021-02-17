@@ -9,11 +9,11 @@
         <template v-slot:activator="{ on, attrs }">
           <v-btn
            style="margin:0px; padding:0px;"
-          text
-            color="white"
+            color="grey"
             v-bind="attrs"
             v-on="on"
-          ><span class="blue-grey--text text--darken-4 jua" style="font-size:18px; padding: 10px; ">비밀번호 찾기</span></v-btn>
+          ><span class="white--text jua" style="font-size:18px; padding: 10px; ">비밀번호 찾기</span>
+          </v-btn>
         </template>
         <template v-slot:default="dialog">
           <v-card>
@@ -48,7 +48,8 @@
               <v-btn
                 color="brown2"
                 @click="findPwd"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">확인</span></v-btn>
+                class="mx-2 my-2"
+              ><span class="navy--text jua mx-5" style="font-size:18px; padding: 10px; ">확인</span></v-btn>
             </v-card-actions>
           </v-card>
         </template>

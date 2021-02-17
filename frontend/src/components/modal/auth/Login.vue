@@ -10,7 +10,7 @@
             v-bind="attrs"
             v-on="on"
           >
-          <span class="brown--text text--lighten-5 jua" style="font-size:18px; padding: 5px;">로그인</span>
+          <span class="white--text jua" style="font-size:18px; padding: 5px;">로그인</span>
           </v-btn>
         </template>
         <template v-slot:default="dialog">
@@ -19,13 +19,13 @@
               color="navy"
               class="mb-4"
               dark
-            ><span class="brown--text text--lighten-5 jua" style="font-size:24px;">로그인</span>
+            ><span class="white--text jua" style="font-size:24px;">로그인</span>
             <v-spacer/>
               <v-btn
                 text
                 @click="dialog.value = false"
               >
-              <span class="brown1--text jua" style="font-size:14px; padding: 10px; ">x</span>
+              <span class="white--text jua" style="font-size:14px; padding: 10px; ">x</span>
               </v-btn>
               </v-toolbar>
             <v-card-text>
@@ -51,7 +51,8 @@
               <v-btn
                 color="brown2"
                 @click="confirm"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">로그인</span></v-btn>
+                class="mx-2 my-2"
+              ><span class="navy--text jua mx-5" style="font-size:20px; padding: 10px; ">로그인</span></v-btn>
             </v-card-actions>
           </v-card>
         </template>

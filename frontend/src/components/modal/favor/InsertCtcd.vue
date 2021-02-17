@@ -1,7 +1,7 @@
 <template>
   <v-card
     max-width="70%"
-    class="mx-auto"
+    class="mx-auto my-5"
   >
   <div style="text-align:center; " class="mx-5 my-5">
     <span class="navy--text jua" style="font-size:36px;">선호하는 지역 3가지를 선택해주세요.</span>
@@ -21,7 +21,8 @@
             <v-item v-slot="{ active, toggle }">
               <v-img
                 :src="require(`@/assets/${item.src}`)"
-                height="150"
+                max-height="150"
+                contain
                 class="text-right pa-2"
                 @click="toggle"
               >
@@ -29,16 +30,18 @@
                   icon
                   dark
                   x-large
+                  color="red"
                 >
                   <v-icon>
                     {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
                   </v-icon>
                 </v-btn>
+              </v-img>
+            </v-item>
+            
                 <div style="text-align:center;">
                     <span class="yeon" style="font-size:36px;">{{ item.title }}</span>
                 </div>
-              </v-img>
-            </v-item>
           </v-col>
         </v-row>
       </v-item-group>
@@ -102,7 +105,7 @@ export default {
             title: '제주'
             },
             {
-            src: 'ctcd/daegu.png',
+            src: 'ctcd/daegu.jpg',
             title: '대구'
             },
         ],
@@ -148,4 +151,5 @@ export default {
 </script>
 
 <style>
+
 </style>

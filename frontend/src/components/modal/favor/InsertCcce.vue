@@ -28,6 +28,7 @@
                 <v-btn
                   icon
                   dark
+                  x-large
                 >
                   <v-icon>
                     {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
@@ -74,7 +75,7 @@ export default {
             },
             {
             src: 'backgrounds/bg.jpg',
-            title: '조선시대 후기 & 조선 후기'
+            title: '조선시대 후기'
             },
             {
             src: 'backgrounds/md.jpg',

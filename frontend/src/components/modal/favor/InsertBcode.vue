@@ -29,6 +29,7 @@
                 <v-btn
                   icon
                   dark
+                  x-large
                 >
                   <v-icon>
                     {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}

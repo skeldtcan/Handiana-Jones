@@ -29,50 +29,65 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <br>
                 <v-row class="mx-0">
-                    <v-col cols="2">
+                    <v-col cols="3">
                     아이디
                     </v-col>
                     <v-text-field
-                    v-model="userid" cols="8">
+                    v-model="userid"
+                    cols="7">
                     </v-text-field>
                 </v-row>
                 <v-row class="mx-0">
-                    <v-col cols="2">
+                    <v-col cols="3">
                     이름
                     </v-col>
-                    <v-text-field v-model="username" cols="8">
+                    <v-text-field v-model="username" cols="7">
                     {{ userInfo.user_name }}
                     </v-text-field>
                 </v-row>
                 <v-row class="mx-0">
-                    <v-col cols="2">
+                    <v-col cols="3">
                     비밀번호
                     </v-col>
-                    <v-text-field v-model="userpwd" cols="8">
+                    <v-text-field 
+                    type="password"
+                    v-model="userpwd"
+                    cols="7">
                     {{ userInfo.user_password }}
                     </v-text-field>
                 </v-row>
+                <v-row>
+                  <v-col cols="3">
+                    비밀번호 확인
+                    </v-col>
+                    <v-text-field
+                    type="password"
+                    v-model="passcon"
+                    cols="7"
+                    ></v-text-field>
+                </v-row>
                 <v-row class="mx-0">
-                    <v-col cols="2">
+                    <v-col cols="3">
                     연락처
                     </v-col>
-                    <v-text-field v-model="userphone" cols="8">
+                    <v-text-field v-model="userphone" cols="7">
                     {{ userInfo.user_phone }}
                     </v-text-field>
                 </v-row>
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn
-                color="brown1"
+                color="grey"
                 @click="deleteUser"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">회원 탈퇴</span>
+                class="mx-2 my-2"
+              ><span class="white--text jua mx-5" style="font-size:16px; padding: 10px; ">회원 탈퇴</span>
               </v-btn>
             <v-btn
                 color="brown2"
                 @click="modifyUser"
-              ><span class="blue-grey--text text--darken-4 jua" style="font-size:16px; padding: 10px; ">정보 수정</span>
+                class="mx-2 my-2"
+              ><span class="navy--text jua mx-5" style="font-size:16px; padding: 10px; ">정보 수정</span>
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -96,6 +111,7 @@ export default {
         username: null,
         userpwd: null,
         userphone: null,
+        passcon: '',
       };
     },
     computed: {
@@ -125,18 +141,23 @@ export default {
             this.userInfo.user_name = this.username;
             this.userInfo.user_password = this.userpwd;
             this.userInfo.user_phone = this.userphone;
-            modifyInfo(
-                this.userInfo,
-                (response) => {
-                    if (response.data === "success") {
-                        console.log('성공');
-                    } else {
-                    console.log('실패');
-                    }
-                },
-                (error) => {
-                    console.log(error);
-            })
+            if (this.passcon === this.userInfo.user_password) {
+              modifyInfo(
+                  this.userInfo,
+                  (response) => {
+                      if (response.data === "success") {
+                          console.log('성공');
+                      } else {
+                      console.log('실패');
+                      }
+                  },
+                  (error) => {
+                      console.log(error);
+              })
+            }
+            else{
+              alert("비밀번호가 일치하지 않습니다. 다시 입력해 주세요.")
+            }
         },
         deleteUser(){
             deleteInfo(
