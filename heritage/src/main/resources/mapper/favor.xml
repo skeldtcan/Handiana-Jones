@@ -52,6 +52,12 @@
 		where user_no = #{user_no}
 	</update>
 
+	<select id="getFavor" parameterType="int" resultType="int">
+	select count(*)
+	from favor
+	where user_no = #{user_no};
+	</select>
+
 	<select id="listRecommend" parameterType="int"
 		resultType="Heritage">
 		select *

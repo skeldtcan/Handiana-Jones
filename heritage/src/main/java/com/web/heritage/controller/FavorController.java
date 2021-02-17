@@ -110,6 +110,25 @@ public class FavorController {
 		return new ResponseEntity<String>(result, status);
 	}
 
+	@ApiOperation(value = "시대 입력", notes = "선호하는 시대1,2,3을 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@GetMapping("/{user_no}")
+	public ResponseEntity<String> getFavor(@PathVariable("user_no") @ApiParam(value = "회원 번호", required = true) int user_no){
+		logger.debug("getCcce - 호출");
+		HttpStatus status = HttpStatus.NO_CONTENT;
+		String result = FAIL;
+
+		try {
+			if(favorService.getFavor(user_no)) {
+				status = HttpStatus.OK;
+				result = SUCCESS;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<String>(result, status);
+	}
+
 	@ApiOperation(value = "추천 목록", notes = "추천 문화재 정보를 반환한다.", response = List.class)
 	@GetMapping("/recommend/{user_no}")
 	public ResponseEntity<List<Favor>> listRecommend(
