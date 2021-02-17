@@ -55,7 +55,7 @@ public class UserController {
 			User loginUser = userService.login(user);
 			if (loginUser != null) {
 				String token = jwtService.create("user_id", loginUser.getUser_id(), "access-token");// key, data, subject
-				logger.debug("로그인 토큰정보 : {}", token);
+				logger.info("로그인 토큰정보 : {}", token);
 				resultMap.put("access-token", token);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
