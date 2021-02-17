@@ -1,7 +1,24 @@
 <template>
     <div class="container">
         <!-- search bar -->
-        <div class="search">
+        <div class="brown1 mainHeader" style=" text-align: left;">
+            <span class="jua" style="font-size: 18px;">
+            우리나라의 방대한 문화재를 담은 한디아나존스 지도입니다.
+            <br/>
+            지도내 정보 조회 안내
+            <ul>
+                <li>마커에 커서를 올릴 시 간이 정보 조회</li>
+                <li>마커 클릭 시 상세 정보 조회</li>
+            </ul>
+            위치 간 경로 및 시간 안내
+            <ul>
+                <li>마우스 클릭 시 경로 생성</li>
+                <li>마우스 우클릭 경로 생성 종료</li>
+                <li>경로 클릭 시 삭제</li>
+            </ul>
+            </span>
+        </div>
+       <div class="search">
             <input type="text" class="searchTerm" placeholder="문화재 또는 지역을 검색해 주세요" v-model="keyword" @keypress.enter="keywordMarker(keyword)">
             <button type="" class="searchButton" @click="keywordMarker(keyword)">
                 <i class="fa fa-search"></i>
@@ -393,7 +410,7 @@ export default {
                 (singleheritage) => {
                 // 마커 이미지를 커스텀하기 위한 코드
                 var imageSrc = require('@/assets/heritage.png'), // 마커이미지의 주소입니다    
-                    imageSize = new kakao.maps.Size(50, 40), // 마커이미지의 크기입니다
+                    imageSize = new kakao.maps.Size(28, 32), // 마커이미지의 크기입니다
                     imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
                 // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
                 var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
@@ -956,13 +973,20 @@ body{
   font-family: 'Open Sans', sans-serif;
 }
 
+.mainHeader {
+    width: 80rem;
+    margin-top: 3%;
+    margin-bottom: 1%;
+    padding: 2%;
+}
+
 .search {
   width: 80rem;
   position: relative;
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 3%;
+  margin-bottom: 1%;
 }
 
 .searchTerm {

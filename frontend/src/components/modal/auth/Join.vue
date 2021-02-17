@@ -10,7 +10,7 @@
           <v-btn text
             v-bind="attrs"
             v-on="on"
-          ><span class="white--text jua" style="font-size:18px; padding: 5px; ">회원가입</span></v-btn>
+          ><span class="white--text jua" style="font-size:19px; padding: 5px; ">회원가입</span></v-btn>
         </template>
         <template v-slot:default="dialog">
           <v-card>
