@@ -2,7 +2,7 @@
 
   <v-card
     max-width="70%"
-    class="mx-auto"
+    class="mx-auto my-5 px-5 py-5"
   >
   <div style="text-align:center; " class="mx-5 my-5">
     <span class="navy--text jua" style="font-size:36px;">선호하는 카테고리 3가지를 선택해주세요.</span>
@@ -44,7 +44,7 @@
         </v-row>
       </v-item-group>
     </v-container>
-  <v-btn block large class="brown1 navy--text jua mx-5 my-5" style="font-size: 20px;" @click="insertBcode">
+  <v-btn block large class="brown1 navy--text jua my-5" style="font-size: 20px;" @click="insertBcode">
     다음으로
   </v-btn>
   </v-card>

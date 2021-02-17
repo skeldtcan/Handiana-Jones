@@ -68,6 +68,6 @@ export default {
   margin: 2% 0% 2% 0%;
 }
 .v-g-size {
-  margin: 7% 3% 7% 3%;
+  margin: 7% 0% 7% 0%;
 }
 </style>
