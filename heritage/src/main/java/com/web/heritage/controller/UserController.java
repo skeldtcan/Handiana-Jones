@@ -133,6 +133,7 @@ public class UserController {
 		@PathVariable("user_id") @ApiParam(value = "중복 확인할 회원의 아이디.", required = true) String user_id,
 		HttpServletRequest request) throws Exception {
 		logger.debug("user_id : {} ", user_id);
+		user_id = user_id + "@gmail.com";
 		if (userService.confirmId(user_id)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -165,6 +166,7 @@ public class UserController {
 	public ResponseEntity<String> signUp(@RequestBody @ApiParam(value = "회원 정보", required = true) User user)
 		throws Exception {
 		logger.debug("signUp - 호출");
+		user.setUser_id(user.getUser_id() + "@gmail.com");
 		if (userService.signUp(user)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
