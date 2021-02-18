@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <!-- search bar -->
-        <div class="brown1 mainHeader" style=" text-align: left;">
+        <div class="brown1 mainHeader">
             <span class="jua" style="font-size: 18px;">
             우리나라의 방대한 문화재를 담은 한디아나존스 지도입니다.
             <br/>
@@ -974,14 +974,17 @@ body{
 }
 
 .mainHeader {
-    width: 80rem;
+    width: 85rem;
     margin-top: 3%;
     margin-bottom: 1%;
+    margin-left: auto;
+    margin-right: auto;
     padding: 2%;
+    text-align: left;
 }
 
 .search {
-  width: 80rem;
+  width: 85rem;
   position: relative;
   display: flex;
   margin-left: auto;
@@ -1018,7 +1021,7 @@ body{
 
 /* kakaomap */
 .kakaomap {
-    width:80rem; height:60rem; margin-left:auto; margin-right:auto;
+    width:85rem; height:60rem; margin-left:auto; margin-right:auto;
     z-index: 0;
 }
 

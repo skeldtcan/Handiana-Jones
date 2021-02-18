@@ -32,6 +32,7 @@
               <v-text-field 
               v-model="user.user_id"
               outlined
+              suffix="@gmail.com"
             label="이메일"
           ></v-text-field>
           <v-btn
@@ -43,12 +44,14 @@
           <v-text-field
           type="password"
           outlined
+          :counter="10"
           v-model="user.user_password"
             label="비밀번호"
           ></v-text-field>
           <v-text-field
           type="password"
           outlined
+          :counter="10"
           v-model="passcon"
             label="비밀번호확인"
           ></v-text-field>

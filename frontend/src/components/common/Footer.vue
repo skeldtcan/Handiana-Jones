@@ -33,7 +33,7 @@
         class="navy py-4 text-center white--text"
         cols="12"
       >
-        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+        {{ new Date().getFullYear() }} — <strong>SSAFY</strong>
       </v-col>
     </v-row>
   </v-footer>
@@ -46,14 +46,10 @@ export default {
         'Home',
         'About Us',
         'Team',
-        'Services',
-        'Blog',
-        'Contact Us',
       ],
       icons: [
         'mdi-facebook',
         'mdi-twitter',
-        'mdi-linkedin',
         'mdi-instagram',
       ],
     }),
