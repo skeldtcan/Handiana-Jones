@@ -7,7 +7,7 @@
       width="70%"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="brown2" class="jua" style="font-size:18px; padding: 10px; " v-bind="attrs" v-on="on">
+        <v-btn large class="brown2 jua" style="font-size:18px; padding: 10px; " v-bind="attrs" v-on="on">
           작성하기
         </v-btn>
       </template>
@@ -39,12 +39,13 @@
           <tiptap-vuetify
             v-model="content"
             :extensions="extensions"
-            :toolbar-attributes="{ color: 'grey' }"
             placeholder="내용을 작성하세요."
           />
-          <v-btn block @click="write" class="jua brown2" style="font-size:17px; float: right; ">
+          <div>
+          <v-btn text @click="write" class="jua brown2 my-2 mx-5" style="font-size:17px;">
               저장
             </v-btn>
+          </div>
         </div>
         
       </v-card>

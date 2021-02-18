@@ -88,7 +88,7 @@
                 color="brown2"
                 @click="modifyUser"
                 class="mx-2 my-2"
-              ><span class="navy--text jua mx-5" style="font-size:18px; padding: 10px; ">정보 수정</span>
+              ><span class="jua mx-5" style="font-size:18px; padding: 10px; ">정보 수정</span>
               </v-btn>
             </v-card-actions>
           </v-card>
