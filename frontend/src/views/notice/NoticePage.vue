@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-card class="mx-auto" width="80%" style="margin-bottom: 5%; margin-top: 5%;">
+    <NoticeCreate style="margin-top: 3%" />
+    <v-card class="mx-auto" width="80%" style="margin-bottom: 10%; margin-top: 2%;">
       <v-toolbar color="navy" dark>
         <v-toolbar-title class="jua" style="font-size:20px"
           >공지사항 목록</v-toolbar-title
@@ -18,7 +19,7 @@
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
-                      label="검색할 번호를 입력하세요."
+                      label="검색할 공지사항 번호 입력란"
                       v-model="noticeNumber"
                     ></v-text-field>
                   </v-col>
@@ -26,9 +27,9 @@
               </v-container>
             </v-card-text>
             <v-card-actions>
-              <v-btn color="grey" @click="searchNotice" class="jua" style="font-size:16px; float: right;">
-                검색
-              </v-btn>
+                <v-btn color="grey" @click="searchNotice" class="jua" style="font-size:16px;">
+                  검색
+                </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -50,12 +51,12 @@
                 >{{ item.notice_content }}
                 <!-- <div slot="toolbar"></div> -->
               </tiptap-vuetify>
-              <v-btn @click="modifyNotice(index)" class="jua brown4 white--text" style="font-size: 19px; float: right; margin-left: 10px">수정</v-btn>
+              <v-btn @click="modifyNotice(index)" class="jua brown2 white--text my-1" style="font-size: 19px; float: right; margin-left: 10px">수정</v-btn>
               <!-- 작성자 -->
               <v-list-item-action-text>
                 <!-- {{ item.user_no }} -->
               </v-list-item-action-text>
-              <v-btn @click="deleteNotice(index)" value="index" class="jua grey white--text" style="font-size: 19px; float: right;">삭제</v-btn>
+              <v-btn @click="deleteNotice(index)" value="index" class="jua grey white--text my-1" style="font-size: 19px; float: right;">삭제</v-btn>
             </v-expansion-panel-content>
 
           </v-expansion-panel>
@@ -66,14 +67,12 @@
       <v-list two-line>
         <v-list-item-group
           v-model="selected"
-          active-class="blue--text"
           multiple
         >
-          <hr style="width:70%; text-align:left; margin-left:10px" />
           <!-- pagination -->
           <div class="pagination jua">
             <p style="cursor:pointer">&laquo;</p>
-            <div class="paginationsub" v-for="index in 10" :key="index">
+            <div class="paginationsub" v-for="index in 1" :key="index">
               <p style="cursor:pointer">{{ index }}</p>
             </div>
             <p style="cursor:pointer">&raquo;</p>
@@ -81,7 +80,6 @@
         </v-list-item-group>
       </v-list>
     </v-card>
-    <NoticeCreate style="margin-bottom: 10%" />
   </div>
 </template>
 
