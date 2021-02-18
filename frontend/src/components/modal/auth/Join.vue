@@ -29,18 +29,18 @@
             </v-toolbar>
             <v-card-text>
               <br>
+            <v-btn
+                color="grey"
+                @click="confirmUserid"
+                style="float: right;"
+              ><span class="white--text jua" style="font-size:17px;">중복 확인</span>
+              </v-btn>
               <v-text-field 
               v-model="user.user_id"
               outlined
               suffix="@gmail.com"
             label="이메일"
           ></v-text-field>
-          <v-btn
-              color="grey"
-              small
-              @click="confirmUserid"
-            ><span class="white--text jua" style="font-size:16px; padding: 5px; ">중복 확인</span>
-            </v-btn>
           <v-text-field
           type="password"
           outlined

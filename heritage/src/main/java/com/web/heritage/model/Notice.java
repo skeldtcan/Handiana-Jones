@@ -3,8 +3,8 @@ package com.web.heritage.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "NoticeDto : 공지사항정보", description = "공지사항의 상세 정보를 나타낸다")
-public class NoticeDto {
+@ApiModel(value = "Notice : 공지사항정보", description = "공지사항의 상세 정보를 나타낸다")
+public class Notice {
 
 	@ApiModelProperty(value = "공지사항번호")
 	private int notice_no;

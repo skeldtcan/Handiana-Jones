@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.web.heritage.model.NoticeDto;
-import com.web.heritage.model.NoticeParameterDto;
+import com.web.heritage.model.Notice;
+import com.web.heritage.model.NoticeParameter;
 import com.web.heritage.model.mapper.NoticeMapper;
-import com.web.util.PageNavigation;
 
 @Service
 public class NoticeServiceImpl implements NoticeService {
@@ -20,30 +19,30 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	/* 공지사항 작성 */
-	public boolean writeNoticepage(NoticeDto noticeDto) throws Exception {
-		if (noticeDto.getNotice_title() == null || noticeDto.getNotice_content() == null) { // 공지사항 작성시 제목 또는 내용이 비었을 시
+	public boolean writeNoticepage(Notice notice) throws Exception {
+		if (notice.getNotice_title() == null || notice.getNotice_content() == null) { // 공지사항 작성시 제목 또는 내용이 비었을 시
 			throw new Exception();
 		}
-		return sqlSession.getMapper(NoticeMapper.class).writeNoticepage(noticeDto) == 1;
+		return sqlSession.getMapper(NoticeMapper.class).writeNoticepage(notice) == 1;
 	}
 
 	@Override
-	public List<NoticeDto> listNoticepage(NoticeParameterDto noticeParameterDto) throws Exception {
-		int start = noticeParameterDto.getPg() == 0 ? 0
-				: (noticeParameterDto.getPg() - 1) * noticeParameterDto.getSpp();
-		noticeParameterDto.setStart(start);
-		return sqlSession.getMapper(NoticeMapper.class).listNoticepage(noticeParameterDto);
+	public List<Notice> listNoticepage(NoticeParameter noticeParameter) throws Exception {
+		int start = noticeParameter.getPg() == 0 ? 0
+				: (noticeParameter.getPg() - 1) * noticeParameter.getSpp();
+		noticeParameter.setStart(start);
+		return sqlSession.getMapper(NoticeMapper.class).listNoticepage(noticeParameter);
 	}
 
 	@Override
-	public NoticeDto getNoticepage(int notice_no) throws Exception {
+	public Notice getNoticepage(int notice_no) throws Exception {
 		return sqlSession.getMapper(NoticeMapper.class).getNoticepage(notice_no);
 	}
 
 	@Override
 	@Transactional
-	public boolean modifyNoticepage(NoticeDto noticeDto) throws Exception {
-		return sqlSession.getMapper(NoticeMapper.class).modifyNoticepage(noticeDto) == 1;
+	public boolean modifyNoticepage(Notice notice) throws Exception {
+		return sqlSession.getMapper(NoticeMapper.class).modifyNoticepage(notice) == 1;
 	}
 
 	@Override
@@ -53,18 +52,18 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 //	@Override
-//	public PageNavigation makePageNavigation(NoticeParameterDto noticeParameterDto) throws Exception {
+//	public PageNavigation makePageNavigation(NoticeParameter noticeParameter) throws Exception {
 //		int naviSize = 5;
 //		PageNavigation pageNavigation = new PageNavigation();
-//		pageNavigation.setCurrentPage(noticeParameterDto.getPg());
+//		pageNavigation.setCurrentPage(noticeParameter.getPg());
 //		pageNavigation.setNaviSize(naviSize);
-//		int totalCount = sqlSession.getMapper(NoticeMapper.class).getTotalCount(noticeParameterDto);
-//		pageNavigation.setTotalCount(totalCount);  
-//		int totalPageCount = (totalCount - 1) / noticeParameterDto.getSpp() + 1;//27
+//		int totalCount = sqlSession.getMapper(NoticeMapper.class).getTotalCount(noticeParameter);
+//		pageNavigation.setTotalCount(totalCount);
+//		int totalPageCount = (totalCount - 1) / noticeParameter.getSpp() + 1;//27
 //		pageNavigation.setTotalPageCount(totalPageCount);
-//		boolean startRange = noticeParameterDto.getPg() <= naviSize;
+//		boolean startRange = noticeParameter.getPg() <= naviSize;
 //		pageNavigation.setStartRange(startRange);
-//		boolean endRange = (totalPageCount - 1) / naviSize * naviSize < noticeParameterDto.getPg();
+//		boolean endRange = (totalPageCount - 1) / naviSize * naviSize < noticeParameter.getPg();
 //		pageNavigation.setEndRange(endRange);
 //		pageNavigation.makeNavigator();
 //		return pageNavigation;
