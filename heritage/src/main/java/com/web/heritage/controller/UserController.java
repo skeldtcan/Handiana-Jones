@@ -151,7 +151,6 @@ public class UserController {
 		logger.debug("auth_key : {} ", auth_key);
 		String success = "이메일 인증에 성공했습니다. 로그인이 가능합니다.";
 
-		user_id = user_id + "@gmail.com";
 		Map<String, String> map = new HashMap<>();
 		map.put("user_id", user_id);
 		map.put("auth_key", auth_key);
