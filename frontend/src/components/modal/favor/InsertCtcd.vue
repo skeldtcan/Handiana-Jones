@@ -137,7 +137,6 @@ export default {
               this.userInfo.user_no,
               (response) => {
                 if (response.data === "success") {
-                    console.log('기존 정보 없음');
                     ctcds (
                       this.favor,
                       (response) => {
@@ -148,7 +147,6 @@ export default {
                       }
                   );
                 } else {
-                  console.log('기존 정보 있음');
                   updateCtcds (
                     this.favor,
                     (response) => {

@@ -6,13 +6,13 @@
       transition="dialog-top-transition"
       width="70%"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn large class="brown2 jua" style="font-size:18px; padding: 10px; " v-bind="attrs" v-on="on">
-          작성하기
+      <template v-slot:activator="{ on, attrs }" v-if="isLogin">
+        <v-btn x-large class="brown2 jua" style="font-size:18px; padding: 10px; " v-bind="attrs" v-on="on">
+          글 작성
         </v-btn>
       </template>
       <!-- 공지사항 작성창 시작-->
-      <v-card outlined>
+      <v-card>
         <v-toolbar dark color="navy">
           <v-toolbar-title
             class="jua"
@@ -168,25 +168,37 @@ export default {
   },
   methods: {
     write() {
-      console.log(this.userInfo.user_no);
-
       this.user_no = this.userInfo.user_no;
-      console.log(this.notice);
-      writeNoticepage(
-        this.notice,
-        (this.notice.user_no = this.user_no),
-        (this.notice.notice_title = this.title),
-        (this.notice.notice_content = this.content),
-        (response) => {
-          console.log('공지사항 작성', response);
-          this.notice_content = '';
-        },
-        (error) => {
-          console.log(error);
+      if(this.title == ''){
+        alert("제목을 입력하세요");  
+      }
+      else{
+        if(this.content == ''){
+          alert("내용을 입력하세요");
         }
-      );
-      this.dialog = false;
-      window.location.reload();
+        else{
+          if(this.userInfo.user_no === 1){ // 관리자 계정
+            writeNoticepage(
+              this.notice,
+              (this.notice.user_no = this.user_no),
+              (this.notice.notice_title = this.title),
+              (this.notice.notice_content = this.content),
+              (response) => {
+                console.log('공지사항 작성', response);
+                this.notice_content = '';
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+            this.dialog = false;
+            window.location.reload();
+          }
+          else{
+            alert("글 작성은 관리자만 가능합니다.")
+          }
+        }
+      }
     },
   },
 };
