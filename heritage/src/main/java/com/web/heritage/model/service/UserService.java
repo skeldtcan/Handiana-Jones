@@ -22,8 +22,6 @@ public interface UserService {
 
 	public boolean confirmEmail(Map<String, String> map) throws Exception;
 
-	public boolean insertAuthKey(User user) throws Exception;
-
 	public boolean alterAuthKey(Map<String, String> map) throws Exception;
 
 	public String getAuthKey(Map<String, String> map) throws Exception;

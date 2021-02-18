@@ -99,11 +99,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean insertAuthKey(User user) throws SQLException {
-		return sqlSession.getMapper(UserMapper.class).insertAuthKey(user) == 1;
-	}
-
-	@Override
 	public boolean alterAuthKey(Map<String, String> map) throws SQLException {
 		return sqlSession.getMapper(UserMapper.class).alterAuthKey(map) == 1;
 	}
@@ -130,7 +125,7 @@ public class UserServiceImpl implements UserService {
 		String mailContent = "<h1>[이메일 인증]</h1>"
 			+ "<br>"
 			+ "<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>"
-			+ "<a href='http://localhost:8000/heritage/user/email?user_id="
+			+ "<a href='http://i4a207.p.ssafy.io:8080/heritage/user/email?user_id="
 			+ user.getUser_id() + "&auth_key=" + auth_key + "' target='_blenk'>"
 			+ "이메일 인증 확인</a>";
 		mail.setTo(user.getUser_id());

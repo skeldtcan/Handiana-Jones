@@ -101,7 +101,7 @@
 
 <script>
 import { findById, modifyInfo, deleteInfo, confirmPwd } from "@/api/user.js";
-import { deleteFavor } from "@/api/favor.js";
+import { deleteFavor, getFavor } from "@/api/favor.js";
 import { mapState } from "vuex";
 
 export default {
@@ -153,6 +153,7 @@ export default {
                     (response) => {
                         if (response.data === "success") {
                             console.log('성공');
+                            alert("수정이 완료되었습니다.")
                         } else {
                         console.log('실패');
                         }
@@ -175,34 +176,63 @@ export default {
             this.userInfo,
             (response) => {
               if (response.data === "success") {
-                  console.log('비밀번호 일치');
-                  deleteFavor(
+                  getFavor(
                     this.userInfo.user_no,
                     (response) => {
-                        if (response.data === "success") {
-                            console.log('추천 정보 삭제');
-                            deleteInfo(
-                              this.userInfo.user_no,
-                              (response) => {
-                                  if (response.data === "success") {
-                                      console.log('탈퇴 성공');
-                                      alert("탈퇴 처리가 완료되었습니다.");
-                                  } else {
-                                    console.log('탈퇴 실패');
-                                  }
-                              },
-                              (error) => {
-                                  console.log(error);
-                          })
-                        } else {
-                          console.log('추천 정보 삭제 실패');
-                        }
+                      if (response.data === "success") {
+                          console.log('기존 정보 없음');
+                          deleteInfo(
+                            this.userInfo.user_no,
+                            (response) => {
+                                if (response.data === "success") {
+                                    alert("탈퇴 처리가 완료되었습니다.");
+                                    this.$store
+                                        .dispatch("LOGOUT")
+                                        .then(() => {
+                                          this.$router.push({ name: "Main" });
+                                        })
+                                        .catch(() => {
+                                          console.log("로그아웃 문제 발생");
+                                        });
+                                }
+                            },
+                            (error) => {
+                                console.log(error);
+                        })
+                      } else {
+                      deleteFavor(
+                          this.userInfo.user_no,
+                          (response) => {
+                              if (response.data === "success") {
+                                  console.log('추천 정보 삭제');
+                                  deleteInfo(
+                                    this.userInfo.user_no,
+                                    (response) => {
+                                        if (response.data === "success") {
+                                            alert("탈퇴 처리가 완료되었습니다.");
+                                            this.$store
+                                                .dispatch("LOGOUT")
+                                                .then(() => {
+                                                  this.$router.push({ name: "Main" });
+                                                })
+                                                .catch(() => {
+                                                  console.log("로그아웃 문제 발생");
+                                                });
+                                        }
+                                    },
+                                    (error) => {
+                                        console.log(error);
+                                })
+                              }
+                          },
+                          (error) => {
+                              console.log(error);
+                        })
+                      }
                     },
-                    (error) => {
-                        console.log(error);
-                  })
-              } else {
-                console.log('비밀번호 불일치');
+              (error) => {
+                  console.log(error);
+              })
               }
             },
             (error) => {

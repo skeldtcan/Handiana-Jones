@@ -4,7 +4,7 @@
     <v-card class="mx-auto" width="80%" style="margin-bottom: 10%; margin-top: 2%;">
       <v-toolbar color="navy" dark>
         <v-toolbar-title class="jua" style="font-size:20px"
-          >공지사항 목록</v-toolbar-title
+          >공지사항</v-toolbar-title
         >
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" persistent max-width="300px">
@@ -17,7 +17,7 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12">
+                  <v-col>
                     <v-text-field
                       label="검색할 공지사항 번호 입력란"
                       v-model="noticeNumber"
@@ -27,7 +27,7 @@
               </v-container>
             </v-card-text>
             <v-card-actions>
-                <v-btn color="grey" @click="searchNotice" class="jua" style="font-size:16px;">
+                <v-btn color="grey mx-auto" @click="searchNotice" class="jua" style="font-size:16px;">
                   검색
                 </v-btn>
             </v-card-actions>
@@ -41,7 +41,8 @@
             <!-- 제목 -->
             <v-expansion-panel-header class="jua brown1" style="font-size:19px;">{{
               '[' + item.notice_no + '] ' + item.notice_title
-            }}</v-expansion-panel-header>
+            }}
+            </v-expansion-panel-header>
 
             <!-- 내용 -->
             <v-expansion-panel-content>
@@ -51,12 +52,12 @@
                 >{{ item.notice_content }}
                 <!-- <div slot="toolbar"></div> -->
               </tiptap-vuetify>
-              <v-btn @click="modifyNotice(index)" class="jua brown2 white--text my-1" style="font-size: 19px; float: right; margin-left: 10px">수정</v-btn>
-              <!-- 작성자 -->
-              <v-list-item-action-text>
-                <!-- {{ item.user_no }} -->
-              </v-list-item-action-text>
-              <v-btn @click="deleteNotice(index)" value="index" class="jua grey white--text my-1" style="font-size: 19px; float: right;">삭제</v-btn>
+                <v-btn @click="modifyNotice(index)" v-if="isLogin" class="jua brown2 white--text my-1" style="font-size: 19px; float: right; margin-left: 10px">수정</v-btn>
+                <!-- 작성자 -->
+                <v-list-item-action-text>
+                  <!-- {{ item.user_no }} -->
+                </v-list-item-action-text>
+                <v-btn @click="deleteNotice(index)" v-if="isLogin" value="index" class="jua grey white--text my-1" style="font-size: 19px; float: right;">삭제</v-btn>
             </v-expansion-panel-content>
 
           </v-expansion-panel>
@@ -120,7 +121,6 @@ export default {
 
   created() {
     listNoticepage((response) => {
-      console.log(this.items);
       this.items = response.data;
     });
   },
@@ -133,13 +133,12 @@ export default {
     return {
       notice: {
         notice_no: '',
-        user_name: '',
+        user_no: '',
         notice_title: '',
         notice_content: '',
       },
       dialog: false,
       // selected: [2],
-
       extensions: [
         History,
         Blockquote,
@@ -164,14 +163,13 @@ export default {
         Paragraph,
         HardBreak,
       ],
-
       // 여기에 공지사항 데이터 불러와서 items에 담기.
       items: [
         {
           notice_content: '',
           notice_no: '',
           notice_title: '',
-          user_name: '',
+          user_no: '',
         },
       ],
     };
@@ -179,19 +177,28 @@ export default {
   methods: {
     searchNotice() {
       this.dialog = false;
-      console.log();
     },
     modifyNotice(index) {
-      modifyNoticepage(this.items[index], (response) => {
-        this.items = response.data;
-      });
-      window.location.reload();
+      if(this.userInfo.user_no === this.items[index].user_no){
+        modifyNoticepage(this.items[index], (response) => {
+            this.items = response.data;
+          });
+          window.location.reload();
+      }
+      else{
+        alert("글 작성자만 수정이 가능합니다.")
+      }
     },
     deleteNotice(index) {
-      deleteNoticepage(this.items[index].notice_no, (response) => {
-        this.items = response.data;
-      });
-      window.location.reload();
+      if(this.userInfo.user_no === this.items[index].user_no){
+        deleteNoticepage(this.items[index].notice_no, (response) => {
+          this.items = response.data;
+        });
+        window.location.reload();
+      }
+      else{
+        alert("글 작성자만 삭제가 가능합니다.")
+      }
     },
   },
 };
