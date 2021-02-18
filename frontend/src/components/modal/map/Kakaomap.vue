@@ -975,7 +975,7 @@ body{
 
 .mainHeader {
     width: 85rem;
-    margin-top: 3%;
+    margin-top: 1%;
     margin-bottom: 1%;
     margin-left: auto;
     margin-right: auto;
