@@ -34,6 +34,7 @@
                     아이디
                     </v-col>
                     <v-text-field
+                    readonly
                     v-model="userid"
                     cols="7">
                     </v-text-field>
@@ -64,7 +65,7 @@
                     <v-text-field
                     type="password"
                     v-model="passcon"
-                    cols="7"
+                    cols="6"
                     ></v-text-field>
                 </v-row>
                 <v-row class="mx-0">
