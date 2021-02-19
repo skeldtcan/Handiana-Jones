@@ -43,7 +43,7 @@ function login(user, success, fail) {
 
 function findUserId(user, success, fail){
   instance
-  .get('/user/find/id', JSON.stringify(user))
+  .post('/user/find/id', JSON.stringify(user))
   .then(success)
   .catch(fail)
 }
