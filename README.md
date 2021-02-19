@@ -1,4 +1,4 @@
-# 서울 2반 7팀 Sub PJT II: 한디아나존스 README
+# 서울 2반 7팀 한디아나존스 README
 
 `우리나라 약 1,7000개에 달하는 방대한 문화재를 웹 페이지의 지도 위에서 모두 탐방해 나갈 수 있는 역사 교육 & 문화재 데이터 관리 및 사용방안 제고 & 온라인 관광사업 활성화 목적의 웹페이지 입니다.`
 
@@ -18,6 +18,12 @@
 - 더불어 한국 학생들의 전반적인 역사 인식 수준이 매우 낮은 것으로 나타났다.
 - 때문에 사람들이 한국 역사를 재미있게 학습해 나갈 수 있도록 프로젝트를 기획했다.
 
+### 역사인식 제고를 통한 외국의 한국 문화재 뺏기 방지에 기여
+
+![image-20210219104459920](README.assets/image-20210219104459920.png)
+
+- 역사 중요성에 대한 전반적인 인식 수준을 높여 외국의 한국문화자 뺏기(Ex. 동북공정) 방지에 이바지한다.
+
 ### 데이터 시대 속 문화재 데이터 관리와 활용법 향상
 
 
@@ -36,7 +42,12 @@
 - 코로나로 인해 오프라인 사업 중 대표적 사업인 관광사업이 치명타를 입음
 - 온라인 상에서 한국 문화재를 탐방하며 관광을 할 수 있게끔 대안을 제시 - 추후 지역 상점들과 연결하여 온라인 상품 구매가 가능하도록 응용도 가능
 
+## 기능 명세서 작성
 
+![image-20210219104719695](README.assets/image-20210219104719695.png)
+
+- 웹 제작에 앞서 구현해야할 기능들을 기획하고 세부 기능별 기능 명세서를 작성했다.
+- 프로젝트 진행 동안 누락되거나 놓치는 부분없이 원활히 작업을 수행하기 위해 작성.
 
 ## 협업 툴 준비 및 세팅
 
@@ -44,11 +55,27 @@
 
 ![image-20210129123306440](README.assets/image-20210129123306440.png)
 
-- Jira를 생성하고 기능 명세서를 중심으로 `Sub PJT II`  동안 수행할 작업 목록을 생성했다.
+- Jira를 생성하고 기능 명세서를 중심으로 수행할 작업 목록을 생성했다.
 - Spirnt를 이용해 할일, 작업중인 일, 완료한 일을 체계적으로 정리하며 작업을 수행했다.
 - 이후 팀 프로젝트 Gitlab을 MM에 연동하고 Jira도 연동을 완료했다. - Jira와 Gitlab에서 작업이 일어나면 알림이 MM으로 Push 되는 것을 확인할 수 있었다.
 
-## Sub PJT II 기간 동안 수행한 내용
+
+
+## 프로젝트 전체 설계도
+
+
+
+![image-20210219105717840](README.assets/image-20210219105717840.png)
+
+- VIEW(프론트 앤드) 페이지의 구조와 관계도를 잡아봤다.
+
+![image-20210219105756699](README.assets/image-20210219105756699.png)
+
+- DB(데이터베이스) ERD도 만들어봤다.
+
+
+
+## 개발 수행 내용
 
 ### 문화재청 제공 문화재 정보 데이터 로드
 
@@ -69,247 +96,16 @@
   - 파라미터를 넣은 검색주소: http://www.cha.go.kr/cha/SearchKindOpenapiList.do?pageUnit=900&pageIndex=18
   - 페이지 하나동 조회 정보의 개수를 900으로 놓고 18페이지를 조회하면 가장 마지막 데이터인 16054번째의 데이터를 확인할 수 있다.
 
-  
 
-###### 작업수행을 위한 기본 라이브러리 활용법
-
-```python
-import requests
-from bs4 import BeautifulSoup as bs
-import xml.etree.ElementTree as ET
-from xml.etree.ElementTree import Element, dump, ElementTree
-```
-
-- `requests`: **Requests** allows you to send HTTP/1.1 requests extremely easily. There’s no need to manually add query strings to your URLs, or to form-encode your POST data. Keep-alive and HTTP connection pooling are 100% automatic, thanks to [urllib3](https://github.com/urllib3/urllib3).
-
-  - ```python
-    # 사용예시
-    >>> r = requests.get('https://api.github.com/user', auth=('user', 'pass'))
-    >>> r.status_code
-    200
-    >>> r.headers['content-type']
-    'application/json; charset=utf8'
-    >>> r.encoding
-    'utf-8'
-    >>> r.text
-    '{"type":"User"...'
-    >>> r.json()
-    {'private_gists': 419, 'total_private_repos': 77, ...}
-    ```
-
-- `Beautiful Soup`:  Beautiful Soup is a Python library for pulling data out of HTML and XML files.
-
-  - ```python
-    # 사용예시
-    import requests
-    from bs4 import BeautifulSoup
-    
-    url = 'https://kin.naver.com/search/list.nhn?query=%ED%8C%8C%EC%9D%B4%EC%8D%AC'
-    
-    response = requests.get(url)
-    
-    if response.status_code == 200:
-        html = response.text
-        soup = BeautifulSoup(html, 'html.parser')
-        print(soup)
-    
-    else : 
-        print(response.status_code)
-    ```
-
-- `xml.etree.ElementTree`:  The [`xml.etree.ElementTree`](https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree) module implements a simple and efficient API for parsing and creating XML data.
-
-  - ```python
-    # 사용예시
-    import xml.etree.ElementTree as ET
-    tree = ET.parse('country_data.xml')
-    root = tree.getroot()
-    # Or directly from a string:
-    root = ET.fromstring(country_data_as_string)
-    ```
-
-  - `Element.find`: [`Element.find()`](https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element.find) finds the *first* child with a particular tag
-
-  - `Element.text`: [`Element.text`](https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element.text) accesses the element’s text content. [`Element.get()`](https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element.get) accesses the element’s attributes
-
-  - `ElementTree`: [`ElementTree`](https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.ElementTree) provides a simple way to build XML documents and write them to files. The [`ElementTree.write()`](https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.ElementTree.write) method serves this purpose.
-
-  - `dump`: Writes an element tree or element structure to sys.stdout. This function should be used for debugging only.
-
-  
-
-###### 전체 목록 가져오기
-
-```python
-#전체 목록 가져오기
-cnt = 1 # 진행상황 확인을 위한 cnt 선언
-heritages = []
-for page in range(1,18):
-    url = "http://www.cha.go.kr/cha/SearchKindOpenapiList.do?pageUnit=1000&pageIndex=" + str(page)
-    response = requests.get(url).content 
-    soup = bs(response, 'html.parser') 
-    doc = ET.fromstring(str(soup)) # object 형태로 데이터를 반환
-    iter_elem = doc.iter(tag="item") # Creates a tree iterator with the current element as the root.
-    for elem in iter_elem:
-        # 파라미터 값에 접근할때 전부 소문자임을 주의
-        heritage = {} # 딕셔너리에 키와 벨류 형태로 문화재 목록 정보를 담는다.
-        heritage['sn'] = elem.find('sn').text
-        heritage['no'] = elem.find('no').text
-        heritage['ccmaname'] = elem.find('ccmaname').text
-        heritage['crltsnonm'] = elem.find('crltsnonm').text
-        heritage['ccbamnm1'] = elem.find('ccbamnm1').text
-        heritage['ccbamnm2'] = elem.find('ccbamnm2').text
-        heritage['ccbactcdnm'] = elem.find('ccbactcdnm').text
-        heritage['ccsiname'] = elem.find('ccsiname').text
-        heritage['ccbaadmin'] = elem.find('ccbaadmin').text
-        heritage['ccbakdcd'] = elem.find('ccbakdcd').text
-        heritage['ccbactcd'] = elem.find('ccbactcd').text
-        heritage['ccbaasno'] = elem.find('ccbaasno').text
-        heritage['ccbacncl'] = elem.find('ccbacncl').text
-        heritage['ccbacpno'] = elem.find('ccbacpno').text
-        heritage['longitude'] = elem.find('longitude').text
-        heritage['latitude'] = elem.find('latitude').text
-        heritages.append(heritage) # 문화재 1개의 필요 파라미터 값들을 모두 딕셔너리에 담는 것을 완료한 후, heritages 배열에 담아준다.
-    if cnt % 1000 == 0:
-        print(cnt)
-    cnt+=1
-    print(page, " 전체목록 완료")
-```
-
-
-
-###### 상세정보 가져오기
+###### 요청 파라미터 확인
 
 ![image-20210124231632560](README.assets/image-20210124231632560-1611890438791.png)
 
-- 문화재검색 상세조회를 위한 필수 요청 파라미터들이다.
-
-```python
-#상세정보 가져오기
-
-#7000개마다 연결 끊김
-cnt=1 # 상세정보 가져오기 진행상황 확인을 위한 cnt 선언
-for heritage in heritages[:7000]:
-    # 문화재검색 상세조회를 위한 필수 요청 파라미터들을 url에 넣어 API 요청을 보낸다.
-    url = "http://www.cha.go.kr/cha/SearchKindOpenapiDt.do?ccbaKdcd="+heritage['ccbakdcd']+"&ccbaCtcd="+heritage['ccbactcd']+"&ccbaAsno="+heritage['ccbaasno']
-    response = requests.get(url).content
-    soup = bs(response, 'html.parser')
-    doc = ET.fromstring(str(soup))
-    iter_elem = doc.iter(tag="item")
-    for elem in iter_elem: # 위와 마찬가지의 방법으로, 위 문화재검색 목록조회를 완료한 문화재 딕셔너리 아이템에 문화재 검색 상세조회를 위한 파라미터들과 그 값을 추가로 넣어준다.
-        heritage['gcodename'] = elem.find('gcodename').text
-        heritage['bcodename'] = elem.find('bcodename').text
-        heritage['mcodename'] = elem.find('mcodename').text
-        heritage['scodename'] = elem.find('scodename').text
-        heritage['ccbaquan'] = elem.find('ccbaquan').text
-        heritage['ccbaasdt'] = elem.find('ccbaasdt').text
-        heritage['ccbalcad'] = elem.find('ccbalcad').text
-        heritage['cccename'] = elem.find('cccename').text
-        heritage['ccbaposs'] = elem.find('ccbaposs').text
-        heritage['content'] = elem.find('content').text
-    if cnt%500 == 0:
-        print(cnt, "개 완료!!!")
-    cnt += 1
-```
-
-
-
-###### 필요없는 속성 삭제 & 싱글쿼터 제거
-
-```python
-#필요없는 속성 삭제
-# 순번과 문화재명(한자)는 필요없으므로 삭제해준다.
-cnt = 1
-for i in heritages:
-    del i['sn'] # 순번 
-    del i['ccbamnm2'] # 문화재명(한자)
-    if cnt%1000 == 0:
-        print(cnt)
-    cnt += 1
-```
-
-- `del` dict[key]
-
-  - ```python
-    # 사용법 참고
-    # Dictionary of strings and int
-    word_freq_dict = {"Hello": 56,
-                      "at": 23,
-                      "test": 43,
-                      "this": 43}
-    # Deleting an item from dictionary using del
-    del word_freq_dict['at']
-    print(word_freq_dict)
-    ```
-
-```python
-#싱글쿼터 제거
-cnt = 1
-for heritage in heritages:
-    for key, value in heritage.items():
-        heritage[key] = value.replace("'", "‘")
-    print(heritage)
-    if cnt % 1000 == 0:
-        print(cnt)
-    cnt += 1
-```
-
-- `dic.items()`: The `items()` method returns a view object. The view object contains the key-value pairs of the dictionary, as tuples in a list.
-
-
-
-###### Sql문 파일로 저장
-
-```python
-#sql문 저장
-f = open('test.sql', 'w', encoding='utf8')
-cnt = 1
-for heritage in heritages:
-    # 파일 형식이 insert into heritage values (' 로 시작해서 ');로 끝나게 전환.
-    s = "insert into heritage values ("
-    for i in heritage.values():
-        s += "'" + i.strip() + "', "
-    s = s.rstrip(' ,')
-    s += ");\n"
-    f.write(s) # sql 파일에 appending
-    if cnt % 1000 == 0:
-        print(cnt)
-    cnt += 1
-f.close()
-```
-
-- `open`(*file*, *mode='r'*, *buffering=-1*, *encoding=None*, *errors=None*, *newline=None*, *closefd=True*, *opener=None*)
-
-  - Open *file* and return a corresponding [file object](https://docs.python.org/3/glossary.html#term-file-object).
-
-- `Write to an Existing File`
-
-  - `"a"` - Append - will append to the end of the file
-
-  - `"w"` - Write - will overwrite any existing content
-
-  - ```python
-    # 사용예시
-    f = open("demofile2.txt", "a")
-    f.write("Now the file has more content!")
-    f.close()
-    
-    #open and read the file after the appending:
-    f = open("demofile2.txt", "r")
-    print(f.read())
-    ```
-
-- **Python** Dictionary **values() Method**
-
-  The **values() method** returns a view object. The view object contains the **values** of the dictionary, as a list.
-
-  
-
-###### 결과물 조회
+###### 파이썬을 이용해 가져온 문화재 데이터 결과물 조회
 
 ![result](README.assets/result-1611890438792.png)
 
-
+- 국민 대부분이 알고있는 유명한 문화재부터 잘 알려지지 않은 마이너(Minor)한 문화재 데이터까지 모두 담고있어, 방대한 양의 문화재 탐방이 가능하다 
 
 `참조한 주요 공식문서`
 
@@ -317,57 +113,133 @@ f.close()
 
 _____
 
-### 프론트 앤드
+
+
+# 주요 기능 및 화면
+
+![image-20210219110100544](README.assets/image-20210219110100544.png)
+
+- 웹 제작에 앞서 전체 컨셉 컬러와 구조를 짜고 제작.
+
+
 
 ###### 메인 페이지
 
-![image-20210129121627472](README.assets/image-20210129121627472.png)
+![image-20210219110656640](README.assets/image-20210219110656640.png)
 
 - 서비스의 핵심 기능을 부각시킨 **메인 화면의** **디자인**
 - 우리 프로젝트의 메인 컬러인 `darken navy`와 `lighten brown` 의 컬러를 부각시켰다.
+- 메인 페이지 로딩 시 총 1000개의 지역별 주요 문화재를 클러스터 형태로 랜덤으로 보여준다. (새로고침 시 새로운 문화재 조회 가능)
+- 검색 하나로 한국에 있는 모든 문화재의 위치와 상세 정보를 조회 가능
+- 사용자 편의를 위한 문화재 지도 사용법 설명도 넣어놨다.
+
+
+
+###### 메인 페이지에서의 문화재 정보 조회
+
+![image-20210219111202309](README.assets/image-20210219111202309.png)
+
+- 마커에 마우스 오버 시 해당 문화재의 간이 정보 모달 생성 
+- 마커 클릭 시 해당 문화재의 상세 정보 모달 생성
+
+
+
+###### 문화재 이름 검색 기능
+
+![image-20210219111242114](README.assets/image-20210219111242114.png)
+
+- 검색 예시: 경복궁
+- 원하는 문화재 이름을 검색하면 해당 위치로의 지도 이동과 함께 검색어에 관련된 문화재의 마커를 보여준다.
+
+
+
+###### 문화재 지역명 검색 기능
+
+![image-20210219111343683](README.assets/image-20210219111343683.png)
+
+- 검색 예시: 서귀포
+- 궁금한 지역의 이름을 검색하면 해당 위치로의 지도 이동과 함께 해당 지역에 속하는 문화재 마커를 보여준다.
+
+
+
+###### 이동 경로 계산 기능
+
+![image-20210219111417528](README.assets/image-20210219111417528.png)
+
+- 탐방을 원하는 문화재 사이의 거리를 계산해 거리와 이동 수단별 대략적인 이동시간을 알려준다.
+- 원하는 지점들을 왼쪽 클릭하면 경로가 생성되고, 오른쪽 클릭하면 경로가 완성된다.
+- 완성된 경로를 다시 왼쪽 클릭하면 경로 삭제 가능
+
+
 
 ###### Auth 관련 페이지
 
-![image-20210129122532691](README.assets/image-20210129122532691.png)![image-20210129122536098](README.assets/image-20210129122536098.png)![image-20210129122554889](README.assets/image-20210129122554889.png)![image-20210129122544014](README.assets/image-20210129122544014.png)
+**사용자 친화적 웹페이지를 구성하기 위해 페이지 전환 최소화를 목표로 했다. **
 
-- 사용자 친화적 웹페이지를 구성하기 위해 페이지 전환 최소화를 목표로 했다.
-- 회원가입, 로그인, 아이디 찾기, 비밀번호 찾기 등 필수 페이지들은 페이지 전환 없이 모달 형식으로 띄우도록 했다.
-- 프론트앤드와 백앤드 회원가입, 로그인, 로그아웃 기능 연결도 완료했다.
+**회원가입, 로그인, 아이디 찾기, 비밀번호 찾기 등 필수 페이지들은 페이지 전환 없이 모달 형식으로 띄우도록 했다.**
 
-###### 메인 기능: 문화재 정보 조회
+`회원가입`(이메일 인증 기능 구현)
 
-![image-20210129122706504](README.assets/image-20210129122706504.png)![image-20210129122712418](README.assets/image-20210129122712418.png)
+![image-20210219111656132](README.assets/image-20210219111656132.png)
 
-- 지도 상에 마커들을 등록해 주는 기능을 구현해 봤다.
-- 각 마커에 `마우스 오버`와 `마우스 클릭` 이벤트 등록을 하고 `마우스 오버` 이벤트 발생 시 간이 모달이 띄워지게끔 기능을 구현했다.
+
+
+- 헤더 우측 상단에 회원가입 버튼을 누르면 회원가입을 할 수 있는 모달이 생성된다.
+- 회원가입은 Gmail로만 가능하며, 가입하기 버튼을 누르면 입력한 이메일 주소로 인증 메일 요청이 발송된다.
+  이메일 인증 확인 버튼을 누르면 이메일 인증이 완료되고, 계정을 사용할 수 있게 된다.
+
+`기타 Auth 기능`
+
+![image-20210219112247314](README.assets/image-20210219112247314.png)
+
+- 헤더 우측 상단에 로그인 버튼을 누르면 로그인을 할 수 있는 모달이 생성된다. 
+- 로그인 후 개인 정보수정 및 회원탈퇴 등이 가능하다.
+- 아이디 찾기와 비밀번호 찾기도 가능
+
+
+
+###### 사용자 맞춤 문화재 추천 기능
+
+`선호도 선택`
+
+![image-20210219112818511](README.assets/image-20210219112818511.png)
+
+- 지역, 문화재 종류, 시대 별로 개인의 선호 정보를 입력하면 이에 맞는 문화재를 추천해주는 기능입니다.
+- 해당 기능은 로그인한 유저에 한해서 이용 가능합니다.
+- 좌측 메뉴 목록에 ‘문화재 추천을 위한 선호 정보 입력‘을 클릭하면 선호하는 지역을 선택할 수 있는 창이 생성됩니다. 
+- 지역, 문화재 종류(카테고리), 역사 시대 별로 세 개의 선호하는 항목을 선택한 후 ‘다음으로’를 클릭합니다.
+
+
+
+`문화재 추천 목록 조회`
+
+![image-20210219113023174](README.assets/image-20210219113023174.png)
+
+- 입력한 선호 정보를 바탕으로 해당 유저에게 문화재 추천 목록을 보여줍니다.
+- ‘더보기’ 클릭 시 해당 문화재의 상세 정보를 조회 할 수 있습니다. 
+
+
+
+`그 외 공지사항 작성 등 기타 필수 기능들을 구현해 봤습니다. 자세한 사항은 직접 홈페이지를 방문 혹은 파일을 실행해 확인해주세요.`
+
+
 
 _______
 
-### 백앤드
+### TDD(테스트 주도 개발 방식)
 
-`현재 프론트 앤드와 백앤드 사이 회원가입, 로그인, 로그아웃 기능만 완벽히 연동했고, 그 외 기능들은 백애드에서 작업해 Swagger 환경에서 테스트를 하며 TDD (테스트 주도 개발) 방식을 고수하려 노력했다.`
+`프로젝트에서 구현하고자 하는 기능별로 Swagger 환경에서 테스트를 하며 TDD (테스트 주도 개발) 방식을 고수하려 노력했습니다.`
 
-###### 회원가입
+###### Swagger를 활용한 백앤드 기능별 테스트 예시 자료
 
-
-
-![image-20210129123638927](README.assets/image-20210129123638927.png)
-
-###### 회원정보 수정
-
-![image-20210129123954967](README.assets/image-20210129123954967.png)
-
-###### 회원 탈퇴
-
-![image-20210129124003450](README.assets/image-20210129124003450.png)
-
-###### 로그인, 아이디 찾기, 비밀번호 찾기
-
-![image-20210129124033335](README.assets/image-20210129124033335.png)![image-20210129124052368](README.assets/image-20210129124052368.png)![image-20210129124055882](README.assets/image-20210129124055882.png)
+![image-20210129123638927](README.assets/image-20210129123638927.png)![image-20210129123954967](README.assets/image-20210129123954967.png)
 
 
 
-- 그 외 회원 목록, 회원 생성, 회원 정보 수정, 회원 삭제, 공지사항 작성, 공지사항 목록 조회, 공지사항 수정, 공지사항 삭제 기능을 백앤드 상에서 구현 완료했다.
+## 배포
 
+`배포 사이트 주소`: http://i4a207.p.ssafy.io/
 
+- 만료기한이 존재하는 점 유의부탁드립니다.
 
+###### AWS(EC2) 서버에 Docker Container를 업로드해 배포
